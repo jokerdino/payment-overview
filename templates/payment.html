@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Payment{% endblock %}
+{% block content %}
+<h1 class="title">Payment</h1>
+
+<table class="table">
+    <tr>
+        <th>Customer:</th>
+        <td>{{ payment.customer }}</td>
+    </tr>
+    {% if payment.date %}
+    <tr>
+        <th>Date:</th>
+        <td> {{ payment.date }} </td?
+    </tr>
+    {% endif %}
+</table>
+
+<div class="field is-grouped">
+    <div class="control">
+        <a class="button is-primary is-outlined is-small"
+           href="{{ request.path }}/edit">Edit</a>
+    </div>
+</div>
+
+{% endblock %}

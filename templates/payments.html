@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Home {% endblock %}
+{% block content %}
+        <h1 class="title"> Payments pending</h1>
+
+        {% if payments %}
+        <table class = "table is-striped is-fullwidth">
+            {% for payment_key, payment in payments %}
+            <tr>
+                <td>
+
+                    <a href="{{ url_for ('payment_page', payment_key=payment_key) }}">
+
+                    {{ payment.customer }}
+                    {% if payment.date %} ({{ payment.date}} ) {% endif %}
+                    </a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+{% endblock %}

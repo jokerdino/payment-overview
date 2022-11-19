@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Edit payment{% endblock %}
+{% block content %}
+
+<h1 class="title">Edit payment</h1>
+<form action="" method="post" name="payment_edit">
+    {{ form.csrf_token }}
+    <div class="field">
+        <label for="title" class="label">Title</label>
+        <div class="control">
+            {{ form.title(required=True, autofocus=True, class='input') }}
+        </div>
+            {% for error in form.title.errors %}
+        <p class="help has-background-warning">
+        {{ error }}
+        </p>
+        {% endfor %}
+        </div>
+    <div class="field">
+        <label for="date" class="label">Date</label>
+        <div class="control">
+            {{ form.date( class='input') }}
+        </div>
+
+    </div>
+
+    <div class="field is-grouped">
+        <button class="button is-primary is-small">Save</button>
+    </div>
+    </div>
+</form>
+{% endblock %}
+

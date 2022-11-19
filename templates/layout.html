@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Payments pending for processing - {% block title %}{% endblock %}</title>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"/>
+        <link rel="stylesheet" 
+               href="{{ url_for('static', filename='payments.css')   }}"/>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <span class="navbar-item">
+
+                <a class="button is-link" href="{{ url_for('home_page') }}">Home</a>
+                    </span>
+                    <span class="navbar-item">
+
+                <a class="button is-link" href="{{ url_for('payments_page')}}">Payments</a>
+                    </span>
+                {% if current_user.is_admin %}
+                <span class="navbar-item">
+                <a class="button is-link" href="{{ url_for('payment_add_page') }}">Add payment</a>
+                    </span>
+                {% endif %}
+                <span class="navbar-item">
+                {% if not current_user.is_authenticated %}
+                    <a class="button is-link" href="{{ url_for('login_page') }}"> Login</a>
+                {% else %}
+                   {{ current_user.username }}
+                   <a class="button is-link" href="{{ url_for('logout_page') }}"> Log out</a>
+                {% endif %}
+                </span>
+                </div>
+
+            </nav>
+        </header>
+
+        {% block content %}{% endblock %}
+        <footer>
+            <small>Hello, it's me</small>
+        </footer>
+    </body>
+</html>
+
