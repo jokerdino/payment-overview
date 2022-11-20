@@ -18,8 +18,16 @@ def home_page():
 
 def payments_completed():
     db = current_app.config["db"]
-    payments = db.get_payments()
-    return render_template("payments_completed.html", payments=sorted(payments))
+    if request.method == "GET":
+        payments = db.get_payments()
+        return render_template("payments_completed.html", payments=sorted(payments))
+    else:
+        if not current_user.is_superadmin:
+            abort(401)
+        form_payment_keys = request.form.getlist("payment_keys")
+        for form_payment_key in form_payment_keys:
+            db.delete_payment(int(form_payment_key))
+        return redirect(url_for("payments_completed"))
 
 def payments_page():
     db = current_app.config["db"]
