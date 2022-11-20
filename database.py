@@ -29,8 +29,11 @@ class Database:
             connection.commit()
 
     def delete_payment(self, payment_key):
-        if payment_key in self.payments:
-            del self.payments[payment_key]
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "DELETE FROM PAYMENT WHERE (ID = ?)"
+            cursor.execute(query, (payment_key,))
+            connection.commit()
 
     def get_payment(self, payment_key):
         with dbapi2.connect(self.dbfile) as connection:

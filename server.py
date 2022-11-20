@@ -29,6 +29,7 @@ def create_app():
 
 
     app.add_url_rule("/payments", view_func=views.payments_page)
+    app.add_url_rule("/payments_completed", view_func=views.payments_completed)
     app.add_url_rule("/payments/<int:payment_key>",view_func=views.payment_page)
     app.add_url_rule(
             "/new-payment", view_func=views.payment_add_page,methods=["GET","POST"]
@@ -38,9 +39,9 @@ def create_app():
             view_func=views.payment_edit_page,
             methods=["GET","POST"],
             )
-    #app.add_url_rule(
-     #       "/payments",view_func=views.payments_page, method=["GET","POST"]
-      #      )
+    app.add_url_rule(
+            "/payments",view_func=views.payments_page, methods=["GET","POST"]
+            )
 
     lm.init_app(app)
     lm.login_view = "login_page"

@@ -6,7 +6,7 @@
 <form action="" method="post" name="payment_edit">
     {{ form.csrf_token }}
     <div class="field">
-        <label for="title" class="label">Title</label>
+        <label for="title" class="label">Customer Name</label>
         <div class="control">
             {{ form.title(required=True, autofocus=True, class='input') }}
         </div>
@@ -32,12 +32,12 @@
 
     <div class="field">
         <label for="mode" class="label">Mode of payment</label>
-        <div class="control">
-            <select name = "mode" id="mode">
-                <option value = "Cheque">Cheque</option>
-                <option value="Cash">Cash</option>
+        <select name="mode">
+        {% for mode in form.mode_list %}
+        <option value="{{mode}}" {% if mode == mode_list %} selected {% endif %}>
+                {{ mode }} </option>
+        {% endfor %}
             </select>
-        </div>
     </div>
 
     <div class="field">
@@ -51,9 +51,11 @@
     </div>
     <div class="field">
         <label for="rel_manager" class="label">Relationship manager</label>
-        <div class="control">
-                             {{ form.rel_manager(class='input')}}
-        </div>
+        <select name="rel_manager" >
+        {% for rm in form.rel_manager_list %}
+        <option value="{{rm}}" > {{rm}}</option>
+        {% endfor %}
+        </select>
 
         </div>
     <div class="field">
@@ -65,7 +67,11 @@
     <div class="field">
         <label for="nature" class="label">Nature of proposal</label>
         <div class="control">
-                             {{form.nature(class='input')}}
+        <select name="nature" >
+        {% for nature in form.nature_list %}
+        <option value="{{nature}}" > {{nature}}</option>
+        {% endfor %}
+        </select>
         </div>
         </div>
     <div class="field">
@@ -78,13 +84,20 @@
     <div class="field">
         <label for="underwriter" class="label">Underwriter</label>
         <div class="control">
-                             {{form.underwriter(class='input')}}
-        </div>
+        <select name="underwriter" >
+        {% for underwriter in form.underwriter_list %}
+        <option value="{{underwriter}}" > {{underwriter}}</option>
+        {% endfor %}
+        </select>
         </div>
     <div class="field">
         <label for="status" class="label">Status</label>
         <div class="control">
-                             {{form.status(class='input')}}
+        <select name="status" >
+        {% for status in form.status_list %}
+        <option value="{{status}}" > {{status}}</option>
+        {% endfor %}
+        </select>
 
         </div>
         </div>
@@ -120,10 +133,12 @@
                              {{form.cdnumber(class='input')}}
         </div>
     </div>
+
     <div class="field is-grouped">
         <button class="button is-primary is-small">Save</button>
     </div>
     </div>
+
 </form>
 {% endblock %}
 

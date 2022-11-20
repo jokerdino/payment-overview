@@ -8,15 +8,19 @@ from datetime import datetime
 class PaymentEditForm(FlaskForm):
     title = StringField("Title", validators = [DataRequired()])
 
-    date = DateField(
-            "Date",
-            validators=[Optional(),
-                ],
-            )
+    date = DateField("Date", validators=[Optional(),],)
     amount = IntegerField("Amount",validators=[Optional(),])
     mode = StringField("Mode of payment", validators=[Optional(),])
 
-    modeentry_list = ['CD', 'Scroll']
+
+
+    mode_list = ['NEFT', 'Cheque','Cash','Others']
+    modeentry_list = ['CD', 'Regular','Scroll','BG','Others']
+    rel_manager_list = ['Kannan','Ravikumar','Varinder Singh']
+    nature_list = ['Fresh','Renewal','Endorsement','Installment','Extension','Incoming coinsurance','Others']
+    underwriter_list = ['Anand Kumar','Kesavi','Anupriya','Swatee Barik','Vijaya','Naval', 'Others']
+    status_list = ['To be receipted','To be underwritten','Awaiting further details from brokers/insured','Approval pending','GC Core issue - ticket raised','Completed','Others1','Others2']
+
     modeentry = StringField("Mode of entry", validators=[Optional(),])
 
     rel_manager = StringField("Relationship manager", validators=[Optional(),])
