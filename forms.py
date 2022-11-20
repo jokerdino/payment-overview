@@ -22,7 +22,7 @@ class PaymentEditForm(FlaskForm):
     status_list = ['To be receipted','To be underwritten','Awaiting further details from brokers/insured','Approval pending','GC Core issue - ticket raised','Completed','Others1','Others2']
 
     modeentry = StringField("Mode of entry", validators=[Optional(),])
-
+    customerid = StringField("Customer ID", validators=[Optional(),])
     rel_manager = StringField("Relationship manager", validators=[Optional(),])
     broker = StringField("Broker", validators=[Optional(),])
     nature = StringField("Nature", validators=[Optional(),])

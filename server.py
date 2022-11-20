@@ -22,26 +22,16 @@ def create_app():
     app.config.from_object("settings")
     app.add_url_rule("/", view_func=views.home_page)
 
-    app.add_url_rule(
-            "/login", view_func=views.login_page, methods=["GET","POST"]
-            )
+    app.add_url_rule("/login", view_func=views.login_page, methods=["GET","POST"])
     app.add_url_rule("/logout", view_func=views.logout_page)
 
 
-    app.add_url_rule("/payments", view_func=views.payments_page)
     app.add_url_rule("/payments_completed", view_func=views.payments_completed,methods=["GET","POST"])
     app.add_url_rule("/payments/<int:payment_key>",view_func=views.payment_page)
-    app.add_url_rule(
-            "/new-payment", view_func=views.payment_add_page,methods=["GET","POST"]
-            )
-    app.add_url_rule(
-            "/payments/<int:payment_key>/edit",
-            view_func=views.payment_edit_page,
-            methods=["GET","POST"],
-            )
-    app.add_url_rule(
-            "/payments",view_func=views.payments_page, methods=["GET","POST"]
-            )
+    app.add_url_rule("/new-payment", view_func=views.payment_add_page,methods=["GET","POST"])
+    app.add_url_rule("/payments/<int:payment_key>/edit",view_func=views.payment_edit_page,
+            methods=["GET","POST"],)
+    app.add_url_rule("/payments",view_func=views.payments_page, methods=["GET","POST"])
 
     lm.init_app(app)
     lm.login_view = "login_page"

@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block title %}Home {% endblock %}
+{% block content %}
+        <h1 class="title"> Payments pending</h1>
+
+        {% if payments %}
+        <form action="" method="post" name="payment_list">
+        <table class = "table is-striped">
+
+            <thead>
+                <tr>
+{% if current_user.is_superadmin%}
+                    <th>Select</th>
+                    {% endif %}
+                    <th>Customer name</th>
+                    <th>Date of payment</th>
+                    <th>Amount</th>
+                    <th>Mode of payment</th>
+                    <th>Mode of entry</th>
+                    <th>Customer ID</th>
+                    <th>Relationship manager</th>
+                    <th>Broker</th>
+                    <th>Nature of proposal</th>
+                    <th>Assigned to</th>
+                   
+                    <th>Ticket</th> <th>Current status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for payment_key, payment in payments %}
+            {% if payment.status != "Completed" %}
+            <tr>
+{% if current_user.is_superadmin %}
+                <td>
+                <label class="checkbox">
+                    <input type="checkbox" name="payment_keys" value="{{ payment_key }}"/>
+                </label></td>
+                {% endif %}
+                <td>
+                    <a href="{{ url_for ('payment_page', payment_key=payment_key) }}">
+
+                        {{ payment.customer }}</a>
+                </td>
+                    <td>{{payment.date}}</td>
+                     <td>{{payment.amount}}</td>
+                     <td>{{payment.mode}}</td>
+                     <td>{{payment.modeentry}}</td> 
+                    
+                     <td>{{payment.customerid}}</td>
+                     <td>{{payment.rel_manager}}</td>
+                     <td>{{payment.broker}}</td>
+                    <td>{{payment.nature}}</td> 
+                     
+                    <td>{{payment.underwriter}}</td>
+                   
+                    <td>{{payment.ticket}}</td>
+ <td>{{payment.status}}</td> 
+            </tr>
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if current_user.is_superadmin%}
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-danger is-small">Delete</button>
+            </div>
+        </div>
+        {% endif %}
+        </form>
+        {% endif %}
+
+
+
+{% endblock %}

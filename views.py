@@ -70,12 +70,11 @@ def payment_add_page():
 
         ticket = form.data["ticket"]
         customerid = form.data["customerid"]
-        cdnumber = form.data["cdnumber"]
 
         payment = Payment(title, date=date, amount=amount, mode= mode,
-                modeentry=modeentry, rel_manager=rel_manager,broker=broker,
-                remarks = remarks, underwriter = underwriter,status=status,
-                ticket=ticket)
+                modeentry=modeentry, customerid=customerid, rel_manager=rel_manager,broker=broker,
+                remarks = remarks, underwriter = underwriter, ticket=ticket, status=status,
+                )
         db = current_app.config["db"]
         payment_key = db.add_payment(payment)
         return redirect(url_for("payment_page", payment_key=payment_key))
@@ -107,18 +106,20 @@ def payment_edit_page(payment_key):
         amount = form.data["amount"]
         mode = form.data["mode"]
         modeentry = form.data["modeentry"]
+        customerid = form.data["customerid"]
         rel_manager = form.data["rel_manager"]
         broker = form.data["broker"]
         nature = form.data["nature"]
         remarks = form.data["remarks"]
         underwriter = form.data["underwriter"]
-        status = form.data["status"]
+
         ticket = form.data["ticket"]
+        status = form.data["status"]
 
         payment = Payment(title, date=date, amount=amount, mode = mode,
-                modeentry=modeentry,rel_manager=rel_manager, broker=broker,
+                modeentry=modeentry, customerid= customerid, rel_manager=rel_manager, broker=broker,
                 nature=nature,remarks=remarks,underwriter=underwriter,
-                status=status,ticket=ticket)
+                ticket=ticket, status=status)
         db.update_payment(payment_key, payment)
         flash("Payment data updated.")
         return redirect(url_for("payment_page", payment_key = payment_key))
@@ -127,14 +128,14 @@ def payment_edit_page(payment_key):
     form.amount.data = payment.amount
     form.mode.data = payment.mode
     form.modeentry.data = payment.modeentry
+    form.customerid.data = payment.customerid
     form.rel_manager.data = payment.rel_manager
     form.broker.data = payment.broker
     form.nature.data = payment.nature
     form.remarks.data = payment.remarks
     form.underwriter.data = payment.underwriter
-    form.status.data = payment.status
     form.ticket.data = payment.ticket
-
+    form.status.data = payment.status
     return render_template ("payment_edit.html", form=form)
 
 def login_page():

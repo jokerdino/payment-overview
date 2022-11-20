@@ -48,6 +48,12 @@
         {% endfor %}
         </select>
 
+        <div class="field">
+            <label for="customerid" class="label">Customer ID</label>
+            <div class="control">
+                {{ form.customerid( class='input') }}
+            </div>
+
     </div>
     <div class="field">
         <label for="rel_manager" class="label">Relationship manager</label>
@@ -106,31 +112,6 @@
         <div class="control">
                              {{form.ticket(class='input')}}
         </div>
-        </div>
-    <div class="field">
-        <label for="customerid" class="label">Customer ID</label>
-        <div class="control">
-                             {{form.customerid(class='input')}}
-        </div>
-        </div>
-    <div class="field">
-        <label for="cdnumber" class="label">CD number</label>
-        <div class="control">
-                             {{form.cdnumber(class='input')}}
-                             </div>
-
-        </div>
-        
-    <div class="field">
-        <label for="place1" class="label">place1</label>
-        <div class="control">
-            {{ form.cdnumber(class='input')}}
-        </div>
-    </div>
-    <div class="field">
-        <label for="place2" class="label">place2</label>
-        <div class="control">
-                             {{form.cdnumber(class='input')}}
         </div>
     </div>
 
