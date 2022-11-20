@@ -37,7 +37,7 @@ def create_app():
     lm.login_view = "login_page"
 
     home_dir = os.path.expanduser("~")
-    db = Database(os.path.join(home_dir, "payments.sqlite"))
+    db = Database("payments.sqlite")
     app.config["db"] = db
 
     app.config["DEBUG"] = True

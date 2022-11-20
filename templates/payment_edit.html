@@ -32,19 +32,22 @@
 
     <div class="field">
         <label for="mode" class="label">Mode of payment</label>
-        <select name="mode">
-        {% for mode in form.mode_list %}
-        <option value="{{mode}}" {% if mode == mode_list %} selected {% endif %}>
-                {{ mode }} </option>
+        <select name="mode" >
+
+        {% for item in form.mode_list %}
+
+        <option value="{{item}}" >
+                {{ item }} </option>
         {% endfor %}
+        
             </select>
     </div>
 
     <div class="field">
         <label for="modeentry" class="label">Mode of entry</label>
         <select name="modeentry" >
-        {% for modeentry in form.modeentry_list %}
-        <option value="{{modeentry}}" > {{modeentry}}</option>
+        {% for item in form.modeentry_list %}
+        <option value="{{item}}" {% if item.name == modeentry %}{% endif %} > {{item}}</option>
         {% endfor %}
         </select>
 

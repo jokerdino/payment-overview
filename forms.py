@@ -11,7 +11,7 @@ class PaymentEditForm(FlaskForm):
     date = DateField("Date", validators=[Optional(),],)
     amount = IntegerField("Amount",validators=[Optional(),])
     mode = StringField("Mode of payment", validators=[Optional(),])
-
+    #mode = SelectField(u'mode',  choices=[('NEFT','NEFT'),('Cheque','Cheque'),('Cash','Cash'),('Others','Others')])
 
 
     mode_list = ['NEFT', 'Cheque','Cash','Others']
@@ -21,6 +21,7 @@ class PaymentEditForm(FlaskForm):
     underwriter_list = ['Anand Kumar','Kesavi','Anupriya','Swatee Barik','Vijaya','Naval', 'Others']
     status_list = ['To be receipted','To be underwritten','Awaiting further details from brokers/insured','Approval pending','GC Core issue - ticket raised','Completed','Others1','Others2']
 
+#    modeentry = SelectField("modeentry", choices=[(1,'CD'),(2,'BG')])
     modeentry = StringField("Mode of entry", validators=[Optional(),])
     customerid = StringField("Customer ID", validators=[Optional(),])
     rel_manager = StringField("Relationship manager", validators=[Optional(),])
