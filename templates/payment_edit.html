@@ -22,8 +22,104 @@
             {{ form.date( class='input') }}
         </div>
 
+        <div class="field">
+            <label for="amount" class="label">Amount</label>
+            <div class="control">
+                {{ form.amount( class='input') }}
+            </div>
+
     </div>
 
+    <div class="field">
+        <label for="mode" class="label">Mode of payment</label>
+        <div class="control">
+            <select name = "mode" id="mode">
+                <option value = "Cheque">Cheque</option>
+                <option value="Cash">Cash</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="field">
+        <label for="modeentry" class="label">Mode of entry</label>
+        <select name="modeentry" >
+        {% for modeentry in form.modeentry_list %}
+        <option value="{{modeentry}}" > {{modeentry}}</option>
+        {% endfor %}
+        </select>
+
+    </div>
+    <div class="field">
+        <label for="rel_manager" class="label">Relationship manager</label>
+        <div class="control">
+                             {{ form.rel_manager(class='input')}}
+        </div>
+
+        </div>
+    <div class="field">
+        <label for="broker" class="label">Broker</label>
+        <div class="control">
+                             {{form.broker(class='input')}}
+        </div>
+        </div>
+    <div class="field">
+        <label for="nature" class="label">Nature of proposal</label>
+        <div class="control">
+                             {{form.nature(class='input')}}
+        </div>
+        </div>
+    <div class="field">
+        <label for="remarks" class="label">Remarks</label>
+        <div class="control">
+                             {{form.remarks(class='input')}}
+        </div>
+
+        </div>
+    <div class="field">
+        <label for="underwriter" class="label">Underwriter</label>
+        <div class="control">
+                             {{form.underwriter(class='input')}}
+        </div>
+        </div>
+    <div class="field">
+        <label for="status" class="label">Status</label>
+        <div class="control">
+                             {{form.status(class='input')}}
+
+        </div>
+        </div>
+    <div class="field">
+        <label for="ticket" class="label">Ticket number</label>
+        <div class="control">
+                             {{form.ticket(class='input')}}
+        </div>
+        </div>
+    <div class="field">
+        <label for="customerid" class="label">Customer ID</label>
+        <div class="control">
+                             {{form.customerid(class='input')}}
+        </div>
+        </div>
+    <div class="field">
+        <label for="cdnumber" class="label">CD number</label>
+        <div class="control">
+                             {{form.cdnumber(class='input')}}
+                             </div>
+
+        </div>
+        
+    <div class="field">
+        <label for="place1" class="label">place1</label>
+        <div class="control">
+            {{ form.cdnumber(class='input')}}
+        </div>
+    </div>
+    <div class="field">
+        <label for="place2" class="label">place2</label>
+        <div class="control">
+                             {{form.cdnumber(class='input')}}
+        </div>
+    </div>
     <div class="field is-grouped">
         <button class="button is-primary is-small">Save</button>
     </div>

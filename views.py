@@ -20,7 +20,7 @@ def home_page():
 def payments_page():
     db = current_app.config["db"]
     payments = db.get_payments()
-    return render_template("payments.html", payments=sorted(payments))
+    return render_template("payments_table.html", payments=sorted(payments))
 
 
 
@@ -31,12 +31,32 @@ def payment_page(payment_key):
 
 @login_required
 def payment_add_page():
-
     form = PaymentEditForm()
     if form.validate_on_submit():
+
         title = form.data["title"]
         date = form.data["date"]
-        payment = Payment(title, date=date)
+        amount = form.data["amount"]
+
+        mode = form.data["mode"]
+
+
+        modeentry = form.data["modeentry"]
+        rel_manager = form.data["rel_manager"]
+        broker = form.data["broker"]
+
+        remarks = form.data["remarks"]
+        underwriter = form.data["underwriter"]
+        status = form.data["status"]
+
+        ticket = form.data["ticket"]
+        customerid = form.data["customerid"]
+        cdnumber = form.data["cdnumber"]
+
+        payment = Payment(title, date=date, amount=amount, mode= mode,
+                modeentry=modeentry, rel_manager=rel_manager,broker=broker,
+                remarks = remarks, underwriter = underwriter,status=status,
+                ticket=ticket)
         db = current_app.config["db"]
         payment_key = db.add_payment(payment)
         return redirect(url_for("payment_page", payment_key=payment_key))
@@ -65,12 +85,37 @@ def payment_edit_page(payment_key):
     if form.validate_on_submit():
         title = form.data["title"]
         date = form.data["date"]
-        payment = Payment(title, date=date)
+        amount = form.data["amount"]
+        mode = form.data["mode"]
+        modeentry = form.data["modeentry"]
+        rel_manager = form.data["rel_manager"]
+        broker = form.data["broker"]
+        nature = form.data["nature"]
+        remarks = form.data["remarks"]
+        underwriter = form.data["underwriter"]
+        status = form.data["status"]
+        ticket = form.data["ticket"]
+
+        payment = Payment(title, date=date, amount=amount, mode = mode,
+                modeentry=modeentry,rel_manager=rel_manager, broker=broker,
+                nature=nature,remarks=remarks,underwriter=underwriter,
+                status=status,ticket=ticket)
         db.update_payment(payment_key, payment)
         flash("Payment data updated.")
         return redirect(url_for("payment_page", payment_key = payment_key))
     form.title.data = payment.customer
     form.date.data = datetime.strptime(payment.date, '%Y-%m-%d') if payment.date else ""
+    form.amount.data = payment.amount
+    form.mode.data = payment.mode
+    form.modeentry.data = payment.modeentry
+    form.rel_manager.data = payment.rel_manager
+    form.broker.data = payment.broker
+    form.nature.data = payment.nature
+    form.remarks.data = payment.remarks
+    form.underwriter.data = payment.underwriter
+    form.status.data = payment.status
+    form.ticket.data = payment.ticket
+
     return render_template ("payment_edit.html", form=form)
 
 def login_page():
