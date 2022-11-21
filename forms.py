@@ -6,33 +6,33 @@ from wtforms_components import IntegerField, SelectField
 from datetime import datetime
 
 class PaymentEditForm(FlaskForm):
-    title = StringField("Title", validators = [DataRequired()])
+    title = StringField("Customer name", validators = [DataRequired()])
 
     date = DateField("Date", validators=[Optional(),],)
     amount = IntegerField("Amount",validators=[Optional(),])
-    mode = StringField("Mode of payment", validators=[Optional(),])
-    #mode = SelectField(u'mode',  choices=[('NEFT','NEFT'),('Cheque','Cheque'),('Cash','Cash'),('Others','Others')])
+    mode = SelectField('Mode of payment', coerce=str, choices=[('',''),('NEFT','NEFT'),('Cheque','Cheque'),('Cash','Cash'),('Others','Others')])
 
 
-    mode_list = ['NEFT', 'Cheque','Cash','Others']
     modeentry_list = ['CD', 'Regular','Scroll','BG','Others']
-    rel_manager_list = ['Kannan','Ravikumar','Varinder Singh']
-    nature_list = ['Fresh','Renewal','Endorsement','Installment','Extension','Incoming coinsurance','Others']
-    underwriter_list = ['Anand Kumar','Kesavi','Anupriya','Swatee Barik','Vijaya','Naval', 'Others']
-    status_list = ['To be receipted','To be underwritten','Awaiting further details from brokers/insured','Approval pending','GC Core issue - ticket raised','Completed','Others1','Others2']
+    rel_manager_list = [('',''),('Kannan','Kannan'),('Ravikumar','Ravikumar'),('Varinder Singh','Varinder Singh')]
+    nature_list = [('',''),('Fresh','Fresh'),('Renewal','Renewal'),('Endorsement','Endorsement'),('Installment','Installment'),
+            ('Extension','Extension'),('Incoming coinsurance','Incoming coinsurance'),('Others','Others')]
+    underwriter_list = [('',''),('Anand Kumar','Anand Kumar'),('Kesavi','Kesavi'),('Anupriya','Anupriya'),('Swatee Barik','Swatee Barik'),
+            ('Vijaya','Vijaya'),('Naval Jacob','Naval Jacob'), ('Others','Others')]
+    status_list = [('',''),('To be receipted','To be receipted'),('To be underwritten','To be underwritten'),('Awaiting further details from brokers/insured','Awaiting further details from brokers/insured'),('Approval pending','Approval pending'),('GC Core issue - ticket raised','GC Core issue - ticket raised'),('Completed','Completed'),('Others1','Others1'),('Others2','Others2')]
 
-#    modeentry = SelectField("modeentry", choices=[(1,'CD'),(2,'BG')])
-    modeentry = StringField("Mode of entry", validators=[Optional(),])
-    customerid = StringField("Customer ID", validators=[Optional(),])
-    rel_manager = StringField("Relationship manager", validators=[Optional(),])
+    modeentry = SelectField('Mode of entry', coerce=str, choices=[('',''),('CD','CD'),('Regular','Regular'),('Scroll','Scroll'),('BG','BG'),('Others','Others')])
+    customerid = IntegerField("Customer ID", validators=[Optional(),])
+    rel_manager = SelectField("Relationship manager",coerce=str,choices=rel_manager_list)
+
     broker = StringField("Broker", validators=[Optional(),])
-    nature = StringField("Nature", validators=[Optional(),])
-    underwriter = StringField("Underwriter",validators=[Optional(),])
-    status = StringField("Status",validators=[Optional(),])
+    nature = SelectField("Nature of proposal", coerce=str, choices=nature_list,validators=[Optional(),])
+    underwriter = SelectField("Underwriter",coerce=str,choices=underwriter_list, validators=[Optional(),])
+    status = SelectField("Status",coerce=str,choices=status_list,validators=[Optional(),])
     ticket = StringField("Ticket",validators=[Optional(),])
     remarks = StringField("Remarks",validators=[Optional(),])
-    customerid = IntegerField("customerid",validators=[Optional(),])
-    cdnumber = StringField("cdnumber",validators=[Optional(),])
+   # customerid = IntegerField("customerid",validators=[Optional(),])
+   # cdnumber = StringField("cdnumber",validators=[Optional(),])
 
 class LoginForm(FlaskForm):
     username = StringField("Username",validators=[DataRequired()])

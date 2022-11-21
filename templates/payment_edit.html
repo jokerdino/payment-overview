@@ -5,123 +5,95 @@
 <h1 class="title">Edit payment</h1>
 <form action="" method="post" name="payment_edit">
     {{ form.csrf_token }}
-    <div class="field">
-        <label for="title" class="label">Customer Name</label>
-        <div class="control">
+    <table class=table>
+        <tr>
+
+            <th> {{form.title.label}}</th>
+        <td>
             {{ form.title(required=True, autofocus=True, class='input') }}
-        </div>
             {% for error in form.title.errors %}
         <p class="help has-background-warning">
         {{ error }}
         </p>
         {% endfor %}
-        </div>
-    <div class="field">
-        <label for="date" class="label">Date</label>
-        <div class="control">
-            {{ form.date( class='input') }}
-        </div>
 
-        <div class="field">
-            <label for="amount" class="label">Amount</label>
-            <div class="control">
-                {{ form.amount( class='input') }}
-            </div>
+        </td></tr>
+        <tr>
+            <th>{{form.date.label}}</th>
+            <td>{{ form.date( class='input') }}</td>
+        </tr>
 
-    </div>
 
-    <div class="field">
-        <label for="mode" class="label">Mode of payment</label>
-        <select name="mode" >
+        <tr>
+            <th> {{form.amount.label}}</th>
+          <td>         {{ form.amount( class='input') }}
 
-        {% for item in form.mode_list %}
+        </td></tr>
+        <tr>
+    <fieldset>
+        <th>{{form.mode.label}}</th><td>  {{form.mode}}
+    </fieldset>
 
-        <option value="{{item}}" >
-                {{ item }} </option>
-        {% endfor %}
-        
-            </select>
-    </div>
+        </td></tr>
+        <tr>
 
-    <div class="field">
-        <label for="modeentry" class="label">Mode of entry</label>
-        <select name="modeentry" >
-        {% for item in form.modeentry_list %}
-        <option value="{{item}}" {% if item.name == modeentry %}{% endif %} > {{item}}</option>
-        {% endfor %}
-        </select>
+        <fieldset>
+           <th> {{form.modeentry.label}}</th><td>{{form.modeentry}}
+        </fieldset>
 
-        <div class="field">
-            <label for="customerid" class="label">Customer ID</label>
-            <div class="control">
-                {{ form.customerid( class='input') }}
-            </div>
+        </td></tr>
+        <tr>
+            <th>{{form.customerid.label}}
 
-    </div>
-    <div class="field">
-        <label for="rel_manager" class="label">Relationship manager</label>
-        <select name="rel_manager" >
-        {% for rm in form.rel_manager_list %}
-        <option value="{{rm}}" > {{rm}}</option>
-        {% endfor %}
-        </select>
+              </th><td>  {{ form.customerid( class='input') }}
 
-        </div>
-    <div class="field">
-        <label for="broker" class="label">Broker</label>
-        <div class="control">
-                             {{form.broker(class='input')}}
-        </div>
-        </div>
-    <div class="field">
-        <label for="nature" class="label">Nature of proposal</label>
-        <div class="control">
-        <select name="nature" >
-        {% for nature in form.nature_list %}
-        <option value="{{nature}}" > {{nature}}</option>
-        {% endfor %}
-        </select>
-        </div>
-        </div>
-    <div class="field">
-        <label for="remarks" class="label">Remarks</label>
-        <div class="control">
-                             {{form.remarks(class='input')}}
-        </div>
+        </td></tr>
+        <tr>
+        <fieldset>
+          <th>  {{form.rel_manager.label}}</th><td> {{form.rel_manager}}
+        </fieldset>
 
-        </div>
-    <div class="field">
-        <label for="underwriter" class="label">Underwriter</label>
-        <div class="control">
-        <select name="underwriter" >
-        {% for underwriter in form.underwriter_list %}
-        <option value="{{underwriter}}" > {{underwriter}}</option>
-        {% endfor %}
-        </select>
-        </div>
-    <div class="field">
-        <label for="status" class="label">Status</label>
-        <div class="control">
-        <select name="status" >
-        {% for status in form.status_list %}
-        <option value="{{status}}" > {{status}}</option>
-        {% endfor %}
-        </select>
+        </td></tr>
+        <tr>
+            <th>{{form.broker.label}}
+        </th>
+             <td>                {{form.broker(class='input')}}
 
-        </div>
-        </div>
-    <div class="field">
-        <label for="ticket" class="label">Ticket number</label>
-        <div class="control">
-                             {{form.ticket(class='input')}}
-        </div>
-        </div>
-    </div>
+        </td></tr>
+        <tr>
+        <fieldset>
+           <th> {{form.nature.label}} </th><td>{{form.nature}}
+        </fieldset>
 
+        </td></tr>
+        <tr>
+            <th>       {{form.remarks.label}}
+    </th>
+         <td>                    {{form.remarks(class='input')}}
+
+        </td></tr>
+        <tr>        <fieldset>
+            <th>{{form.underwriter.label}}</th><td> {{form.underwriter}}
+        </fieldset>
+
+        </td></tr>
+
+        <tr>
+            <th>{{form.ticket.label}}
+        </th>
+        <td>                     {{form.ticket(class='input')}}
+
+        </td></tr>
+         <tr>        <fieldset>
+            <th>{{form.status.label}} </th><td>{{form.status}}
+        </fieldset>
+
+        </td></tr>
+           </table>
     <div class="field is-grouped">
-        <button class="button is-primary is-small">Save</button>
+        <button class="button is-primary is-big">Save</button>
     </div>
-    </div>
+
 
 </form>
 {% endblock %}
