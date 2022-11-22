@@ -84,10 +84,12 @@ def payment_add_page():
         ticket = form.data["ticket"]
         customerid = form.data["customerid"]
 
+        voucher = form.data["voucher"]
+
         payment = Payment(title, date=date, amount=amount, mode= mode,
                 modeentry=modeentry, customerid=customerid, rel_manager=rel_manager,broker=broker,
                 remarks = remarks, underwriter = underwriter, ticket=ticket, status=status,
-                )
+                voucher=voucher)
         db = current_app.config["db"]
         payment_key = db.add_payment(payment)
         return redirect(url_for("payment_page", payment_key=payment_key))
@@ -128,11 +130,11 @@ def payment_edit_page(payment_key):
 
         ticket = form.data["ticket"]
         status = form.data["status"]
-
+        voucher = form.data["voucher"]
         payment = Payment(title, date=date, amount=amount, mode = mode,
                 modeentry=modeentry, customerid= customerid, rel_manager=rel_manager, broker=broker,
                 nature=nature,remarks=remarks,underwriter=underwriter,
-                ticket=ticket, status=status)
+                ticket=ticket, status=status, voucher=voucher)
         db.update_payment(payment_key, payment)
         flash("Payment data updated.")
         return redirect(url_for("payment_page", payment_key = payment_key))
@@ -149,6 +151,7 @@ def payment_edit_page(payment_key):
     form.underwriter.data = payment.underwriter
     form.ticket.data = payment.ticket
     form.status.data = payment.status
+    form.voucher.data = payment.voucher
     return render_template ("payment_edit.html", form=form)
 
 def login_page():

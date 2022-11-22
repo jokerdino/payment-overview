@@ -5,7 +5,7 @@
 
 <table class="table">
     <tr>
-        <th>Customer:</th>
+        <th>Customer name:</th>
         <td>{{ payment.customer }}</td>
     </tr>
     <tr>
@@ -28,11 +28,15 @@
         <td> {{ payment.modeentry }}</td>
     </tr>
     <tr>
-        <th>Customer ID</th>
+        <th>Customer ID:</th>
         <td>{{ payment.customerid}}</td>
     </tr>
     <tr>
-        <th>Relationship manager</th>
+        <th>Voucher number:</th>
+        <td>{{ payment.voucher}}</td>
+    </tr>
+    <tr>
+        <th>Relationship manager:</th>
         <td> {{ payment.rel_manager }}</td>
     </tr>
     <tr>
@@ -40,24 +44,25 @@
         <td> {{ payment.broker }}</td>
     </tr>
     <tr>
-        <th>Nature of proposal</th>
+        <th>Nature of proposal:</th>
         <td> {{ payment.nature }}</td>
     </tr>
     <tr>
-        <th>Remarks</th>
+        <th>Remarks:</th>
         <td> {{ payment.remarks }}</td>
     </tr>
     <tr>
-        <th>Underwriter</th>
+        <th>Underwriter:</th>
         <td> {{ payment.underwriter }}</td>
     </tr>
     <tr>
-        <th>Ticket number</th>
+        <th>Ticket number:</th>
         <td> {{ payment.ticket }}</td>
     </tr>
     <tr>
-        <th>Status</th>
+        <th>Status:</th>
         <td> {{ payment.status }}</td>
+        
     </tr>
 </table>
 
