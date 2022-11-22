@@ -6,8 +6,20 @@
     <div class="hero-body">
         <div class"container has-text-centered">
 
-        <h1 class="title">Welcome to Flask server</h1>
+        <h1 class="title">Welcome! </h1>
+<h3>LCB Chennai 500200 - payments, receipts, underwriting proposal tracker</h3>
         </div>
+
+<ol>
+<li>
+                <a class=" is-link" href="{{ url_for('payments_page')}}">Payments to be receipted</a>
+                  </li>
+<li>
+                <a class=" is-link" href="{{ url_for('payments_pending_uw')}}">Pending for underwriting</a>
+    </li>        
+         <li>       <a class=" is-link" href= "{{ url_for('payments_completed')}}">Completed tasks</a>
+</li>
+</ol>
 </section>
 
 {% endblock %}
