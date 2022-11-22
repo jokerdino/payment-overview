@@ -48,7 +48,11 @@
                      <td>{{payment.mode}}</td>
                      <td>{{payment.modeentry}}</td> 
                     
-                     <td>{{payment.customerid}}</td>
+{% if payment.customerid != None %}
+                     <td style ="background-color: green">{{payment.customerid}}</td>
+{% else %}
+<td >{{payment.customerid}}</td>
+{% endif %}
                      <td>{{payment.rel_manager}}</td>
                      <td>{{payment.broker}}</td>
                     <td>{{payment.nature}}</td> 
