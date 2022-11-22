@@ -45,7 +45,8 @@
                         {{ payment.customer }}</a>
                 </td>
                     <td>{{payment.date}}</td>
-                     <td>{{payment.amount}}</td>
+                     <td style="text-align:right">{{ "{:,}".format(payment.amount|int)}}</td>
+
                      <td>{{payment.mode}}</td>
                      <td>{{payment.modeentry}}</td> 
                     

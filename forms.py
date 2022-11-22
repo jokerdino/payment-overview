@@ -19,7 +19,7 @@ class PaymentEditForm(FlaskForm):
             ('Extension','Extension'),('Incoming coinsurance','Incoming coinsurance'),('Others','Others')]
     underwriter_list = [('',''),('Anand Kumar','Anand Kumar'),('Kesavi','Kesavi'),('Anupriya','Anupriya'),('Swatee Barik','Swatee Barik'),
             ('Vijaya','Vijaya'),('Naval Jacob','Naval Jacob'), ('Others','Others')]
-    status_list = [('',''),('To be receipted','To be receipted'),('To be underwritten','To be underwritten'),('Awaiting further details from brokers/insured','Awaiting further details from brokers/insured'),('Approval pending','Approval pending'),('GC Core issue - ticket raised','GC Core issue - ticket raised'),('Completed','Completed'),('Others1','Others1'),('Others2','Others2')]
+    status_list = [('',''),('To be receipted','To be receipted'),('To be underwritten','To be underwritten'),('Work in progress','Work in progress'),('Awaiting further details from brokers/insured','Awaiting further details from brokers/insured'),('Approval pending','Approval pending'),('GC Core issue - ticket raised','GC Core issue - ticket raised'),('Completed','Completed'),('Others1','Others1'),('Others2','Others2')]
 
     modeentry = SelectField('Mode of entry', coerce=str, choices=[('',''),('CD','CD'),('Regular','Regular'),('Scroll','Scroll'),('BG','BG'),('Others','Others')])
     customerid = IntegerField("Customer ID", validators=[Optional(),])

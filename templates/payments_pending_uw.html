@@ -61,7 +61,7 @@
                         {{ payment.customer }}</a>
                 </td>
                     <td>{{payment.date}}</td>
-                     <td>{{payment.amount}}</td>
+                    <td style="text-align:right">{{ "{:,}".format(payment.amount|int)}}</td>
                      <td>{{payment.mode}}</td>
                      <td>{{payment.modeentry}}</td> 
                     
@@ -79,7 +79,8 @@
                 <td class="under-limit" style ="background-color: grey">{{ payment.status }}</td>
  	{% elif payment.status == "Awaiting further details from brokers/insured"  %}
                 <td class="under-limit" style ="background-color: yellow">{{ payment.status }}</td>
-
+                {% elif payment.status == "Work in progress"  %}
+                <td class="under-limit" style ="color: blue"><b>{{ payment.status }}</b></td>
 
             {% else %}
               

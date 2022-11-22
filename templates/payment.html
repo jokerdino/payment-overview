@@ -14,7 +14,8 @@
     </tr>
     <tr>
         <th>Amount:</th>
-        <td> {{ payment.amount }} </td>
+        <td >{{ "{:,}".format(payment.amount|int)}}</td>
+
     </tr>
 
     <tr>
