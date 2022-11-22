@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}Home {% endblock %}
 {% block content %}
-        <h1 class="title"> Payments pending</h1>
+        <h1 class="title"> Payments to be receipted</h1>
 
         {% if payments %}
         <form action="" method="post" name="payment_list">
@@ -23,13 +23,14 @@
                     <th>Nature of proposal</th>
                     <th>Assigned to</th>
                    
-                    <th>Ticket</th> <th>Current status</th>
+                    <th>Ticket</th>
+			 <th>Current status</th>
                 </tr>
             </thead>
             <tbody>
 
             {% for payment_key, payment in payments %}
-            {% if payment.status != "Completed" %}
+            {% if payment.status == "To be receipted" %}
             <tr>
 {% if current_user.is_superadmin %}
                 <td>

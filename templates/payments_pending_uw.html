@@ -1,11 +1,25 @@
 {% extends "layout.html" %}
+<link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+<script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
 {% block title %}Home {% endblock %}
 {% block content %}
-        <h1 class="title"> Payments Completed</h1>
+        <h1 class="title"> Payments pending for underwriting</h1>
+
+
 
         {% if payments %}
         <form action="" method="post" name="payment_list">
-        <table class = "table is-striped">
+<div id="table"></div>
+        <table class = "table is-striped" data-filter-control="true"  id="table"
+                    data-toggle="table"
+                    data-filter-control="true"
+                    data-show-search-clear-button="true"
+                    data-sortable="true"
+                    classes="table-sm"
+                    data-pagination="true"
+                    data-show-columns="true"
+                    data-show-columns-toggle-all="true"
+                    >
 
             <thead>
                 <tr>
@@ -13,7 +27,7 @@
                     <th>Select</th>
                     {% endif %}
 
-                      <th>Customer name</th>
+                    <th>Customer name</th>
                     <th>Date of payment</th>
                     <th>Amount</th>
                     <th>Mode of payment</th>
@@ -22,15 +36,17 @@
                     <th>Relationship manager</th>
                     <th>Broker</th>
                     <th>Nature of proposal</th>
-                    <th>Assigned to</th>
+                    <th data-filter-control="select" data-sortable="true">Assigned to</th>
                    
                     <th>Ticket</th> <th>Current status</th>
+        
                 </tr>
             </thead>
             <tbody>
 
             {% for payment_key, payment in payments %}
-            {% if payment.status == "Completed" %}
+            {% if payment.status != "Completed" %}
+		{% if payment.status != "To be receipted" %}
             <tr>
 {% if current_user.is_superadmin%}
                 <td>
@@ -57,9 +73,21 @@
                     <td>{{payment.underwriter}}</td>
                
                     <td>{{payment.ticket}}</td>
-      <td>{{payment.status}}</td> 
+            {% if payment.status == "Approval pending"  %}
+                <td class="under-limit" style ="background-color: red">{{ payment.status }}</td>
+   	 {% elif payment.status == "GC Core issue - ticket raised"  %}
+                <td class="under-limit" style ="background-color: grey">{{ payment.status }}</td>
+ 	{% elif payment.status == "Awaiting further details from brokers/insured"  %}
+                <td class="under-limit" style ="background-color: yellow">{{ payment.status }}</td>
+
+
+            {% else %}
+              
+      		   <td>{{payment.status}}</td> 
+   {% endif %}
             </tr>
             {% endif %}
+{% endif %}
             {% endfor %}
             </tbody>
         </table>
@@ -73,6 +101,25 @@
         </form>
         {% endif %}
         {% endif %}
+<script>
+      new gridjs.Grid({
+        columns: [
+          
+          { id: 'underwriter', name: 'Assigned to' },
+        ],
+        data: [
+          {% for payment_key, payment in payments %}
+            {
+              name: '{{ payment.underwriter }}'
+            },
+          {% endfor %}
+        ],
+        search: true,
+        sort: true,
+        pagination: true,
+      }).render(document.getElementById('table'));
 
+</script>
 
 {% endblock %}
+
