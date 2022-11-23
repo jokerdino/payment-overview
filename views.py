@@ -85,11 +85,15 @@ def payment_add_page():
         customerid = form.data["customerid"]
 
         voucher = form.data["voucher"]
+        created_date = datetime.now()
 
+        created = created_date.strftime("%d/%m/%Y %H:%M:%S")
+        #history = (status,str(created))
+        history = status + ": "+ created
         payment = Payment(title, date=date, amount=amount, mode= mode,
                 modeentry=modeentry, customerid=customerid, rel_manager=rel_manager,broker=broker,
                 remarks = remarks, underwriter = underwriter, ticket=ticket, status=status,
-                voucher=voucher)
+                voucher=voucher, created = created, history = history)
         db = current_app.config["db"]
         payment_key = db.add_payment(payment)
         return redirect(url_for("payment_page", payment_key=payment_key))
@@ -131,10 +135,18 @@ def payment_edit_page(payment_key):
         ticket = form.data["ticket"]
         status = form.data["status"]
         voucher = form.data["voucher"]
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        update = status + ': ' +dt_string
+        if payment.history != None:
+            history = payment.history +' <br/>' +update
+        else:
+            history = update
+
         payment = Payment(title, date=date, amount=amount, mode = mode,
                 modeentry=modeentry, customerid= customerid, rel_manager=rel_manager, broker=broker,
                 nature=nature,remarks=remarks,underwriter=underwriter,
-                ticket=ticket, status=status, voucher=voucher)
+                ticket=ticket, status=status, voucher=voucher, history = history)
         db.update_payment(payment_key, payment)
         flash("Payment data updated.")
         return redirect(url_for("payment_page", payment_key = payment_key))
@@ -152,6 +164,8 @@ def payment_edit_page(payment_key):
     form.ticket.data = payment.ticket
     form.status.data = payment.status
     form.voucher.data = payment.voucher
+    form.history.data = payment.history
+
     return render_template ("payment_edit.html", form=form)
 
 def login_page():

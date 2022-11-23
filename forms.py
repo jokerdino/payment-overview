@@ -54,6 +54,8 @@ class PaymentEditForm(FlaskForm):
     ticket = StringField("Ticket:",validators=[Optional(),])
     remarks = StringField("Remarks:",validators=[Optional(),])
     voucher = StringField("Voucher number:")
+    created = StringField("Created on:")
+    history = StringField("Status updates:")
 
 class LoginForm(FlaskForm):
     username = StringField("Username",validators=[DataRequired()])

@@ -64,6 +64,16 @@
         <td> {{ payment.status }}</td>
         
     </tr>
+    <tr><th>Created:</th>
+        <td>{{payment.created}}</td>
+    </tr>
+    <tr><th>Updates:</th>
+        {% autoescape false %}
+        <td>{{payment.history}}</td>
+        {% endautoescape %}
+        
+    </tr>
+
 </table>
 
 {% if payment.status != "Completed"%}
