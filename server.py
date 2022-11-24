@@ -1,4 +1,5 @@
 import os.path
+import platform
 
 from flask import Flask, render_template
 from flask_login import LoginManager
@@ -37,7 +38,10 @@ def create_app():
     lm.login_view = "login_page"
 
     home_dir = os.path.expanduser("~")
-    db = Database("payments.sqlite")
+    if platform.system() == "Windows":
+        db = Database("D:\payment-board\payments.sqlite")
+    else:
+        db = Database("payments.sqlite")
     app.config["db"] = db
 
     app.config["DEBUG"] = True
