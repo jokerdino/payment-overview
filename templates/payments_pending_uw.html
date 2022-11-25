@@ -10,15 +10,7 @@
         {% if payments %}
         <form action="" method="post" name="payment_list">
 <div id="table"></div>
-        <table class = "table is-striped" data-filter-control="true"  id="table"
-                    data-toggle="table"
-                    data-filter-control="true"
-                    data-show-search-clear-button="true"
-                    data-sortable="true"
-                    classes="table-sm"
-                    data-pagination="true"
-                    data-show-columns="true"
-                    data-show-columns-toggle-all="true"
+        <table class = "table is-striped" data-filter-control="true"  id="payment_table"
                     >
 
             <thead>
@@ -102,25 +94,13 @@
         </form>
         {% endif %}
         {% endif %}
-<script>
-      new gridjs.Grid({
-        columns: [
-          
-          { id: 'underwriter', name: 'Assigned to' },
-        ],
-        data: [
-          {% for payment_key, payment in payments %}
-            {
-              name: '{{ payment.underwriter }}'
-            },
-          {% endfor %}
-        ],
-        search: true,
-        sort: true,
-        pagination: true,
-      }).render(document.getElementById('table'));
 
-</script>
-
+        {% block scripts %}
+        <script>
+            $(document).ready(function () {
+                            $('#payment_table').DataTable();
+                        });
+        </script>
+        {% endblock %}
 {% endblock %}
 

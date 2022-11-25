@@ -139,7 +139,10 @@ def payment_edit_page(payment_key):
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         update = status + ': ' +dt_string
         if payment.history != None:
-            history = payment.history +' <br/>' +update
+            if payment.status != form.data['status']:
+                history = payment.history +' <br/>' +update
+            else:
+                history = payment.history
         else:
             history = update
 

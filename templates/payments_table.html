@@ -5,7 +5,7 @@
 
         {% if payments %}
         <form action="" method="post" name="payment_list">
-        <table class = "table is-striped">
+        <table class="table is-striped" id="payment_table">
 
             <thead>
                 <tr>
@@ -77,6 +77,11 @@
         </form>
         {% endif %}
 
-
-
-{% endblock %}
+        {% block scripts %}
+        <script>
+            $(document).ready(function () {
+                            $('#payment_table').DataTable();
+                        });
+        </script>
+        {% endblock %}
+        {% endblock %}
