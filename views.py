@@ -5,18 +5,29 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from passlib.hash import pbkdf2_sha256 as hasher
 
+import pandas as pd
 from flask_login import LoginManager, current_user, UserMixin, login_user, logout_user, login_required
 
 from forms import LoginForm, PaymentEditForm
 from user import get_user
 from payment import Payment
+from sqlite_excel import convert_input
 
 
 def favicon():
     return url_for('static', filename='favicon.ico')
 
+
 def home_page():
     return render_template("home.html")
+
+def upload():
+    if request.method == 'POST':
+        upload_file = request.files.get('file')
+        convert_input(upload_file)
+        flash("Payment data has been uploaded.")
+#        return redirect(url_for("payments_page"))
+    return render_template('upload.html')
 
 def payments_completed():
     db = current_app.config["db"]
@@ -186,7 +197,7 @@ def payment_edit_page(payment_key):
                 ticket=ticket, status=status, voucher=voucher, history = history, completed = completed)
         db.update_payment(payment_key, payment)
 
-        flash("Payment data updated.")
+        #flash("Payment data updated.")
         return redirect(url_for("payment_page", payment_key = payment_key))
 
     form.title.data = payment.customer
@@ -220,13 +231,13 @@ def login_page():
             password = form.data["password"]
             if hasher.verify(password, user.password):
                 login_user(user)
-                flash("You have logged in.")
+    #            flash("You have logged in.")
                 next_page = request.args.get("next", url_for("home_page"))
                 return redirect(next_page)
-            flash("Invalid credentials.")
+     #       flash("Invalid credentials.")
     return render_template("login.html",form=form)
 
 def logout_page():
     logout_user()
-    flash("You have logged out.")
+   # flash("You have logged out.")
     return redirect(url_for("home_page"))
