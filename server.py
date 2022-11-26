@@ -4,10 +4,13 @@ import platform
 from flask import Flask, render_template
 from flask_login import LoginManager
 
+from waitress import serve
+
 import views
 from database import Database
 from payment import Payment
 from user import get_user
+
 
 lm = LoginManager()
 
@@ -46,12 +49,12 @@ def create_app():
         db = Database("payments.sqlite")
     app.config["db"] = db
 
-    app.config["DEBUG"] = True
+    app.config["DEBUG"] = False
     return app
 
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(host="0.0.0.0", port=8080)
+    serve(app, host="0.0.0.0", port=8080)
 
 
