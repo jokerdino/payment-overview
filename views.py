@@ -88,12 +88,16 @@ def payment_add_page():
         created_date = datetime.now()
 
         created = created_date.strftime("%d/%m/%Y %H:%M:%S")
-        #history = (status,str(created))
-        history = status + ": "+ created
+        history = created + ": "+ status
+
+        if status == "Completed":
+            completed = created
+        else:
+            completed = None
         payment = Payment(title, date=date, amount=amount, mode= mode,
                 modeentry=modeentry, customerid=customerid, rel_manager=rel_manager,broker=broker,
                 remarks = remarks, underwriter = underwriter, ticket=ticket, status=status,
-                voucher=voucher, created = created, history = history)
+                voucher=voucher, created = created, history = history, completed = completed)
         db = current_app.config["db"]
         payment_key = db.add_payment(payment)
         return redirect(url_for("payment_page", payment_key=payment_key))
@@ -137,7 +141,7 @@ def payment_edit_page(payment_key):
         voucher = form.data["voucher"]
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        update = status + ': ' +dt_string
+        update = dt_string +  ': ' +status
         if payment.history != None:
             if payment.status != form.data['status']:
                 history = payment.history +' <br/>' +update
@@ -145,11 +149,14 @@ def payment_edit_page(payment_key):
                 history = payment.history
         else:
             history = update
-
+        if status == "Completed":
+            completed = dt_string
+        else:
+            completed = None
         payment = Payment(title, date=date, amount=amount, mode = mode,
                 modeentry=modeentry, customerid= customerid, rel_manager=rel_manager, broker=broker,
                 nature=nature,remarks=remarks,underwriter=underwriter,
-                ticket=ticket, status=status, voucher=voucher, history = history)
+                ticket=ticket, status=status, voucher=voucher, history = history, completed = completed)
         db.update_payment(payment_key, payment)
         flash("Payment data updated.")
         return redirect(url_for("payment_page", payment_key = payment_key))

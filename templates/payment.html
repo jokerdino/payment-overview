@@ -73,7 +73,11 @@
         {% endautoescape %}
         
     </tr>
-
+    {% if payment.status == "Completed" %}
+    <tr><th>Completed on: </th>
+        <td>{{payment.completed}}</td>
+    </tr>
+    {% endif %}
 </table>
 
 {% if payment.status != "Completed"%}

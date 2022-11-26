@@ -31,7 +31,7 @@ class PaymentEditForm(FlaskForm):
             ('Vijaya','Vijaya'),
             ('Naval Jacob','Naval Jacob'),
             ('Others','Others')]
-    status_list = [('',''),
+    status_list = [
             ('To be receipted','To be receipted'),
             ('To be underwritten','To be underwritten'),
             ('Work in progress','Work in progress'),
