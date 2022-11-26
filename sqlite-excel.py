@@ -45,16 +45,23 @@ empty_csv['MODE'] = "NEFT"
 empty_csv['STATUS'] = "To be receipted"
 empty_csv['CREATED'] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-empty_csv['HISTORY'] = empty_csv[['STATUS', 'CREATED']].agg(": ".join,axis=1)
-empty_csv.to_csv('step3.csv',index=False)
+file_name = datetime.now().strftime("%d%m%Y %H%M%S") + ".csv"
 
-# upload prepared csv file to database
 try:
-    df_upload = pd.read_csv('step3.csv')
-    df_upload.to_sql(con=my_conn,name='PAYMENT',if_exists='append',index=False)
+    empty_csv['HISTORY'] = empty_csv[['STATUS', 'CREATED']].agg(": ".join,axis=1)
+    empty_csv.to_csv(file_name,index=False)
 
-except SQLAlchemyError as e:
-    error = str(e.__dict__['orig'])
-    print(error)
-else:
-    print("Uploaded successfully.")
+    # upload prepared csv file to database
+    try:
+        df_upload = pd.read_csv(file_name)
+        df_upload.to_sql(con=my_conn,name='PAYMENT',if_exists='append',index=False)
+
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        print(error)
+    else:
+        print(df_upload)
+        print("Uploaded successfully.")
+except ValueError as e:
+    print("All pending transactions have already been uploaded to database.")
+
