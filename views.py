@@ -12,6 +12,8 @@ from user import get_user
 from payment import Payment
 
 
+def favicon():
+    return url_for('static', filename='favicon.ico')
 
 def home_page():
     return render_template("home.html")
