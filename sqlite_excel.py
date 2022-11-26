@@ -21,7 +21,6 @@ def export_database():
 
 
     # add suffix to database csv file
-    df_db_fetch = df_db_fetch[df_db_fetch['STATUS'] == "To be receipted"]
 
     return df_db_fetch
 
@@ -29,6 +28,7 @@ def convert_input(upload_file):
     # convert file downloaded from NEFT portal to required format
     df_db_fetch = export_database()
 
+    df_db_fetch = df_db_fetch[df_db_fetch['STATUS'] == "To be receipted"]
     df_db = df_db_fetch.add_suffix('_db')
 
     my_path = "payments.sqlite"
@@ -55,7 +55,7 @@ def convert_input(upload_file):
     empty_csv['STATUS'] = "To be receipted"
     empty_csv['CREATED'] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-    file_name = datetime.now().strftime("%d%m%Y %H%M%S") + ".csv"
+    file_name = "upload"+datetime.now().strftime("%d%m%Y %H%M%S") + ".csv"
 
     try:
         empty_csv['HISTORY'] = empty_csv[['STATUS', 'CREATED']].agg(": ".join,axis=1)

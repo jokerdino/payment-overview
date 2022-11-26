@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Upload NEFT file{% endblock%}
+{% block content %}
+<h1 class="title">Upload NEFT file from NEFT portal</h1>
+
+<form method=post enctype=multipart/form-data>
+    <input type=file name=file>
+    <input type=submit value=Upload>
+</form>
+<br>
+
+    {% with messages = get_flashed_messages() %}  
+         {% if messages %}  
+               {% for message in messages %}  
+               <p>{{ message }}</p>  
+               {% endfor %}  
+         {% endif %}  
+      {% endwith %} 
+
+{% endblock %}
+

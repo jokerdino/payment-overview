@@ -26,7 +26,7 @@ def create_app():
     app.add_url_rule("/favicon.ico",view_func=views.favicon)
     app.add_url_rule("/login", view_func=views.login_page, methods=["GET","POST"])
     app.add_url_rule("/logout", view_func=views.logout_page)
-
+    app.add_url_rule("/download",view_func=views.download,methods=["GET","POST"])
     app.add_url_rule("/upload",view_func=views.upload,methods=["GET","POST"])
     app.add_url_rule("/payments_pending_uw", view_func=views.payments_pending_uw,methods=["GET","POST"])
     app.add_url_rule("/payments_completed", view_func=views.payments_completed,methods=["GET","POST"])

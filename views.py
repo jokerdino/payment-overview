@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import current_app, render_template, request, redirect, url_for, flash
+from flask import current_app, render_template, request, redirect, url_for, flash, send_file
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from passlib.hash import pbkdf2_sha256 as hasher
@@ -11,7 +11,7 @@ from flask_login import LoginManager, current_user, UserMixin, login_user, logou
 from forms import LoginForm, PaymentEditForm
 from user import get_user
 from payment import Payment
-from sqlite_excel import convert_input
+from sqlite_excel import export_database, convert_input
 
 
 def favicon():
@@ -21,12 +21,17 @@ def favicon():
 def home_page():
     return render_template("home.html")
 
+def download():
+    path = export_database()
+    download_string = "download"+datetime.now().strftime("%d%m%Y %H%M%S") + ".xlsx"
+    path.to_excel(download_string,index=False)
+    return send_file(download_string,download_name="download.xlsx",as_attachment=True)
+
 def upload():
     if request.method == 'POST':
         upload_file = request.files.get('file')
         convert_input(upload_file)
         flash("Payment data has been uploaded.")
-#        return redirect(url_for("payments_page"))
     return render_template('upload.html')
 
 def payments_completed():
