@@ -81,7 +81,8 @@
         <script>
             $(document).ready(function () {
                             $('#payment_table').DataTable({
-                                order: [[1,'asc']]
+                                order: [[1,'desc']],
+                                            pagingType: 'full_numbers',
                                         });
                         });
         </script>
