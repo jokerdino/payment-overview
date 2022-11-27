@@ -17,12 +17,11 @@
 <li>
                 <a class=" is-link" href="{{ url_for('payments_pending_uw')}}">Pending for underwriting</a>
     </li>        
-         <li>       <a class=" is-link" href= "{{ url_for('payments_completed')}}">Completed tasks</a>
+         <li>       <a class=" is-link" href="{{ url_for('payments_completed')}}">Completed tasks</a>
 </li>
 </ol>
 </section>
 
-<a class="is-link" href = "{{url_for('upload')}}">Upload NEFT file</a>
-<br>
-<a class="is-link" href="{{ url_for('.download') }}">Download</a>
+<a class="button is-link" href="{{url_for('upload')}}">Upload NEFT file</a>
+<a class="button is-link" href="{{ url_for('.download') }}">Download database as Excel file</a>
 {% endblock %}

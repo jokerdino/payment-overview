@@ -98,7 +98,9 @@
         {% block scripts %}
         <script>
             $(document).ready(function () {
-                            $('#payment_table').DataTable();
+                            $('#payment_table').DataTable({
+                                order: [[1,"asc"]]
+                                        });
                         });
         </script>
         {% endblock %}

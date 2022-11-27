@@ -1,0 +1,9 @@
+Flask==2.2.2
+Flask_Login==0.6.2
+Flask_WTF==1.0.1
+pandas==1.5.0
+passlib==1.7.4
+SQLAlchemy==1.4.44
+waitress==2.1.2
+WTForms==3.0.1
+WTForms_Components==0.10.5
