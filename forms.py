@@ -57,6 +57,9 @@ class PaymentEditForm(FlaskForm):
     created = StringField("Created on:")
     history = StringField("Status updates:")
 
+    proposal = StringField("Proposal number: ")
+    policyno = StringField("Policy number: ")
+
 class LoginForm(FlaskForm):
     username = StringField("Username",validators=[DataRequired()])
 

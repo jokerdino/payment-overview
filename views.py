@@ -104,6 +104,10 @@ def payment_add_page():
         created_date = datetime.now()
         created = created_date.strftime("%d/%m/%Y %H:%M:%S")
 
+        proposal = form.data["proposal"]
+        policyno = form.data["policyno"]
+
+
         if underwriter != "":
             underwriter_history = "<br>"+created + ": Assigned to " + underwriter
             history = created + ": "+ status +underwriter_history
@@ -117,7 +121,8 @@ def payment_add_page():
         payment = Payment(title, date=date, amount=amount, mode= mode,
                 modeentry=modeentry, customerid=customerid, rel_manager=rel_manager,broker=broker,
                 remarks = remarks, underwriter = underwriter, ticket=ticket, status=status,
-                voucher=voucher, created = created, history = history, completed = completed)
+                voucher=voucher, created = created, history = history, completed = completed,
+                proposal = proposal, policyno = policyno)
         db = current_app.config["db"]
         payment_key = db.add_payment(payment)
         return redirect(url_for("payment_page", payment_key=payment_key))
@@ -174,6 +179,9 @@ def payment_edit_page(payment_key):
         status = form.data["status"]
         voucher = form.data["voucher"]
 
+        proposal = form.data["proposal"]
+        policyno = form.data["policyno"]
+
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         update = dt_string +  ': ' +status
@@ -192,14 +200,20 @@ def payment_edit_page(payment_key):
             history = update + underwriter_update
 
         if status == "Completed":
-            completed = dt_string
+            if payment.completed is not None:
+                completed = payment.completed
+                #completed = dt_string
+            else:
+                completed = dt_string
+                #completed = payment.completed
         else:
             completed = None
 
         payment = Payment(title, date=date, amount=amount, mode = mode,
                 modeentry=modeentry, customerid= customerid, rel_manager=rel_manager, broker=broker,
                 nature=nature,remarks=remarks,underwriter=underwriter,
-                ticket=ticket, status=status, voucher=voucher, history = history, completed = completed)
+                ticket=ticket, status=status, voucher=voucher, history = history, completed = completed,
+                proposal = proposal, policyno = policyno)
         db.update_payment(payment_key, payment)
 
         #flash("Payment data updated.")
@@ -224,6 +238,9 @@ def payment_edit_page(payment_key):
     form.status.data = payment.status
     form.voucher.data = payment.voucher
     form.history.data = payment.history
+
+    form.proposal.data = payment.proposal
+    form.policyno.data = payment.policyno
 
     return render_template ("payment_edit.html", form=form)
 

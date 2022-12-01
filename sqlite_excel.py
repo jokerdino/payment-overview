@@ -58,7 +58,7 @@ def convert_input(upload_file):
     file_name = "upload"+datetime.now().strftime("%d%m%Y %H%M%S") + ".csv"
 
     try:
-        empty_csv['HISTORY'] = empty_csv[['STATUS', 'CREATED']].agg(": ".join,axis=1)
+        empty_csv['HISTORY'] = empty_csv[['CREATED', 'STATUS']].agg(": ".join,axis=1)
         empty_csv.to_csv(file_name,index=False)
 
         # upload prepared csv file to database

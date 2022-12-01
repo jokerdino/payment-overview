@@ -5,6 +5,7 @@ from flask import Flask, render_template
 from flask_login import LoginManager
 
 from waitress import serve
+#from gevent.pywsgi import WSGIServer
 
 import views
 from database import Database
@@ -49,12 +50,15 @@ def create_app():
         db = Database("payments.sqlite")
     app.config["db"] = db
 
-    app.config["DEBUG"] = False
+#    app.config["DEBUG"] = True
     return app
 
 
 if __name__ == "__main__":
     app = create_app()
+  #  http_server = WSGIServer(("0.0.0.0", 8080), app)
+  #  http_server.serve_forever()
+ #   app.run(host="0.0.0.0", port=8080)
     serve(app, host="0.0.0.0", port=8080)
-
+#
 

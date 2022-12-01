@@ -2,7 +2,8 @@ class Payment:
     def __init__(self, customer, date=None, amount=None,
             mode=None, modeentry=None, customerid = None, rel_manager=None,
             broker=None,nature =None, remarks=None,underwriter=None,
-            ticket=None,status=None,voucher=None,created=None,history=None, completed=None):
+            ticket=None,status=None,voucher=None,created=None,history=None, completed=None,
+            proposal=None, policyno=None):
         self.customer = customer
         self.date = date
         self.amount = amount
@@ -20,3 +21,5 @@ class Payment:
         self.created = created
         self.history = history
         self.completed = completed
+        self.proposal = proposal
+        self.policyno = policyno
