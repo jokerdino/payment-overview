@@ -30,7 +30,9 @@
             <tbody>
 
             {% for payment_key, payment in payments %}
-            {% if payment.status == "To be receipted" %}
+            {% if payment.status == "To be receipted"
+            or payment.status == "Waiting for payment"
+            or payment.status == "To be refunded" %}
             <tr>
 {% if current_user.is_superadmin %}
                 <td>
@@ -61,7 +63,11 @@
                     <td>{{payment.underwriter}}</td>
                    
                     <td>{{payment.ticket}}</td>
- <td>{{payment.status}}</td> 
+                    {% if payment.status != "To be receipted" %}
+                    <td style="background-color: yellow">{{payment.status}}</td>
+                    {% else %}
+                    <td>{{payment.status}}</td> 
+                    {% endif %}
             </tr>
             {% endif %}
             {% endfor %}

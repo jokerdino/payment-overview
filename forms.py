@@ -40,6 +40,8 @@ class PaymentEditForm(FlaskForm):
             ('Approval pending','Approval pending'),
             ('GC Core issue - ticket raised','GC Core issue - ticket raised'),
             ('Completed','Completed'),
+            ('To be refunded','To be refunded'),
+            ('Waiting for payment','Waiting for payment'),
             ('Others1','Others1'),
             ('Others2','Others2')]
 

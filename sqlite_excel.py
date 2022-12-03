@@ -38,7 +38,7 @@ def convert_input(upload_file):
     neft_incoming = neft_incoming[neft_incoming['File Splited'] != "Yes"]
     neft_incoming = neft_incoming[neft_incoming['Download Status'] != "Downloaded"]
 
-    neft_incoming['Reference Date'] = pd.to_datetime(neft_incoming['Reference Date'],infer_datetime_format=True)
+    neft_incoming['Reference Date'] = pd.to_datetime(neft_incoming['Reference Date'],dayfirst=True)
 
     # merge NEFT file with database csv file
 
@@ -50,7 +50,7 @@ def convert_input(upload_file):
     empty_csv = pd.DataFrame(columns=[columns_list])
     empty_csv['CUSTOMER'] = neft_incoming_to_be_uploaded['Payee Name']
     empty_csv['AMOUNT'] = neft_incoming_to_be_uploaded['Amount']
-    empty_csv['DATE'] = neft_incoming_to_be_uploaded['Reference Date']#.strftime("%Y-%m-%d")
+    empty_csv['DATE'] = neft_incoming_to_be_uploaded['Reference Date']
     empty_csv['MODE'] = "NEFT"
     empty_csv['STATUS'] = "To be receipted"
     empty_csv['CREATED'] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")

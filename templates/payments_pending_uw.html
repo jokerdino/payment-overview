@@ -37,8 +37,10 @@
             <tbody>
 
             {% for payment_key, payment in payments %}
-            {% if payment.status != "Completed" %}
-		{% if payment.status != "To be receipted" %}
+            {% if payment.status != "Completed"  
+		 and payment.status != "To be receipted"
+         and payment.status != "Waiting for payment"
+         and payment.status != "To be refunded" %}
             <tr>
 {% if current_user.is_superadmin%}
                 <td>
@@ -80,7 +82,6 @@
    {% endif %}
             </tr>
             {% endif %}
-{% endif %}
             {% endfor %}
             </tbody>
         </table>
@@ -94,7 +95,6 @@
         </form>
         {% endif %}
         {% endif %}
-
         {% block scripts %}
         <script>
             $(document).ready(function () {
