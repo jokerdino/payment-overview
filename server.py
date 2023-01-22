@@ -32,6 +32,7 @@ def create_app():
     app.add_url_rule("/logout", view_func=views.logout_page)
     app.add_url_rule("/download",view_func=views.download,methods=["GET","POST"])
     app.add_url_rule("/upload",view_func=views.upload,methods=["GET","POST"])
+    app.add_url_rule("/all",view_func=views.payments_all,methods=["GET"])
     app.add_url_rule("/payments_pending_uw", view_func=views.payments_pending_uw,methods=["GET","POST"])
     app.add_url_rule("/payments_completed", view_func=views.payments_completed,methods=["GET","POST"])
     app.add_url_rule("/payments/<int:payment_key>",view_func=views.payment_page)

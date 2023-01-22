@@ -34,6 +34,12 @@ def upload():
         flash("Payment data has been uploaded.")
     return render_template('upload.html')
 
+def payments_all():
+    db = current_app.config['db']
+    if request.method == "GET":
+        payments = db.get_payments()
+        return render_template("payments_all.html",payments=sorted(payments))
+
 def payments_completed():
     db = current_app.config["db"]
     if request.method == "GET":
