@@ -79,7 +79,18 @@
         {% block scripts %}
         <script>
             $(document).ready(function () {
-                            $('#payment_table').DataTable();
+                            $('#payment_table').DataTable({
+                                dom: 'lfBrtip',
+                                buttons: [
+                                                'copyHtml5',
+                                                'csvHtml5',
+                                                'excelHtml5'],
+                                order: [[1,'desc']],
+                                            pagingType: 'full_numbers',
+                                lengthMenu: [
+                                             [10,25,50,100,-1],
+                                            [10,25,50,100,'All'],]
+                                        });
                         });
         </script>
         {% endblock %}
