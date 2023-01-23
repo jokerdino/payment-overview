@@ -37,6 +37,12 @@
                 <a class="button is-link" href= "{{ url_for('payments_completed')}}">Completed tasks</a>
 
                     </span>
+                                    <span class="navbar-item">
+                <a class="button is-link" href="{{ url_for('pending_scroll_list') }}">Pending scroll list</a>
+                    </span>
+                                    <span class="navbar-item">
+                <a class="button is-link" href="{{ url_for('cd_list') }}">CD list</a>
+                    </span>
                 {% if current_user.is_admin %}
                 <span class="navbar-item">
                 <a class="button is-link" href="{{ url_for('payment_add_page') }}">Add payment</a>

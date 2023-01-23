@@ -28,6 +28,19 @@ import secrets
 def favicon():
     return url_for('static', filename='favicon.ico')
 
+def cd_list():
+
+    cd_list = pd.read_excel('CD_list.xlsx')
+    cd_list_filter = cd_list[['SL Name','SL Code','CD number','Credit']]
+    cd_list_filter.sort_values(by='SL Name',ascending=False)
+    return render_template("cd.html" , tables=[cd_list_filter.to_html(classes="table", border=1,table_id="table", justify="center",float_format='{:.0f}'.format,header=True,index=False)])
+
+
+def pending_scroll_list():
+    scroll_list = pd.read_csv('scroll_list.csv')
+    #cd_list_filter = cd_list[['SL Name','SL Code','CD number','Credit']]
+    #cd_list_filter.sort_values(by='SL Name',ascending=False)
+    return render_template("scroll.html" , tables=[scroll_list.to_html(classes="table", border=1,table_id="table", justify="center",float_format='{:.0f}'.format,header=True,index=False)])
 
 def home_page():
 
