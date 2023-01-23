@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from flask import current_app, render_template, request, redirect, url_for, flash, send_file
@@ -6,6 +7,13 @@ from wtforms import StringField, PasswordField, SubmitField
 from passlib.hash import pbkdf2_sha256 as hasher
 
 import pandas as pd
+
+import sqlite3
+
+import numpy as np
+from plotnine import *
+import shutil
+
 from flask_login import LoginManager, current_user, UserMixin, login_user, logout_user, login_required
 
 from forms import LoginForm, PaymentEditForm
@@ -19,7 +27,31 @@ def favicon():
 
 
 def home_page():
-    return render_template("home.html")
+
+    conn = sqlite3.connect("payments.sqlite")
+    data = pd.read_sql("SELECT * from payment", conn)
+    copy_data = data[['ID','STATUS','RM','UW']]
+    copy_data.replace('',"_Unassigned",inplace=True)
+    copy_data.fillna("_Unassigned",inplace=True)
+
+    pivot_data = pd.pivot_table(copy_data, index=['UW','STATUS'],columns=['RM'],values='ID',aggfunc='count')
+    pivot_data.fillna(0,inplace=True)
+
+    p = ggplot(data=copy_data) + aes(x="RM",fill="STATUS") + geom_bar()+facet_wrap(['UW'],ncol=1)
+    ggsave(p,filename='file.png',dpi=300)
+
+    shutil.move('file.png','static/file.png')
+
+    pivot_data = pivot_data.reset_index()
+
+    pivot_data['Total'] = pivot_data.sum(numeric_only=True,axis=1)
+    pivot_data.loc["TOTAL"] = pivot_data.sum(numeric_only=True,axis=0)
+    #pivot_data.to_excel("table.xlsx",index=False)
+
+    conn.close()
+
+    return render_template("home.html", tables=[pivot_data.to_html(classes='table',index=False)])
+
 
 def download():
     path = export_database()

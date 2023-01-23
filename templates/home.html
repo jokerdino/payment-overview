@@ -22,6 +22,24 @@
 </ol>
 </section>
 
+
+
+     
+
 <a class="button is-link" href="{{url_for('upload')}}">Upload NEFT file</a>
 <a class="button is-link" href="{{ url_for('.payments_all') }}">Download database as Excel file</a>
+
+<img src="{{url_for('static',filename='file.png')}}" alt="User Image" />
+{% for table in tables %}
+{{table|safe}}
+{% endfor %}
 {% endblock %}
+
+   <script>
+            $(document).ready(function () {
+                            $('#table').DataTable({
+                          
+                                        });
+                        });
+        </script>
+
