@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock%}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-body">
+        <div class"container has-text-centered">
+
+        <h1 class="title"> Pending scroll register </h1>
+
+        </div>
+
+{% for table in tables %}
+
+{{table|safe}}
+{% endfor %}
+
+        {% block scripts %}
+        <script>
+            $(document).ready(function () {
+                            $('#table').DataTable({
+                                dom: 'lfBrtip',
+                                buttons: [
+                                                'copyHtml5',
+                                                'csvHtml5',
+                                                'excelHtml5'],
+                                order: [[1,'asc']],
+                                            pagingType: 'full_numbers',
+                                lengthMenu: [
+                                             [10,25,50,100,-1],
+                                            [10,25,50,100,'All'],]
+                                        });
+                        });
+        </script>
+        {% endblock %}
+{% endblock %}
