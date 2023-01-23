@@ -3,6 +3,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 import pandas as pd
 from datetime import datetime
+import requests
+import secrets
 
 def export_database():
     # build connection to database
@@ -71,6 +73,22 @@ def convert_input(upload_file):
             print(error)
         else:
             print(df_upload)
+            CHAT_ID = secrets.CHAT_ID
+            SEND_URL = secrets.SEND_URL
+            df_upload.to_excel("file.xlsx",index=False)
+            for i in range(len(df_upload)):
+                title = df_upload.iloc[i,0]
+                string_date = df_upload.iloc[i,1]
+                mode = df_upload.iloc[i,3]
+                amount = df_upload.iloc[i,2]
+                message = ("""Payee name: %s
+                Amount received: %s
+                Date of payment: %s
+                Mode of payment: %s
+                """ % (title, amount, string_date, mode))
+
+
+                requests.post(SEND_URL, json={'chat_id': CHAT_ID, 'text': message})
             print("Uploaded successfully.")
     except ValueError as e:
         print("All pending transactions have already been uploaded to database.")

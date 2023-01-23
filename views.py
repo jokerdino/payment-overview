@@ -8,6 +8,7 @@ from passlib.hash import pbkdf2_sha256 as hasher
 
 import pandas as pd
 
+import requests
 import sqlite3
 
 import numpy as np
@@ -20,6 +21,8 @@ from forms import LoginForm, PaymentEditForm
 from user import get_user
 from payment import Payment
 from sqlite_excel import export_database, convert_input
+
+import secrets
 
 
 def favicon():
@@ -163,6 +166,23 @@ def payment_add_page():
                 proposal = proposal, policyno = policyno)
         db = current_app.config["db"]
         payment_key = db.add_payment(payment)
+
+        CHAT_ID = secrets.CHAT_ID
+        SEND_URL = secrets.SEND_URL
+
+        try:
+            string_date = date.strftime('%d-%m-%Y')
+        except AttributeError as e:
+            string_date = "None"
+        message = ("""Payee name: %s
+        Amount received: %s
+        Date of payment: %s
+        Mode of payment: %s
+        """ % (title, amount, string_date, mode))
+
+
+        requests.post(SEND_URL, json={'chat_id': CHAT_ID, 'text': message})
+
         return redirect(url_for("payment_page", payment_key=payment_key))
     return render_template("payment_edit.html", form=form)
 
