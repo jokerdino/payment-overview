@@ -38,7 +38,7 @@ def home_page():
     pivot_data.fillna(0,inplace=True)
 
     p = ggplot(data=copy_data) + aes(x="RM",fill="STATUS") + geom_bar()+facet_wrap(['UW'],ncol=1)
-    ggsave(p,filename='file.png',dpi=300)
+    ggsave(p,filename='file.png',height=25, width=8,dpi=300,limitsize=False)
 
     shutil.move('file.png','static/file.png')
 
