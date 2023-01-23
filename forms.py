@@ -13,7 +13,7 @@ class PaymentEditForm(FlaskForm):
     mode = SelectField('Mode of payment:', coerce=str, choices=[('',''),('NEFT','NEFT'),('Cheque','Cheque'),('Cash','Cash'),('Others','Others')])
 
     modeentry_list = [('',''),('CD','CD'),('Regular','Regular'),('Scroll','Scroll'),('BG','BG'),('Others','Others')]
-    rel_manager_list = [('',''),('Kannan','Kannan'),('Ravikumar','Ravikumar'),('Varinder Singh','Varinder Singh')]
+    rel_manager_list = [('',''),('Kannan','Kannan'),('Ravikumar','Ravikumar'),('Varinder','Varinder')]
     nature_list = [('',''),
             ('Fresh','Fresh'),
             ('Renewal','Renewal'),

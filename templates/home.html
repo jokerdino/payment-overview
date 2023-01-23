@@ -30,16 +30,27 @@
 <a class="button is-link" href="{{ url_for('.payments_all') }}">Download database as Excel file</a>
 
 <img src="{{url_for('static',filename='file.png')}}" alt="User Image" />
+
 {% for table in tables %}
+
 {{table|safe}}
 {% endfor %}
-{% endblock %}
 
-   <script>
+  {% block scripts %}
+
+       <script>
             $(document).ready(function () {
                             $('#table').DataTable({
-                          
-                                        });
+                       "bPaginate": false,
+                      "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                }],
+                       "info": false
+         });
                         });
         </script>
+        {% endblock %}
+        {% endblock %}
 
