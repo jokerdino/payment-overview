@@ -43,16 +43,23 @@
                                     <span class="navbar-item">
                 <a class="button is-link" href="{{ url_for('cd_list') }}">CD list</a>
                     </span>
-                {% if current_user.is_admin %}
+                {% if current_user.is_authenticated %}
                 <span class="navbar-item">
                 <a class="button is-link" href="{{ url_for('payment_add_page') }}">Add payment</a>
                     </span>
                 {% endif %}
                 <span class="navbar-item ">
                 {% if not current_user.is_authenticated %}
+                    <a class="button is-link" href="{{ url_for('signup') }}"> Signup</a><div>
+                    </span>
+                     <span class="navbar-item ">
                     <a class="button is-link" href="{{ url_for('login_page') }}"> Login</a>
+                    </span>
                 {% else %}
+                 <span class="navbar-item ">
                    {{ current_user.username }}
+                   </span>
+                    <span class="navbar-item ">
                    <a class="button is-link" href="{{ url_for('logout_page') }}"> Log out</a>
                 {% endif %}
                 </span>

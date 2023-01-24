@@ -4,7 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 import pandas as pd
 from datetime import datetime
 import requests
-import secrets
+import telegram_secrets
 
 def export_database():
     # build connection to database
@@ -74,8 +74,8 @@ def convert_input(upload_file):
             print(error)
         else:
             print(df_upload)
-            CHAT_ID = secrets.CHAT_ID
-            SEND_URL = secrets.SEND_URL
+            CHAT_ID = telegram_secrets.CHAT_ID
+            SEND_URL = telegram_secrets.SEND_URL
             df_upload.to_excel("file.xlsx",index=False)
             for i in range(len(df_upload)):
                 title = df_upload.iloc[i,0]

@@ -62,8 +62,12 @@ class PaymentEditForm(FlaskForm):
     proposal = StringField("Proposal number: ")
     policyno = StringField("Policy number: ")
     instrumentno = StringField("Instrument number: ")
-class LoginForm(FlaskForm):
-    username = StringField("Username",validators=[DataRequired()])
 
+class SignupForm(FlaskForm):
+    username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
 
+
+class LoginForm(FlaskForm):
+    username = StringField("Username",validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])

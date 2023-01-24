@@ -15,7 +15,7 @@
 
             <thead>
                 <tr>
-{% if current_user.is_superadmin %}
+{% if current_user.is_admin %}
                     <th>Select</th>
                     {% endif %}
 
@@ -42,7 +42,7 @@
          and payment.status != "Waiting for payment"
          and payment.status != "To be refunded" %}
             <tr>
-{% if current_user.is_superadmin%}
+                {% if current_user.is_admin %}
                 <td>
                 <label class="checkbox">
                     <input type="checkbox" name="payment_keys" value="{{ payment_key }}"/>
@@ -86,7 +86,7 @@
             </tbody>
         </table>
 
-        {% if current_user.is_superadmin %}
+        {% if current_user.is_admin %}
         <div class="field is-grouped">
             <div class="control">
                 <button class="button is-danger is-small">Delete</button>

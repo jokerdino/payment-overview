@@ -3,4 +3,4 @@ __pycache__/
 *.csv
 *.sqlite
 *.xls
-secrets.py
+telegram_secrets.py

@@ -9,6 +9,7 @@ from waitress import serve
 
 import views
 from database import Database
+from user_database import UserDatabase
 from payment import Payment
 from user import get_user
 
@@ -16,8 +17,8 @@ from user import get_user
 lm = LoginManager()
 
 @lm.user_loader
-def load_user(user_id):
-    return get_user(user_id)
+def load_user(username):
+    return get_user(username)
 
 
 
@@ -28,6 +29,7 @@ def create_app():
     app.config.from_object("settings")
     app.add_url_rule("/", view_func=views.home_page)
     app.add_url_rule("/favicon.ico",view_func=views.favicon)
+    app.add_url_rule("/signup", view_func=views.signup, methods=["GET","POST"])
     app.add_url_rule("/login", view_func=views.login_page, methods=["GET","POST"])
     app.add_url_rule("/logout", view_func=views.logout_page)
     app.add_url_rule("/download",view_func=views.download,methods=["GET","POST"])
@@ -49,9 +51,12 @@ def create_app():
     home_dir = os.path.expanduser("~")
     if platform.system() == "Windows":
         db = Database("D:\payment-board\payments.sqlite")
+        user_db = UserDatabase("D:\payment-board\user.sqlite")
     else:
         db = Database("payments.sqlite")
+        user_db = UserDatabase("user.sqlite")
     app.config["db"] = db
+    app.config["user_db"] = user_db
 
 #    app.config["DEBUG"] = True
     return app

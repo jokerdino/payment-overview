@@ -40,6 +40,13 @@
                     <button class="button is-block is-info is-large is-fullwidth">
                         Login
                     </button>
+                    {% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification is-danger">
+        {{ messages[0] }}
+    </div>
+{% endif %}
+{% endwith %}
                 </form>
             </div>
         </div>

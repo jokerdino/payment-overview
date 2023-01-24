@@ -4,7 +4,9 @@ from datetime import datetime
 from flask import current_app, render_template, request, redirect, url_for, flash, send_file
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from passlib.hash import pbkdf2_sha256 as hasher
+#from passlib.hash import pbkdf2_sha256 as hasher
+
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import pandas as pd
 
@@ -17,16 +19,38 @@ import shutil
 
 from flask_login import LoginManager, current_user, UserMixin, login_user, logout_user, login_required
 
-from forms import LoginForm, PaymentEditForm
-from user import get_user
+from forms import LoginForm, PaymentEditForm, SignupForm
+from user import get_user, User
 from payment import Payment
+
 from sqlite_excel import export_database, convert_input
 
-import secrets
-
+import telegram_secrets
+#from modeluser import User
 
 def favicon():
     return url_for('static', filename='favicon.ico')
+
+def signup():
+    form = SignupForm()
+    #print("first hello")
+    if request.method == "GET":
+        return render_template("signup.html",form=form)
+    else:
+     #   print("hello")
+        username = form.data["username"]
+        #name = form.data["name"]
+        password = form.data["password"]
+        password_hash =generate_password_hash(password, method='sha256')
+        # TODO: check if username does not already exist
+
+        user = User(username=username, password=password_hash)
+        user_db = current_app.config["user_db"]
+        user_key = user_db.add_user(user)
+      #  print("added", user_key)
+        return redirect(url_for("login_page"))
+
+
 
 def cd_list():
 
@@ -94,7 +118,7 @@ def payments_completed():
         payments = db.get_payments()
         return render_template("payments_completed.html", payments=sorted(payments))
     else:
-        if not current_user.is_superadmin:
+        if not current_user.is_admin:
             abort(401)
         form_payment_keys = request.form.getlist("payment_keys")
         for form_payment_key in form_payment_keys:
@@ -107,7 +131,7 @@ def payments_pending_uw():
         payments = db.get_payments()
         return render_template("payments_pending_uw.html", payments=sorted(payments))
     else:
-        if not current_user.is_superadmin:
+        if not current_user.is_admin:
             abort(401)
         form_payment_keys = request.form.getlist("payment_keys")
         for form_payment_key in form_payment_keys:
@@ -120,7 +144,7 @@ def payments_page():
         payments = db.get_payments()
         return render_template("payments_table.html", payments=sorted(payments))
     else:
-        if not current_user.is_superadmin:
+        if not current_user.is_admin:
             abort(401)
         form_payment_keys = request.form.getlist("payment_keys")
         for form_payment_key in form_payment_keys:
@@ -180,8 +204,8 @@ def payment_add_page():
         db = current_app.config["db"]
         payment_key = db.add_payment(payment)
 
-        CHAT_ID = secrets.CHAT_ID
-        SEND_URL = secrets.SEND_URL
+        CHAT_ID = telegram_secrets.CHAT_ID
+        SEND_URL = telegram_secrets.SEND_URL
 
         try:
             string_date = date.strftime('%d-%m-%Y')
@@ -320,18 +344,33 @@ def payment_edit_page(payment_key):
     return render_template ("payment_edit.html", form=form)
 
 def login_page():
+
+    if current_user.is_authenticated:
+        return redirect(url_for('home_page'))
     form = LoginForm()
+    user_db = current_app.config["user_db"]
+   # payment = db.get_payment(payment_key)
     if form.validate_on_submit():
         username = form.data["username"]
-        user = get_user(username)
+        user = user_db.get_user(username)
         if user is not None:
             password = form.data["password"]
-            if hasher.verify(password, user.password):
+            # password_hash = generate_password_hash(password, method='sha256')
+
+
+            #print(user.password)
+            #print(password_hash)
+            if check_password_hash(user.password, password):
+                #print("loggedin")
                 login_user(user)
-    #            flash("You have logged in.")
+
+                #flash("You have logged in.")
                 next_page = request.args.get("next", url_for("home_page"))
                 return redirect(next_page)
-     #       flash("Invalid credentials.")
+            else:
+                #print("password does not match. log in again.")
+                # print(user.username)
+                flash("Invalid credentials.")
     return render_template("login.html",form=form)
 
 def logout_page():
