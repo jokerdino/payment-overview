@@ -76,7 +76,7 @@ def convert_input(upload_file):
             print(df_upload)
             CHAT_ID = telegram_secrets.CHAT_ID
             SEND_URL = telegram_secrets.SEND_URL
-            df_upload.to_excel("file.xlsx",index=False)
+#            df_upload.to_excel("file.xlsx",index=False)
             for i in range(len(df_upload)):
                 title = df_upload.iloc[i,0]
                 string_date = df_upload.iloc[i,1]

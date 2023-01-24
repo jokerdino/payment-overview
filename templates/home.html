@@ -4,39 +4,36 @@
 
 <section class="hero">
     <div class="hero-body">
-        <div class"container has-text-centered">
+        <div class="container has-text-centered">
 
-        <h1 class="title">Welcome! </h1>
-<h3>LCB Chennai 500200 - payments, receipts, underwriting proposal tracker</h3>
+        <h1 class="title">
+LCB Chennai 500200 - payments, receipts, underwriting proposal tracker</h1>
         </div>
 
-<ol>
-<li>
-                <a class=" is-link" href="{{ url_for('payments_page')}}">Payments to be receipted</a>
-                  </li>
-<li>
-                <a class=" is-link" href="{{ url_for('payments_pending_uw')}}">Pending for underwriting</a>
-    </li>        
-         <li>       <a class=" is-link" href="{{ url_for('payments_completed')}}">Completed tasks</a>
-</li>
-</ol>
 </section>
 
 
-
-     
-
 <a class="button is-link" href="{{url_for('upload')}}">Upload NEFT file</a>
-<a class="button is-link" href="{{ url_for('.payments_all') }}">Download database as Excel file</a>
+<a class="button is-link" href="{{ url_for('.payments_all') }}">Show all transactions</a>
 
-<img src="{{url_for('static',filename='file.png')}}" alt="User Image" />
+<br>
+<br>
+<br>
 
+<div class="has-text-centered">
+    <h3>Status summary - underwriter and relationship manager breakup
+    </h3>
+    </div>
 {% for table in tables %}
 
 {{table|safe}}
 {% endfor %}
 
-  {% block scripts %}
+<br>
+<img src="{{url_for('static',filename='file.png')}}" alt="User Image" />
+</div>
+<hr>
+{% block scripts %}
 
        <script>
             $(document).ready(function () {

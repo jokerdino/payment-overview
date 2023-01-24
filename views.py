@@ -77,7 +77,7 @@ def home_page():
     pivot_data = pd.pivot_table(copy_data, index=['UW','STATUS'],columns=['RM'],values='ID',aggfunc='count')
     pivot_data.fillna(0,inplace=True)
 
-    p = ggplot(data=copy_data) + aes(x="RM",fill="STATUS") + geom_bar()+facet_wrap(['UW'],ncol=3)
+    p = ggplot(data=copy_data) + aes(x="RM",fill="STATUS") + ggtitle("Underwriter/relationship manager breakup")+labs(x="Relationship manager", y="Count of tasks") + geom_bar()+facet_wrap(['UW'],ncol=3)
     ggsave(p,filename='file.png',height=10, width=12,dpi=300,limitsize=False)
 
     shutil.move('file.png','static/file.png')
@@ -110,6 +110,14 @@ def payments_all():
     if request.method == "GET":
         payments = db.get_payments()
         return render_template("payments_all.html",payments=sorted(payments))
+
+    else:
+        if not current_user.is_admin:
+            abort(401)
+        form_payment_keys = request.form.getlist("payment_keys")
+        for form_payment_key in form_payment_keys:
+            db.delete_payment(int(form_payment_key))
+        return redirect(url_for("payments_all"))
 
 def payments_completed():
     db = current_app.config["db"]
