@@ -160,7 +160,7 @@ def payment_add_page():
 
         proposal = form.data["proposal"]
         policyno = form.data["policyno"]
-
+        instrumentno = form.data["instrumentno"]
 
         if underwriter != "":
             underwriter_history = "<br>"+created + ": Assigned to " + underwriter
@@ -176,7 +176,7 @@ def payment_add_page():
                 modeentry=modeentry, customerid=customerid, rel_manager=rel_manager,broker=broker,
                 remarks = remarks, underwriter = underwriter, ticket=ticket, status=status,
                 voucher=voucher, created = created, history = history, completed = completed,
-                proposal = proposal, policyno = policyno)
+                proposal = proposal, policyno = policyno, instrumentno = instrumentno)
         db = current_app.config["db"]
         payment_key = db.add_payment(payment)
 
@@ -191,7 +191,8 @@ def payment_add_page():
         Amount received: %s
         Date of payment: %s
         Mode of payment: %s
-        """ % (title, amount, string_date, mode))
+        Instrument number: %s
+        """ % (title, amount, string_date, mode, instrumentno))
 
 
         requests.post(SEND_URL, json={'chat_id': CHAT_ID, 'text': message})
@@ -252,6 +253,8 @@ def payment_edit_page(payment_key):
 
         proposal = form.data["proposal"]
         policyno = form.data["policyno"]
+        instrumentno = form.data["instrumentno"]
+
 
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
@@ -284,7 +287,7 @@ def payment_edit_page(payment_key):
                 modeentry=modeentry, customerid= customerid, rel_manager=rel_manager, broker=broker,
                 nature=nature,remarks=remarks,underwriter=underwriter,
                 ticket=ticket, status=status, voucher=voucher, history = history, completed = completed,
-                proposal = proposal, policyno = policyno)
+                proposal = proposal, policyno = policyno, instrumentno = instrumentno)
         db.update_payment(payment_key, payment)
 
         #flash("Payment data updated.")
@@ -312,6 +315,7 @@ def payment_edit_page(payment_key):
 
     form.proposal.data = payment.proposal
     form.policyno.data = payment.policyno
+    form.instrumentno.data = payment.instrumentno
 
     return render_template ("payment_edit.html", form=form)
 

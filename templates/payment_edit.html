@@ -29,7 +29,14 @@
           <td>         {{ form.amount( class='input') }}
 
         </td></tr>
+
         <tr>
+            <th>{{form.instrumentno.label}}</th>
+            <td>{{ form.instrumentno(class='input') }}</td>
+        </tr>
+
+        <tr>
+
     <fieldset>
         <th>{{form.mode.label}}</th><td>  {{form.mode}}
     </fieldset>

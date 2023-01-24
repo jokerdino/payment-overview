@@ -53,6 +53,7 @@ def convert_input(upload_file):
     empty_csv['CUSTOMER'] = neft_incoming_to_be_uploaded['Payee Name']
     empty_csv['AMOUNT'] = neft_incoming_to_be_uploaded['Amount']
     empty_csv['DATE'] = neft_incoming_to_be_uploaded['Reference Date']
+    empty_csv['INSTRUMENTNO'] = neft_incoming_to_be_uploaded['Reference No']
     empty_csv['MODE'] = "NEFT"
     empty_csv['STATUS'] = "To be receipted"
     empty_csv['CREATED'] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -81,11 +82,13 @@ def convert_input(upload_file):
                 string_date = df_upload.iloc[i,1]
                 mode = df_upload.iloc[i,3]
                 amount = df_upload.iloc[i,2]
+                instrumentno = df_upload.iloc[i,19]
                 message = ("""Payee name: %s
                 Amount received: %s
                 Date of payment: %s
                 Mode of payment: %s
-                """ % (title, amount, string_date, mode))
+                Instrument number: %s
+                """ % (title, amount, string_date, mode, instrumentno))
 
 
                 requests.post(SEND_URL, json={'chat_id': CHAT_ID, 'text': message})

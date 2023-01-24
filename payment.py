@@ -3,7 +3,7 @@ class Payment:
             mode=None, modeentry=None, customerid = None, rel_manager=None,
             broker=None,nature =None, remarks=None,underwriter=None,
             ticket=None,status=None,voucher=None,created=None,history=None, completed=None,
-            proposal=None, policyno=None):
+            proposal=None, policyno=None, instrumentno=None):
         self.customer = customer
         self.date = date
         self.amount = amount
@@ -23,3 +23,4 @@ class Payment:
         self.completed = completed
         self.proposal = proposal
         self.policyno = policyno
+        self.instrumentno = instrumentno
