@@ -51,7 +51,7 @@ def create_app():
     home_dir = os.path.expanduser("~")
     if platform.system() == "Windows":
         db = Database("D:\payment-board\payments.sqlite")
-        user_db = UserDatabase("D:\payment-board\user.sqlite")
+        user_db = UserDatabase("D:\\payment-board\\user.sqlite")
     else:
         db = Database("payments.sqlite")
         user_db = UserDatabase("user.sqlite")

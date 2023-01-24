@@ -4,7 +4,6 @@ from datetime import datetime
 from flask import current_app, render_template, request, redirect, url_for, flash, send_file
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-#from passlib.hash import pbkdf2_sha256 as hasher
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -26,30 +25,31 @@ from payment import Payment
 from sqlite_excel import export_database, convert_input
 
 import telegram_secrets
-#from modeluser import User
 
 def favicon():
     return url_for('static', filename='favicon.ico')
 
 def signup():
     form = SignupForm()
-    #print("first hello")
     if request.method == "GET":
         return render_template("signup.html",form=form)
     else:
-     #   print("hello")
         username = form.data["username"]
-        #name = form.data["name"]
         password = form.data["password"]
         password_hash =generate_password_hash(password, method='sha256')
-        # TODO: check if username does not already exist
 
-        user = User(username=username, password=password_hash)
         user_db = current_app.config["user_db"]
-        user_key = user_db.add_user(user)
-      #  print("added", user_key)
-        return redirect(url_for("login_page"))
 
+        try:
+            exist_name = user_db.get_user(username)
+            old_username = exist_name.username
+            if username == old_username:
+                flash("Username already exists.")
+                return redirect(url_for('signup'))
+        except TypeError as e:
+            user = User(username=username, password=password_hash)
+            user_key = user_db.add_user(user)
+            return redirect(url_for("login_page"))
 
 
 def cd_list():
@@ -86,7 +86,6 @@ def home_page():
 
     pivot_data['Total'] = pivot_data.sum(numeric_only=True,axis=1)
     pivot_data.loc["TOTAL"] = pivot_data.sum(numeric_only=True,axis=0)
-    #pivot_data.to_excel("table.xlsx",index=False)
 
     conn.close()
 
@@ -300,10 +299,8 @@ def payment_edit_page(payment_key):
         if status == "Completed":
             if payment.completed is not None:
                 completed = payment.completed
-                #completed = dt_string
             else:
                 completed = dt_string
-                #completed = payment.completed
         else:
             completed = None
 
@@ -349,27 +346,19 @@ def login_page():
         return redirect(url_for('home_page'))
     form = LoginForm()
     user_db = current_app.config["user_db"]
-   # payment = db.get_payment(payment_key)
     if form.validate_on_submit():
         username = form.data["username"]
         user = user_db.get_user(username)
         if user is not None:
             password = form.data["password"]
-            # password_hash = generate_password_hash(password, method='sha256')
 
 
-            #print(user.password)
-            #print(password_hash)
             if check_password_hash(user.password, password):
-                #print("loggedin")
                 login_user(user)
 
-                #flash("You have logged in.")
                 next_page = request.args.get("next", url_for("home_page"))
                 return redirect(next_page)
             else:
-                #print("password does not match. log in again.")
-                # print(user.username)
                 flash("Invalid credentials.")
     return render_template("login.html",form=form)
 
