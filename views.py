@@ -71,9 +71,12 @@ def pending_scroll_list():
     return render_template("scroll.html" , tables=[scroll_list.to_html(classes="table", border=1,table_id="table", justify="center",float_format='{:.0f}'.format,header=True,index=False)])
 
 def draw_chart(data):
+    try:
+        p = ggplot(data=data) + aes(x="RM",fill="STATUS") + ggtitle("Underwriter/relationship manager breakup")+labs(x="Relationship manager", y="Count of tasks") + geom_bar()+facet_wrap(['UW'],ncol=3)
+        ggsave(p,filename='static/file.png',height=10, width=12,dpi=300,limitsize=False, verbose=False)
+    except:
+        print("Error")
 
-    p = ggplot(data=data) + aes(x="RM",fill="STATUS") + ggtitle("Underwriter/relationship manager breakup")+labs(x="Relationship manager", y="Count of tasks") + geom_bar()+facet_wrap(['UW'],ncol=3)
-    ggsave(p,filename='static/file.png',height=10, width=12,dpi=300,limitsize=False, verbose=False)
     return True
 
 def home_page():
