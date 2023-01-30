@@ -16,6 +16,10 @@ import numpy as np
 from plotnine import *
 import shutil
 
+import matplotlib.pyplot as plt
+plt.switch_backend('agg')
+
+
 from flask_login import LoginManager, current_user, UserMixin, login_user, logout_user, login_required
 
 from forms import LoginForm, PaymentEditForm, SignupForm
@@ -66,21 +70,25 @@ def pending_scroll_list():
     #cd_list_filter.sort_values(by='SL Name',ascending=False)
     return render_template("scroll.html" , tables=[scroll_list.to_html(classes="table", border=1,table_id="table", justify="center",float_format='{:.0f}'.format,header=True,index=False)])
 
+def draw_chart(data):
+
+    p = ggplot(data=data) + aes(x="RM",fill="STATUS") + ggtitle("Underwriter/relationship manager breakup")+labs(x="Relationship manager", y="Count of tasks") + geom_bar()+facet_wrap(['UW'],ncol=3)
+    ggsave(p,filename='static/file.png',height=10, width=12,dpi=300,limitsize=False, verbose=False)
+    return True
+
 def home_page():
 
     conn = sqlite3.connect("payments.sqlite")
     data = pd.read_sql("SELECT * from payment", conn)
-    copy_data = data[['ID','STATUS','RM','UW']]
+    copy_data = data[['ID','STATUS','RM','UW']].copy()
     copy_data.replace('',"_Unassigned",inplace=True)
     copy_data.fillna("_Unassigned",inplace=True)
+
+    draw_chart(copy_data)
 
     pivot_data = pd.pivot_table(copy_data, index=['UW','STATUS'],columns=['RM'],values='ID',aggfunc='count')
     pivot_data.fillna(0,inplace=True)
 
-    p = ggplot(data=copy_data) + aes(x="RM",fill="STATUS") + ggtitle("Underwriter/relationship manager breakup")+labs(x="Relationship manager", y="Count of tasks") + geom_bar()+facet_wrap(['UW'],ncol=3)
-    ggsave(p,filename='file.png',height=10, width=12,dpi=300,limitsize=False)
-
-    shutil.move('file.png','static/file.png')
 
     pivot_data = pivot_data.reset_index()
 
@@ -219,10 +227,10 @@ def payment_add_page():
         except AttributeError as e:
             string_date = "None"
         message = ("""Payee name: %s
-        Amount received: %s
-        Date of payment: %s
-        Mode of payment: %s
-        Instrument number: %s
+Amount received: %s
+Date of payment: %s
+Mode of payment: %s
+Instrument number: %s
         """ % (title, amount, string_date, mode, instrumentno))
 
 

@@ -39,3 +39,5 @@ select_to_date.send_keys(end_date)
 
 
 driver.find_element('xpath',"(//input[@name='fetchReport'])[2]").click()
+
+driver.quit()

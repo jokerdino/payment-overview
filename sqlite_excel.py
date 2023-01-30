@@ -84,10 +84,10 @@ def convert_input(upload_file):
                 amount = df_upload.iloc[i,2]
                 instrumentno = df_upload.iloc[i,19]
                 message = ("""Payee name: %s
-                Amount received: %s
-                Date of payment: %s
-                Mode of payment: %s
-                Instrument number: %s
+Amount received: %s
+Date of payment: %s
+Mode of payment: %s
+Instrument number: %s
                 """ % (title, amount, string_date, mode, instrumentno))
 
 

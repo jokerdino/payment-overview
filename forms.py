@@ -9,7 +9,7 @@ class PaymentEditForm(FlaskForm):
     title = StringField("Customer name:", validators = [DataRequired()])
 
     date = DateField("Date:", validators=[Optional(),],)
-    amount = IntegerField("Amount:",validators=[Optional(),])
+    amount = StringField("Amount:",validators=[Optional(),])
     mode = SelectField('Mode of payment:', coerce=str, choices=[('',''),('NEFT','NEFT'),('Cheque','Cheque'),('Cash','Cash'),('Others','Others')])
 
     modeentry_list = [('',''),('CD','CD'),('Regular','Regular'),('Scroll','Scroll'),('BG','BG'),('Others','Others')]
@@ -46,7 +46,7 @@ class PaymentEditForm(FlaskForm):
             ('Others2','Others2')]
 
     modeentry = SelectField('Mode of entry:', coerce=str, choices=modeentry_list)
-    customerid = IntegerField("Customer ID:", validators=[Optional(),])
+    customerid = StringField("Customer ID:", validators=[Optional(),])
     rel_manager = SelectField("Relationship manager:",coerce=str,choices=rel_manager_list)
 
     broker = StringField("Broker:", validators=[Optional(),])
