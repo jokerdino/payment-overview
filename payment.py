@@ -1,14 +1,32 @@
 class Payment:
-    def __init__(self, customer, date=None, amount=None,
-            mode=None, modeentry=None, customerid = None, rel_manager=None,
-            broker=None,nature =None, remarks=None,underwriter=None,
-            ticket=None,status=None,voucher=None,created=None,history=None, completed=None,
-            proposal=None, policyno=None, instrumentno=None):
+    def __init__(
+        self,
+        customer,
+        date=None,
+        amount=None,
+        mode=None,
+        modeentry=None,
+        customerid=None,
+        rel_manager=None,
+        broker=None,
+        nature=None,
+        remarks=None,
+        underwriter=None,
+        ticket=None,
+        status=None,
+        voucher=None,
+        created=None,
+        history=None,
+        completed=None,
+        proposal=None,
+        policyno=None,
+        instrumentno=None,
+    ):
         self.customer = customer
         self.date = date
         self.amount = amount
         self.mode = mode
-        self.modeentry=modeentry
+        self.modeentry = modeentry
         self.customerid = customerid
         self.rel_manager = rel_manager
         self.remarks = remarks
