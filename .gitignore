@@ -4,3 +4,4 @@ __pycache__/
 *.sqlite
 *.xls
 telegram_secrets.py
+*.yaml

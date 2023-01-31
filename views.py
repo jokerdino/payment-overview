@@ -51,7 +51,7 @@ def signup():
                 return redirect(url_for("signup"))
         except TypeError as e:
             user = User(username=username, password=password_hash)
-            user_key = user_db.add_user(user)
+            user_db.add_user(user)
             return redirect(url_for("login_page"))
 
 
@@ -78,6 +78,30 @@ def cd_list():
 
 def pending_scroll_list():
     scroll_list = pd.read_csv("scroll_list.csv")
+    scroll_list["Payment Received Date"] = pd.to_datetime(
+        scroll_list["Payment Received Date"], format="%b %d, %Y %I:%M %p"
+    )
+    scroll_list["Payment Entry Date"] = pd.to_datetime(
+        scroll_list["Payment Entry Date"], format="%b %d, %Y %I:%M %p"
+    )
+    scroll_list["Cheque Date"] = pd.to_datetime(
+        scroll_list["Cheque Date"], format="%b %d, %Y %I:%M %p"
+    )
+    scroll_list["Date of Expiry"] = pd.to_datetime(
+        scroll_list["Date of Expiry"], format="%b %d, %Y %I:%M %p"
+    )
+
+    scroll_list["Payment Received Date"] = scroll_list[
+        "Payment Received Date"
+    ].dt.strftime("%d-%m-%Y")
+    scroll_list["Payment Entry Date"] = scroll_list["Payment Entry Date"].dt.strftime(
+        "%d-%m-%Y"
+    )
+    scroll_list["Cheque Date"] = scroll_list["Cheque Date"].dt.strftime("%d-%m-%Y")
+    scroll_list["Date of Expiry"] = scroll_list["Date of Expiry"].dt.strftime(
+        "%d-%m-%Y"
+    )
+    scroll_list = scroll_list.rename({"Cheque Number": "Instrument number"}, axis=1)
     # cd_list_filter = cd_list[['SL Name','SL Code','CD number','Credit']]
     # cd_list_filter.sort_values(by='SL Name',ascending=False)
     return render_template(

@@ -1,4 +1,3 @@
-import os.path
 import platform
 
 from flask import Flask
@@ -60,7 +59,6 @@ def create_app():
     lm.init_app(app)
     lm.login_view = "login_page"
 
-    home_dir = os.path.expanduser("~")
     if platform.system() == "Windows":
         db = Database(r"D:\payment-board\payments.sqlite")
         user_db = UserDatabase("D:\\payment-board\\user.sqlite")

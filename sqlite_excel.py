@@ -93,7 +93,7 @@ def convert_input(upload_file):
             for i in range(len(df_upload)):
                 title = df_upload.iloc[i, 0]
                 received_date = df_upload.iloc[i, 1]
-                date_received_date = datetime.strptime(received_date,"%Y-%m-%d")
+                date_received_date = datetime.strptime(received_date, "%Y-%m-%d")
                 string_date = date_received_date.strftime("%d-%m-%Y")
                 mode = df_upload.iloc[i, 3]
                 amount = df_upload.iloc[i, 2]
