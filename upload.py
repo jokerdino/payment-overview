@@ -33,6 +33,7 @@ neft_incoming = pd.read_excel(
 )
 neft_incoming = neft_incoming[neft_incoming["File Splited"] != "Yes"]
 neft_incoming = neft_incoming[neft_incoming["Download Status"] != "Downloaded"]
+df_db["AMOUNT_db"] = df_db["AMOUNT_db"].astype(int)
 
 neft_incoming["Reference Date"] = pd.to_datetime(
     neft_incoming["Reference Date"], dayfirst=True

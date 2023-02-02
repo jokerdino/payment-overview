@@ -2,7 +2,12 @@ import sys
 import time
 
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.ui import Select
+
+options = Options()
+options.headless = True
 
 if len(sys.argv) > 1:
     end_date = sys.argv[1]
@@ -11,7 +16,10 @@ else:
     end_date = time.strftime("%d/%m/%Y")
 
 
-driver = webdriver.Firefox()
+browser_path = Service(r"C:\Utility\BrowserDrivers\geckodriver.exe")
+
+driver = webdriver.Firefox(options=options)  # , service=browser_path)
+
 
 driver.get(
     "http://10.200.41.130:8080/NeftPortal/neft/RollIdentifier.do?empNo=44515&empName=.%20BARNEEDHAR%20VIGNESHWAR%20G&offCode=500200&userId=BARNEEDHAR"
@@ -44,5 +52,12 @@ select_to_date.send_keys(end_date)
 
 
 driver.find_element("xpath", "(//input[@name='fetchReport'])[2]").click()
+
+# print("waiting starts. count to 25")
+
+# driver.implicitly_wait(25)
+
+# print("waiting over. time to close")
+
 
 driver.quit()

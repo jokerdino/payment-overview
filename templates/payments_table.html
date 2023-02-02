@@ -51,8 +51,10 @@
                      <td>{{payment.mode}}</td>
                      <td>{{payment.modeentry}}</td> 
                     
-{% if payment.customerid != None %}
-                     <td style ="background-color: green">{{payment.customerid}}</td>
+{% if payment.customerid != None and
+ payment.customerid|length %}
+
+<td style ="background-color: green">{{payment.customerid}}</td>
 {% else %}
 <td >{{payment.customerid}}</td>
 {% endif %}
