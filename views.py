@@ -55,6 +55,10 @@ def signup():
             return redirect(url_for("login_page"))
 
 
+def leave_project():
+    return render_template("leave_home.html")
+
+
 def cd_list():
 
     cd_list = pd.read_excel("CD_list.xlsx")

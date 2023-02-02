@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <title>Payments, receipts and underwriting proposal tracker{% block title %}{% endblock %}</title>
+        <title>Leave management{% block title %}{% endblock %}</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"/>
@@ -22,37 +22,14 @@
             <nav class="navbar is-transparent" aria-label="main navigation">
                 <div class="navbar-brand">
                     <span class="navbar-item">
-
-                <a class="button is-link" href="{{ url_for('home_page') }}">Home</a>
+               <a class="button is-link" href="{{ url_for('leave_project') }}">Home</a>
                     </span>
                     <span class="navbar-item">
-
-                <a class="button is-link" href="{{ url_for('payments_page')}}">Payments to be receipted</a>
-                    </span>
-                    <span class="navbar-item">
-
-                <a class="button is-link" href="{{ url_for('payments_pending_uw')}}">Pending for underwriting</a>
-                    </span>
-                    <span class="navbar-item">
-                <a class="button is-link" href= "{{ url_for('payments_completed')}}">Completed tasks</a>
-
-                    </span>
-                                    <span class="navbar-item">
-                <a class="button is-link" href="{{ url_for('pending_scroll_list') }}">Pending scroll list</a>
-                    </span>
-                                    <span class="navbar-item">
-                <a class="button is-link" href="{{ url_for('cd_list') }}">CD list</a>
-                    </span>
-                    <span class="navbar-item">
-                        <a class="button is-link" href="{{ url_for('leave_project')}}">Go to Leave management</a>
+                        <a class="button is-link" href="{{ url_for('home_page')}}">Go to Underwriting portal</a>
 
                         </span>
 
-                    {% if current_user.is_authenticated %}
-                <span class="navbar-item">
-                <a class="button is-link" href="{{ url_for('payment_add_page') }}">Add payment</a>
-                    </span>
-                {% endif %}
+
                 <span class="navbar-item ">
                 {% if not current_user.is_authenticated %}
                     <a class="button is-link" href="{{ url_for('signup') }}"> Signup</a><div>
@@ -69,8 +46,7 @@
                 {% endif %}
                 </span>
                 </div>
-
-            </nav>
+     </nav>
 </header>
 
     <div class="container">

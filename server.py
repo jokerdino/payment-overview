@@ -55,6 +55,9 @@ def create_app():
     app.add_url_rule(
         "/payments", view_func=views.payments_page, methods=["GET", "POST"]
     )
+    app.add_url_rule(
+        "/leave_management", view_func=views.leave_project, methods=["GET", "POST"]
+    )
 
     lm.init_app(app)
     lm.login_view = "login_page"
