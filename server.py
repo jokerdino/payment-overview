@@ -84,6 +84,17 @@ def create_app():
         view_func=leave_views.add_casual_leave,
         methods=["GET", "POST"],
     )
+    app.add_url_rule(
+        "/leave_management/employee/<int:emp_key>/sick_leave",
+        view_func=leave_views.add_sick_leave,
+        methods=["GET", "POST"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/employee/<int:emp_key>/rh_leave",
+        view_func=leave_views.add_rh_leave,
+        methods=["GET", "POST"],
+    )
 
     lm.init_app(app)
     lm.login_view = "login_page"

@@ -17,6 +17,7 @@ class Employee(db.Model):
     history_sick_leave = db.Column(db.Text)
     history_special_leave = db.Column(db.Text)
     history_leave_encashment = db.Column(db.Text)
+    history_restricted_holiday = db.Column(db.Text)
 
     def __repr__(self):
         return f"<Employee {self.emp_number!r}: {self.name!r}>"

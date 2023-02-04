@@ -52,6 +52,13 @@
         <td> {{ employee.history_sick_leave }} </td>
         {% endautoescape %}
     </tr>
+    
+            <tr>
+        <th>Restricted Holiday details: </th>
+         {% autoescape false %}
+        <td> {{ employee.history_restricted_holiday }} </td>
+        {% endautoescape %}
+    </tr>
         <tr>
         <th>Special leave details:</th>
          {% autoescape false %}
@@ -68,5 +75,7 @@
 </table>
   
  <a class="button is-link" href="{{url_for('add_casual_leave', emp_key=employee.id )}}">Add casual leave</a>
+ <a class="button is-link" href="{{url_for('add_rh_leave', emp_key=employee.id )}}">Add restricted holiday</a>
+ <a class="button is-link" href="{{url_for('add_sick_leave', emp_key=employee.id )}}">Add sick leave</a>
 
 {% endblock %}

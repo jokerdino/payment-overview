@@ -27,3 +27,20 @@ class LeaveForm(FlaskForm):
     start_date = DateField("Enter start date: ", validators=[DataRequired()])
     end_date = DateField("Enter end date: ", validators=[DataRequired()])
     leave_letter = BooleanField("Leave letter has been submitted:")
+
+
+class SickLeaveForm(FlaskForm):
+    type_leave = RadioField(
+        "Enter type of leave",
+        choices=[("full", "Full pay"), ("half", "Half pay")],
+    )
+    start_date = DateField("Enter start date: ", validators=[DataRequired()])
+    end_date = DateField("Enter end date: ", validators=[DataRequired()])
+    leave_letter = BooleanField("Leave letter has been submitted:")
+
+
+class Restricted_leaveform(FlaskForm):
+    start_date = DateField(
+        "Enter restricted holiday date: ", validators=[DataRequired()]
+    )
+    leave_letter = BooleanField("Leave letter has been submitted: ")
