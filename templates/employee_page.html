@@ -1,0 +1,72 @@
+{% extends "leave_layout.html" %}
+{% block title %}Employee{% endblock %}
+{% block content %}
+<h1 class="title">Employee leave details</h1>
+
+<table class="table">
+    <tr>
+        <th>Employee name:</th>
+        <td>{{ employee.name }}</td>
+    </tr>
+    <tr>
+        <th>Employee number:</th>
+        <td> {{ employee.emp_number }} </td>
+    </tr>
+        <tr>
+        <th>Leave updated as on:</th>
+        <td> {{ employee.leave_as_on }} </td>
+    </tr>
+        <tr>
+        <th>Current casual leave balance:</th>
+        <td> {{ employee.count_casual_leave }} </td>
+    </tr>
+        <tr>
+        <th>Current earned leave count:</th>
+        <td> {{ employee.count_earned_leave }} </td>
+    </tr>
+        <tr>
+        <th>Current sick leave count:</th>
+        <td> {{ employee.count_sick_leave }} </td>
+    </tr>
+        <tr>
+        <th>Current restricted holiday count:</th>
+        <td> {{ employee.count_restricted_holiday }} </td>
+    </tr>
+        <tr>
+        <th>Casual leave details:</th>
+              {% autoescape false %}
+    
+        
+        <td> {{ employee.history_casual_leave }} </td>
+        {% endautoescape %}
+    </tr>
+        <tr>
+        <th>Earned leave details: </th>
+         {% autoescape false %}
+        <td> {{ employee.history_earned_leave }} </td>
+        {% endautoescape %}
+    </tr>
+        <tr>
+        <th>Sick leave details:</th>
+         {% autoescape false %}
+        <td> {{ employee.history_sick_leave }} </td>
+        {% endautoescape %}
+    </tr>
+        <tr>
+        <th>Special leave details:</th>
+         {% autoescape false %}
+        <td> {{ employee.history_special_leave }} </td>
+        {% endautoescape %}
+    </tr>
+        <tr>
+        <th>Leave encashment: </th>
+         {% autoescape false %}
+        <td> {{ employee.history_leave_encashment }} </td>
+        {% endautoescape %}
+    </tr>
+
+</table>
+  
+ <a class="button is-link" href="{{url_for('add_casual_leave', emp_key=employee.id )}}">Add casual leave</a>
+
+{% endblock %}

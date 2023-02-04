@@ -4,8 +4,10 @@ from flask import Flask
 from flask_login import LoginManager
 from waitress import serve
 
+import leave_views
 import views
 from database import Database
+from employees import db
 from user import get_user
 from user_database import UserDatabase
 
@@ -56,7 +58,31 @@ def create_app():
         "/payments", view_func=views.payments_page, methods=["GET", "POST"]
     )
     app.add_url_rule(
-        "/leave_management", view_func=views.leave_project, methods=["GET", "POST"]
+        "/leave_management",
+        view_func=leave_views.leave_project,
+        methods=["GET", "POST"],
+    )
+    app.add_url_rule(
+        "/leave_management/create_employee",
+        view_func=leave_views.create_employee,
+        methods=["GET", "POST"],
+    )
+    app.add_url_rule(
+        "/leave_management/show_all",
+        view_func=leave_views.show_all_employees,
+        methods=["GET"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/employee/<int:emp_key>",
+        view_func=leave_views.employee_page,
+        methods=["GET", "POST"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/employee/<int:emp_key>/casual_leave",
+        view_func=leave_views.add_casual_leave,
+        methods=["GET", "POST"],
     )
 
     lm.init_app(app)
@@ -71,9 +97,18 @@ def create_app():
     app.config["db"] = db
     app.config["user_db"] = user_db
 
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///employees.sqlite"
+
+    #    db.init_app(app)
+    # import employees
+
     return app
 
 
 if __name__ == "__main__":
     app = create_app()
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
+        # db.drop_all()
     serve(app, host="0.0.0.0", port=8080)
