@@ -19,13 +19,12 @@
         <th>Current casual leave balance:</th>
         <td> {{ employee.count_casual_leave }} </td>
     </tr>
- 
-  
+
         <tr>
         <th>Casual leave details:</th>
            {% autoescape false %}
-    
-        
+
+
         <td> {{ employee.history_casual_leave }} </td>
         {% endautoescape %}
  
@@ -33,7 +32,7 @@
 
     <tr>
             <th>{{form.type_leave.label}}</th>
-            <td>{{ form.type_leave( class='input') }}</td>
+            <td>{{ form.type_leave }}</td>
         </tr>
             <tr>
             <th>{{form.start_date.label}}</th>
@@ -45,10 +44,10 @@
         </tr>
    <tr>
             <th>{{form.leave_letter.label}}</th>
-            <td>{{ form.leave_letter( class='checkbox') }}</td>
+            <td>{{ form.leave_letter }}</td>
         </tr>
 </table>
-   
+
        <div class="field is-grouped">
         <button class="button is-primary is-big">Save</button>
     </div>

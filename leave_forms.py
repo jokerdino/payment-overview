@@ -1,5 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, DateField, IntegerField, RadioField, StringField
+from wtforms import (
+    BooleanField,
+    DateField,
+    IntegerField,
+    RadioField,
+    SelectField,
+    StringField,
+)
 from wtforms.validators import DataRequired
 
 
@@ -39,7 +46,30 @@ class SickLeaveForm(FlaskForm):
     leave_letter = BooleanField("Leave letter has been submitted:")
 
 
-class Restricted_leaveform(FlaskForm):
+class SpecialLeaveForm(FlaskForm):
+    leave_list = [
+        ("Maternity", "Maternity Leave"),
+        ("Paternity", "Paternity leave"),
+        ("Quarantine", "Quarantine Leave"),
+        ("Exam", "Examination leave"),
+        ("Others", "Others"),
+    ]
+    type_leave = SelectField("Enter type of leave", choices=leave_list)
+    start_date = DateField("Enter start date: ", validators=[DataRequired()])
+    end_date = DateField("Enter end date: ", validators=[DataRequired()])
+    leave_letter = BooleanField("Leave letter has been submitted: ")
+
+
+class LOPLeaveForm(FlaskForm):
+    type_leave = RadioField(
+        "Enter type of leave", choices=[("LOP", "LOP"), ("Strike", "Strike")]
+    )
+    start_date = DateField("Enter start date: ", validators=[DataRequired()])
+    end_date = DateField("Enter end date: ", validators=[DataRequired()])
+    leave_letter = BooleanField("Leave letter has been submitted: ")
+
+
+class RestrictedLeaveform(FlaskForm):
     start_date = DateField(
         "Enter restricted holiday date: ", validators=[DataRequired()]
     )

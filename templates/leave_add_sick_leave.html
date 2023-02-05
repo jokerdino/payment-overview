@@ -19,21 +19,19 @@
         <th>Current sick leave balance:</th>
         <td> {{ employee.count_sick_leave }} </td>
     </tr>
- 
-  
+
         <tr>
         <th>Sick leave details:</th>
            {% autoescape false %}
-    
-        
+
         <td> {{ employee.history_sick_leave }} </td>
         {% endautoescape %}
- 
+
     </tr>
 
     <tr>
             <th>{{form.type_leave.label}}</th>
-            <td>{{ form.type_leave( class='input') }}</td>
+            <td>{{ form.type_leave }}</td>
         </tr>
             <tr>
             <th>{{form.start_date.label}}</th>
@@ -45,10 +43,10 @@
         </tr>
    <tr>
             <th>{{form.leave_letter.label}}</th>
-            <td>{{ form.leave_letter( class='checkbox') }}</td>
+            <td>{{ form.leave_letter }}</td>
         </tr>
 </table>
-   
+
        <div class="field is-grouped">
         <button class="button is-primary is-big">Save</button>
     </div>

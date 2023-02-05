@@ -4,7 +4,14 @@ from fractions import Fraction
 from flask import flash, redirect, render_template, url_for
 
 from employees import Employee, Leaves
-from leave_forms import EmployeeForm, LeaveForm, Restricted_leaveform, SickLeaveForm
+from leave_forms import (
+    EmployeeForm,
+    LeaveForm,
+    LOPLeaveForm,
+    RestrictedLeaveform,
+    SickLeaveForm,
+    SpecialLeaveForm,
+)
 
 
 def daterange(date1, date2):
@@ -121,6 +128,181 @@ def employee_page(emp_key):
     return render_template("employee_page.html", employee=employee)
 
 
+def leave_to_database(
+    emp_number, start_date, end_date, nature_of_leave, type_leave, leave_letter_status
+):
+
+    from server import db
+
+    leave_list = []
+
+    for dt in daterange(start_date, end_date):
+        leave_list.append(dt)
+
+    for dt in leave_list:
+        leave = Leaves(
+            emp_number=emp_number,
+            date_of_leave=dt,
+            nature_of_leave=nature_of_leave,
+            type_leave=type_leave,
+            leave_letter_status=leave_letter_status,
+        )
+        db.session.add(leave)
+        db.session.commit()
+
+
+def add_lop_leave(emp_key):
+    from server import db
+
+    employee = Employee.query.get_or_404(emp_key)
+    form = LOPLeaveForm()
+    if form.validate_on_submit():
+        type_leave = form.data["type_leave"]
+        start_date = form.data["start_date"]
+        end_date = form.data["end_date"]
+        leave_letter_status = form.data["leave_letter"]
+
+        if end_date < start_date:
+            flash("End date should be higher than start date.")
+
+        else:
+            # ensure leave is not already entered before - done for start date
+            # check sufficient leave balance - done
+            # expand leaves - done
+            # add leaves - done
+            # update leave balance - done
+
+            exists = (
+                db.session.query(Leaves.date_of_leave)
+                .filter(
+                    Leaves.date_of_leave == start_date,
+                    Leaves.emp_number == employee.emp_number,
+                )
+                .first()
+            )
+
+            if exists:
+                flash("Leave already entered.")
+
+            else:
+
+                no_of_days = numOfDays(start_date, end_date) + 1
+                #            if type_leave == "full":
+                #                no_of_days = no_of_days * 2
+
+                #            if check_leave_count(employee.count_sick_leave, no_of_days):
+                #                employee.count_sick_leave = update_leave(
+                #                    employee.count_sick_leave, no_of_days
+                #                )
+
+                history_update = "{}: {} (From {} to {})".format(
+                    type_leave.title(), str(no_of_days), str(start_date), str(end_date)
+                )
+
+                if employee.history_special_leave != None:
+                    employee.history_special_leave = (
+                        employee.history_special_leave + "<br>" + history_update
+                    )
+                else:
+                    employee.history_special_leave = history_update
+
+                db.session.add(employee)
+
+                nature_of_leave = type_leave
+
+                leave_to_database(
+                    employee.emp_number,
+                    start_date,
+                    end_date,
+                    nature_of_leave,
+                    None,
+                    leave_letter_status,
+                )
+
+                return redirect(url_for("employee_page", emp_key=employee.id))
+    #            else:
+    #
+    #               flash("Insufficient leave balance.")
+
+    return render_template("leave_add_lop_leave.html", employee=employee, form=form)
+
+
+def add_special_leave(emp_key):
+    from server import db
+
+    employee = Employee.query.get_or_404(emp_key)
+    form = SpecialLeaveForm()
+    if form.validate_on_submit():
+        type_leave = form.data["type_leave"]
+        start_date = form.data["start_date"]
+        end_date = form.data["end_date"]
+        leave_letter_status = form.data["leave_letter"]
+
+        if end_date < start_date:
+            flash("End date should be higher than start date.")
+
+        else:
+            # ensure leave is not already entered before - done for start date
+            # check sufficient leave balance - done
+            # expand leaves - done
+            # add leaves - done
+            # update leave balance - done
+
+            exists = (
+                db.session.query(Leaves.date_of_leave)
+                .filter(
+                    Leaves.date_of_leave == start_date,
+                    Leaves.emp_number == employee.emp_number,
+                )
+                .first()
+            )
+
+            if exists:
+                flash("Leave already entered.")
+
+            else:
+
+                no_of_days = numOfDays(start_date, end_date) + 1
+                #            if type_leave == "full":
+                #                no_of_days = no_of_days * 2
+
+                #            if check_leave_count(employee.count_sick_leave, no_of_days):
+                #                employee.count_sick_leave = update_leave(
+                #                    employee.count_sick_leave, no_of_days
+                #                )
+
+                history_update = "{}: {} (From {} to {})".format(
+                    type_leave.title(), str(no_of_days), str(start_date), str(end_date)
+                )
+
+                if employee.history_special_leave != None:
+                    employee.history_special_leave = (
+                        employee.history_special_leave + "<br>" + history_update
+                    )
+                else:
+                    employee.history_special_leave = history_update
+
+                db.session.add(employee)
+
+                nature_of_leave = type_leave
+
+                leave_to_database(
+                    employee.emp_number,
+                    start_date,
+                    end_date,
+                    nature_of_leave,
+                    None,
+                    leave_letter_status,
+                )
+
+                return redirect(url_for("employee_page", emp_key=employee.id))
+    #            else:
+    #
+    #               flash("Insufficient leave balance.")
+
+    return render_template("leave_add_special_leave.html", employee=employee, form=form)
+
+
 def add_sick_leave(emp_key):
     from server import db
 
@@ -132,71 +314,72 @@ def add_sick_leave(emp_key):
         end_date = form.data["end_date"]
         leave_letter_status = form.data["leave_letter"]
 
-        # ensure leave is not already entered before - done for start date
-        # check sufficient leave balance - done
-        # expand leaves - done
-        # add leaves - done
-        # update leave balance - done
-
-        exists = (
-            db.session.query(Leaves.date_of_leave)
-            .filter(
-                Leaves.date_of_leave == start_date,
-                Leaves.emp_number == employee.emp_number,
-            )
-            .first()
-        )
-
-        if exists:
-
-            flash("Leave already entered.")
+        if end_date < start_date:
+            flash("End date should be higher than start date.")
 
         else:
-            # print("does not exist yet")
 
-            no_of_days = numOfDays(start_date, end_date) + 1
-            if type_leave == "full":
-                no_of_days = no_of_days * 2
+            # ensure leave is not already entered before - done for start date
+            # check sufficient leave balance - done
+            # expand leaves - done
+            # add leaves - done
+            # update leave balance - done
 
-            if check_leave_count(employee.count_sick_leave, no_of_days):
-                employee.count_sick_leave = update_leave(
-                    employee.count_sick_leave, no_of_days
+            exists = (
+                db.session.query(Leaves.date_of_leave)
+                .filter(
+                    Leaves.date_of_leave == start_date,
+                    Leaves.emp_number == employee.emp_number,
                 )
+                .first()
+            )
 
-                history_update = "{}: {} (From {} to {})".format(
-                    type_leave.title(), str(no_of_days), str(start_date), str(end_date)
-                )
+            if exists:
 
-                if employee.history_sick_leave != None:
-                    employee.history_sick_leave = (
-                        employee.history_sick_leave + "<br>" + history_update
-                    )
-                else:
-                    employee.history_sick_leave = history_update
+                flash("Leave already entered.")
 
-                db.session.add(employee)
-
-                nature_of_leave = "SIck leave"
-                casual_leave_list = []
-
-                for dt in daterange(start_date, end_date):
-                    casual_leave_list.append(dt)
-
-                for dt in casual_leave_list:
-                    leave = Leaves(
-                        emp_number=employee.emp_number,
-                        date_of_leave=dt,
-                        nature_of_leave=nature_of_leave,
-                        type_leave=type_leave,
-                        leave_letter_status=leave_letter_status,
-                    )
-                    db.session.add(leave)
-                    db.session.commit()
-
-                return redirect(url_for("employee_page", emp_key=employee.id))
             else:
 
-                flash("Insufficient leave balance.")
+                no_of_days = numOfDays(start_date, end_date) + 1
+                if type_leave == "full":
+                    no_of_days = no_of_days * 2
+
+                if check_leave_count(employee.count_sick_leave, no_of_days):
+                    employee.count_sick_leave = update_leave(
+                        employee.count_sick_leave, no_of_days
+                    )
+
+                    history_update = "{}: {} (From {} to {})".format(
+                        type_leave.title(),
+                        str(no_of_days),
+                        str(start_date),
+                        str(end_date),
+                    )
+
+                    if employee.history_sick_leave != None:
+                        employee.history_sick_leave = (
+                            employee.history_sick_leave + "<br>" + history_update
+                        )
+                    else:
+                        employee.history_sick_leave = history_update
+
+                    db.session.add(employee)
+
+                    nature_of_leave = "Sick leave"
+
+                    leave_to_database(
+                        employee.emp_number,
+                        start_date,
+                        end_date,
+                        nature_of_leave,
+                        type_leave,
+                        leave_letter_status,
+                    )
+
+                    return redirect(url_for("employee_page", emp_key=employee.id))
+                else:
+
+                    flash("Insufficient leave balance.")
 
     return render_template("leave_add_sick_leave.html", employee=employee, form=form)
 
@@ -205,82 +388,76 @@ def add_rh_leave(emp_key):
     from server import db
 
     employee = Employee.query.get_or_404(emp_key)
-    form = Restricted_leaveform()
+    form = RestrictedLeaveform()
 
-    # print("is it even working")
     if form.validate_on_submit():
-        # print("test")
         #  type_leave = form.data["type_leave"]
         start_date = form.data["start_date"]
         end_date = start_date
         leave_letter_status = form.data["leave_letter"]
-        # print("second test")
-        # ensure leave is not already entered before - done for start date
-        # check sufficient leave balance - done
-        # expand leaves - done
-        # add leaves - done
-        # update leave balance - done
 
-        exists = (
-            db.session.query(Leaves.date_of_leave)
-            .filter(
-                Leaves.date_of_leave == start_date,
-                Leaves.emp_number == employee.emp_number,
-            )
-            .first()
-        )
-        # print("1")
-        if exists:
-            flash("Leave already entered.")
+        if end_date < start_date:
+            flash("End date should be higher than start date.")
 
         else:
-            #    print("does not exist yet")
+            # ensure leave is not already entered before - done for start date
+            # check sufficient leave balance - done
+            # expand leaves - done
+            # add leaves - done
+            # update leave balance - done
 
-            no_of_days = numOfDays(start_date, end_date) + 1
-            # if type_leave == "half":
-            #   no_of_days = no_of_days / 2
-
-            if check_leave_count(employee.count_restricted_holiday, no_of_days):
-                employee.count_restricted_holiday = update_leave(
-                    employee.count_restricted_holiday, no_of_days
+            exists = (
+                db.session.query(Leaves.date_of_leave)
+                .filter(
+                    Leaves.date_of_leave == start_date,
+                    Leaves.emp_number == employee.emp_number,
                 )
+                .first()
+            )
+            if exists:
+                flash("Leave already entered.")
 
-                history_update = "RH: {} (On {})".format(
-                    str(no_of_days), str(start_date)
-                )
-
-                if employee.history_restricted_holiday != None:
-                    employee.history_restricted_holiday = (
-                        employee.history_restricted_holiday + "<br>" + history_update
-                    )
-                else:
-                    employee.history_restricted_holiday = history_update
-
-                db.session.add(employee)
-
-                nature_of_leave = "Restricted holiday"
-                rh_leave_list = []
-
-                for dt in daterange(start_date, end_date):
-                    rh_leave_list.append(dt)
-
-                for dt in rh_leave_list:
-                    leave = Leaves(
-                        emp_number=employee.emp_number,
-                        date_of_leave=dt,
-                        nature_of_leave=nature_of_leave,
-                        type_leave=None,
-                        leave_letter_status=leave_letter_status,
-                    )
-                    db.session.add(leave)
-                    db.session.commit()
-
-                return redirect(url_for("employee_page", emp_key=employee.id))
             else:
 
-                flash("Insufficient leave balance.")
-    # else:
-    # print("it is not working")
+                no_of_days = numOfDays(start_date, end_date) + 1
+                # if type_leave == "half":
+                #   no_of_days = no_of_days / 2
+
+                if check_leave_count(employee.count_restricted_holiday, no_of_days):
+                    employee.count_restricted_holiday = update_leave(
+                        employee.count_restricted_holiday, no_of_days
+                    )
+
+                    history_update = "RH: {} (On {})".format(
+                        str(no_of_days), str(start_date)
+                    )
+
+                    if employee.history_restricted_holiday != None:
+                        employee.history_restricted_holiday = (
+                            employee.history_restricted_holiday
+                            + "<br>"
+                            + history_update
+                        )
+                    else:
+                        employee.history_restricted_holiday = history_update
+
+                    db.session.add(employee)
+
+                    nature_of_leave = "Restricted holiday"
+
+                    leave_to_database(
+                        employee.emp_number,
+                        start_date,
+                        end_date,
+                        nature_of_leave,
+                        None,
+                        leave_letter_status,
+                    )
+
+                    return redirect(url_for("employee_page", emp_key=employee.id))
+                else:
+
+                    flash("Insufficient leave balance.")
     return render_template("leave_add_rh_leave.html", employee=employee, form=form)
 
 
@@ -295,70 +472,71 @@ def add_casual_leave(emp_key):
         end_date = form.data["end_date"]
         leave_letter_status = form.data["leave_letter"]
 
-        # ensure leave is not already entered before - done for start date
-        # check sufficient leave balance - done
-        # expand leaves - done
-        # add leaves - done
-        # update leave balance - done
-
-        exists = (
-            db.session.query(Leaves.date_of_leave)
-            .filter(
-                Leaves.date_of_leave == start_date,
-                Leaves.emp_number == employee.emp_number,
-            )
-            .first()
-        )
-
-        if exists:
-
-            flash("Leave already entered.")
+        if end_date < start_date:
+            flash("End date should be higher than start date.")
 
         else:
-            # print("does not exist yet")
 
-            no_of_days = numOfDays(start_date, end_date) + 1
-            if type_leave == "half":
-                no_of_days = no_of_days / 2
+            # ensure leave is not already entered before - done for start date
+            # check sufficient leave balance - done
+            # expand leaves - done
+            # add leaves - done
+            # update leave balance - done
 
-            if check_leave_count(employee.count_casual_leave, no_of_days):
-                employee.count_casual_leave = update_leave(
-                    employee.count_casual_leave, no_of_days
+            exists = (
+                db.session.query(Leaves.date_of_leave)
+                .filter(
+                    Leaves.date_of_leave == start_date,
+                    Leaves.emp_number == employee.emp_number,
                 )
+                .first()
+            )
 
-                history_update = "{}: {} (From {} to {})".format(
-                    type_leave.title(), str(no_of_days), str(start_date), str(end_date)
-                )
+            if exists:
 
-                if employee.history_casual_leave != None:
-                    employee.history_casual_leave = (
-                        employee.history_casual_leave + "<br>" + history_update
-                    )
-                else:
-                    employee.history_casual_leave = history_update
+                flash("Leave already entered.")
 
-                db.session.add(employee)
-
-                nature_of_leave = "Casual leave"
-                casual_leave_list = []
-
-                for dt in daterange(start_date, end_date):
-                    casual_leave_list.append(dt)
-
-                for dt in casual_leave_list:
-                    leave = Leaves(
-                        emp_number=employee.emp_number,
-                        date_of_leave=dt,
-                        nature_of_leave=nature_of_leave,
-                        type_leave=type_leave,
-                        leave_letter_status=leave_letter_status,
-                    )
-                    db.session.add(leave)
-                    db.session.commit()
-
-                return redirect(url_for("employee_page", emp_key=employee.id))
             else:
 
-                flash("Insufficient leave balance.")
+                no_of_days = numOfDays(start_date, end_date) + 1
+                if type_leave == "half":
+                    no_of_days = no_of_days / 2
+
+                if check_leave_count(employee.count_casual_leave, no_of_days):
+                    employee.count_casual_leave = update_leave(
+                        employee.count_casual_leave, no_of_days
+                    )
+
+                    history_update = "{}: {} (From {} to {})".format(
+                        type_leave.title(),
+                        str(no_of_days),
+                        str(start_date),
+                        str(end_date),
+                    )
+
+                    if employee.history_casual_leave != None:
+                        employee.history_casual_leave = (
+                            employee.history_casual_leave + "<br>" + history_update
+                        )
+                    else:
+                        employee.history_casual_leave = history_update
+
+                    db.session.add(employee)
+
+                    nature_of_leave = "Casual leave"
+
+                    leave_to_database(
+                        employee.emp_number,
+                        start_date,
+                        end_date,
+                        nature_of_leave,
+                        type_leave,
+                        leave_letter_status,
+                    )
+
+                    return redirect(url_for("employee_page", emp_key=employee.id))
+                else:
+
+                    flash("Insufficient leave balance.")
 
     return render_template("leave_add_casual_leave.html", employee=employee, form=form)

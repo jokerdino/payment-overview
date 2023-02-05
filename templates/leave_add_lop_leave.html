@@ -1,7 +1,7 @@
 {% extends "leave_layout.html" %}
 {% block title %}Employee{% endblock %}
 {% block content %}
-<h1 class="title">Add Restricted Holiday</h1>
+<h1 class="title">Add LOP / Strike</h1>
 
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
@@ -15,29 +15,32 @@
         <td> {{ employee.emp_number }} </td>
     </tr>
 
-        <tr>
-        <th>Current Restricted Holiday balance:</th>
-        <td> {{ employee.count_restricted_holiday }} </td>
-    </tr>
+
 
         <tr>
-        <th>Restricted holiday details:</th>
+        <th>Sick leave details:</th>
            {% autoescape false %}
 
-        <td> {{ employee.history_restricted_holiday }} </td>
+        <td> {{ employee.history_special_leave }} </td>
         {% endautoescape %}
 
     </tr>
 
-
+    <tr>
+            <th>{{form.type_leave.label}}</th>
+            <td>{{ form.type_leave}}</td>
+        </tr>
             <tr>
             <th>{{form.start_date.label}}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
-
+            <tr>
+            <th>{{form.end_date.label}}</th>
+            <td>{{ form.end_date( class='input') }}</td>
+        </tr>
    <tr>
             <th>{{form.leave_letter.label}}</th>
-            <td>{{ form.leave_letter }}</td>
+            <td>{{ form.leave_letter}}</td>
         </tr>
 </table>
 
