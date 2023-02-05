@@ -23,6 +23,9 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object("settings")
+
+    app.jinja_env.filters["dec_to_proper_frac"] = leave_views.dec_to_proper_frac
+
     app.add_url_rule("/", view_func=views.home_page)
     app.add_url_rule("/favicon.ico", view_func=views.favicon)
     app.add_url_rule("/signup", view_func=views.signup, methods=["GET", "POST"])

@@ -56,19 +56,17 @@ def update_leave(leave_balance, no_of_days):
 #   print("%s has been updated. New balance: %s" % (leave_type, mixed_frac))
 
 
-def dec_to_proper_frac(emp_no):
+def dec_to_proper_frac(count_earned_leave):
 
-    earned_leave = float(d[emp_no]["earned leave"])
+    if not (count_earned_leave).is_integer():
 
-    if not (earned_leave).is_integer():
-
-        a = int(earned_leave)
-        new = earned_leave - a
+        a = int(count_earned_leave)
+        new = count_earned_leave - a
         b = Fraction(new % 11).limit_denominator(100)
         fraction = str(a) + " " + str(b)
         return fraction
     else:
-        return earned_leave
+        return count_earned_leave
 
 
 def leave_project():
@@ -154,7 +152,7 @@ def employee_page(emp_key):
     if request.method == "POST":
 
         employee.count_casual_leave = 12
-        employee.count_restricted_history = 2
+        employee.count_restricted_holiday = 2
         employee.count_sick_leave = min(employee.count_sick_leave + 30, 240)
 
         # TODO: calculate earned leave as on dec-31 of the year
@@ -510,7 +508,7 @@ def calculate_el_emp(emp_number, start_date):
         .all()
     )
     str_leave_updated_date = [x[0] for x in tuple_leave_updated_date]
-    print(str_leave_updated_date[0])
+    # print(str_leave_updated_date[0])
 
     leave_updated_date = datetime.datetime.strptime(
         str_leave_updated_date[0], "%Y-%m-%d"
@@ -541,13 +539,15 @@ def calculate_el_emp(emp_number, start_date):
     count_ineligible_days = (
         db.session.query(func.count(Leaves.id))
         .filter(
-            Leaves.emp_number == emp_number, Leaves.date_of_leave >= leave_updated_date
+            Leaves.emp_number == emp_number,
+            Leaves.date_of_leave >= leave_updated_date,
+            Leaves.date_of_leave < start_date,
         )
         .filter(or_(*filter_conditions))
         .scalar()
     )
 
-    print(count_ineligible_days)
+    # print(count_ineligible_days)
 
     no_of_days = numOfDays(leave_updated_date, start_date)
 
