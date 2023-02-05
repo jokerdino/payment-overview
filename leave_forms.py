@@ -109,3 +109,7 @@ class RestrictedLeaveform(FlaskForm):
         "Enter restricted holiday date: ", validators=[DataRequired()]
     )
     leave_letter = BooleanField("Leave letter has been submitted: ")
+
+
+class ReportDateForm(FlaskForm):
+    start_date = DateField("Enter date: ", validators=[DataRequired()])

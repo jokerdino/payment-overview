@@ -1,0 +1,69 @@
+{% extends "leave_layout.html" %}
+
+{% block title %}List of Leaves{% endblock %}
+{% block content %}
+        <h1 class="title"> Leave list</h1>
+
+        {% if leaves %}
+        <form action="" method="post" name="leave_list">
+        <table class = "table is-striped" id='leave_table'>
+
+            <thead>
+                <tr>
+     <th>Select</th>
+                      <th>Employee number</th>
+                    <th>Nature of leave</th>
+                    <th>Type of leave</th>
+                    <th>Date of Leave</th>
+                    <th>Leave letter status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for leave in leaves %}
+            <tr>
+
+                <td>
+                <label class="checkbox">
+                    <input type="checkbox" name="leave_keys" value="{{ leave.id }}"/>
+                </label></td>
+
+                <td>
+
+                        {{ leave.emp_number }}</a>
+                </td>
+                  <td>
+
+                   {{ leave.nature_of_leave}}</td>
+                         <td>
+
+                   {{ leave.type_leave}}</td>
+
+     <td>
+
+                        {{ leave.date_of_leave }}
+                </td>
+                   <td>
+
+                        {{ leave.leave_letter_status}}
+                </td>
+                     </tr>
+
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+        
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-danger is-small">Leave letter submitted</button>
+            </div>
+        </div>
+        </form>
+       
+        {% endif %}
+
+  
+{% endblock %}
+

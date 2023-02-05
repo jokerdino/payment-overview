@@ -22,7 +22,7 @@
                     <th>Broker</th>
                     <th>Nature of proposal</th>
                     <th>Assigned to</th>
-                   
+
                     <th>Ticket</th>
 			 <th>Current status</th>
                 </tr>
@@ -50,7 +50,7 @@
 
                      <td>{{payment.mode}}</td>
                      <td>{{payment.modeentry}}</td> 
-                    
+
 {% if payment.customerid != None and
  payment.customerid|length %}
 
@@ -61,9 +61,9 @@
                      <td>{{payment.rel_manager}}</td>
                      <td>{{payment.broker}}</td>
                     <td>{{payment.nature}}</td> 
-                     
+
                     <td>{{payment.underwriter}}</td>
-                   
+
                     <td>{{payment.ticket}}</td>
                     {% if payment.status != "To be receipted" %}
                     <td style="background-color: yellow">{{payment.status}}</td>

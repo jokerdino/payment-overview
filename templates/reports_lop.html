@@ -1,0 +1,60 @@
+{% extends "leave_layout.html" %}
+
+{% block title %}List of Leaves{% endblock %}
+{% block content %}
+        <h1 class="title"> Leave list</h1>
+
+        {% if leaves %}
+        <form action="" method="post" name="leave_list">
+        <table class = "table is-striped" id='leave_table'>
+
+            <thead>
+                <tr>
+
+                      <th>Employee number</th>
+                    <th>Nature of leave</th>
+                    <th>Type of leave</th>
+                    <th>Date of Leave</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for leave in leaves %}
+            <tr>
+
+
+                <td>
+
+                        {{ leave.emp_number }}</a>
+                </td>
+                  <td>
+
+                   {{ leave.nature_of_leave}}</td>
+                         <td>
+
+                   {{ leave.type_leave}}</td>
+
+     <td>
+
+                        {{ leave.date_of_leave }}</a>
+                </td>
+                     </tr>
+
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% if current_user.is_admin %}
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-danger is-small">Delete</button>
+            </div>
+        </div>
+        </form>
+        {% endif %}
+        {% endif %}
+
+  
+{% endblock %}
+

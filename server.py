@@ -70,7 +70,7 @@ def create_app():
     app.add_url_rule(
         "/leave_management/show_all",
         view_func=leave_views.show_all_employees,
-        methods=["GET"],
+        methods=["GET", "POST"],
     )
 
     app.add_url_rule(
@@ -123,6 +123,46 @@ def create_app():
     app.add_url_rule(
         "/leave_management/employee/<int:emp_key>/leave_encashment",
         view_func=leave_views.add_leave_encashment,
+        methods=["GET", "POST"],
+    )
+    app.add_url_rule(
+        "/leave_management/reports",
+        view_func=leave_views.reports,
+        methods=["GET"],
+    )
+    app.add_url_rule(
+        "/leave_management/reports/lop",
+        view_func=leave_views.reports_lop,
+        methods=["GET"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/reports/strike",
+        view_func=leave_views.reports_strike,
+        methods=["GET"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/reports/sick_leave_half_pay",
+        view_func=leave_views.reports_sick_leave_half_pay,
+        methods=["GET"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/reports/leave_encashment",
+        view_func=leave_views.reports_leave_encashment,
+        methods=["GET"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/reports/leave_date",
+        view_func=leave_views.reports_leave_on_specific_date,
+        methods=["GET", "POST"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/employee/<int:emp_key>/leave_letter_status",
+        view_func=leave_views.reports_leave_letter,
         methods=["GET", "POST"],
     )
 

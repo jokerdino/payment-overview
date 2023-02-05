@@ -1,0 +1,28 @@
+{% extends "leave_layout.html" %}
+{% block title %}Home{% endblock%}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+
+        <h1 class="title">
+LCB Chennai 500200 - Leave management</h1>
+        </div>
+
+</section>
+
+
+
+    <h3>Leave management
+    </h3>
+
+  <a class="button is-link" href="{{url_for('reports_lop')}}">Reports - LOP</a>
+  
+  <a class="button is-link" href="{{url_for('reports_strike')}}">Reports - Strike</a>
+  
+  <a class="button is-link" href="{{url_for('reports_leave_encashment')}}">Reports - Leave encashment</a>
+  
+  <a class="button is-link" href="{{url_for('reports_leave_on_specific_date')}}">Reports - Leave taken on a specific date</a>
+        {% endblock %}
+

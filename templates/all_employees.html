@@ -1,4 +1,3 @@
-
 {% extends "leave_layout.html" %}
 
 {% block title %}All employees {% endblock %}
@@ -11,46 +10,47 @@
 
             <thead>
                 <tr>
-            
+<th>Select</th>
                       <th>Employee number</th>
                     <th>Employee name</th>
                     <th>Leave updated as on: </th>
-       
                 </tr>
             </thead>
             <tbody>
 
             {% for employee in employees %}
             <tr>
-       
-
+<td>
+                <label class="checkbox">
+                    <input type="checkbox" name="employee_keys" value="{{ employee.id }}"/>
+                </label></td>
                 <td>
-                   
+
                         {{ employee.emp_number }}</a>
                 </td>
                   <td>
                   <a href="{{ url_for ('employee_page', emp_key=employee.id) }}">
                    {{employee.name}}</td>
-   
+
      <td>
-                   
+
                         {{ employee.leave_as_on }}</a>
                 </td>
                      </tr>
-   
-   
+
+
             {% endfor %}
             </tbody>
         </table>
 
-        {% if current_user.is_admin %}
+    
         <div class="field is-grouped">
             <div class="control">
                 <button class="button is-danger is-small">Delete</button>
             </div>
         </div>
         </form>
-        {% endif %}
+     
         {% endif %}
 
 
