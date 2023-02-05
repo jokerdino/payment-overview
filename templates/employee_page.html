@@ -2,7 +2,7 @@
 {% block title %}Employee{% endblock %}
 {% block content %}
 <h1 class="title">Employee leave details</h1>
-
+ <form action="" method="post" name="employee_page">
 <table class="table">
     <tr>
         <th>Employee name:</th>
@@ -77,7 +77,16 @@
  <a class="button is-link" href="{{url_for('add_casual_leave', emp_key=employee.id )}}">Add casual leave</a>
  <a class="button is-link" href="{{url_for('add_rh_leave', emp_key=employee.id )}}">Add restricted holiday</a>
  <a class="button is-link" href="{{url_for('add_sick_leave', emp_key=employee.id )}}">Add sick leave</a>
+ <a class="button is-link" href="{{url_for('add_earned_leave', emp_key=employee.id )}}">Add earned leave</a>
  <a class="button is-link" href="{{url_for('add_lop_leave', emp_key=employee.id )}}">Add LOP / Strike</a>
  <a class="button is-link" href="{{url_for('add_special_leave', emp_key=employee.id )}}">Add Special leave</a>
+  <a class="button is-link" href="{{url_for('add_leave_encashment', emp_key=employee.id )}}">Add leave encashment</a>
+ 
+  <a class="button is-link" href="{{url_for('calc_earned_leave_page', emp_key=employee.id )}}">Calculate Earned leave</a>
+
+       <div class="field is-grouped">
+        <button class="button is-primary is-big">New Year reset</button>
+    </div>
+    </form>
 
 {% endblock %}

@@ -3,6 +3,7 @@ from wtforms import (
     BooleanField,
     DateField,
     IntegerField,
+    IntegerRangeField,
     RadioField,
     SelectField,
     StringField,
@@ -26,7 +27,39 @@ class EmployeeForm(FlaskForm):
     )
 
 
-class LeaveForm(FlaskForm):
+class EarnedLeaveForm(FlaskForm):
+    start_date = DateField("Enter start date: ", validators=[DataRequired()])
+    end_date = DateField("Enter end date: ", validators=[DataRequired()])
+    leave_letter = BooleanField("Leave letter has been submitted: ")
+
+
+class CalculateEarnedLeaveForm(FlaskForm):
+
+    start_date = DateField(
+        "Enter date upto which Earned leave is to be calculated: ",
+        validators=[DataRequired()],
+    )
+
+
+class LeaveEncashmentForm(FlaskForm):
+
+    block_year_list = [
+        ("2022-2023", "2022-2023"),
+        ("2024-2025", "2024-2025"),
+        ("2026-2027", "2026-2027"),
+    ]
+    block_year = SelectField(
+        "Select block year for which leave is encashed:",
+        choices=block_year_list,
+        validators=[DataRequired()],
+    )
+    start_date = DateField(
+        "Enter date of leave encashment: ", validators=[DataRequired()]
+    )
+    encashed_days = IntegerRangeField("Enter number of days: ", default=15)
+
+
+class CasualLeaveForm(FlaskForm):
     type_leave = RadioField(
         "Enter type of leave",
         choices=[("full", "Full day CL"), ("half", "Half day CL")],
@@ -54,7 +87,9 @@ class SpecialLeaveForm(FlaskForm):
         ("Exam", "Examination leave"),
         ("Others", "Others"),
     ]
-    type_leave = SelectField("Enter type of leave", choices=leave_list)
+    type_leave = SelectField(
+        "Enter type of leave", choices=leave_list, validators=[DataRequired()]
+    )
     start_date = DateField("Enter start date: ", validators=[DataRequired()])
     end_date = DateField("Enter end date: ", validators=[DataRequired()])
     leave_letter = BooleanField("Leave letter has been submitted: ")

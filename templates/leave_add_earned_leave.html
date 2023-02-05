@@ -1,0 +1,62 @@
+{% extends "leave_layout.html" %}
+{% block title %}Employee{% endblock %}
+{% block content %}
+<h1 class="title">Add earned leave</h1>
+
+<form action="" method="post" name="employee_edit">
+    {{ form.csrf_token }}
+<table class="table">
+    <tr>
+        <th>Employee name:</th>
+        <td>{{ employee.name }}</td>
+    </tr>
+    <tr>
+        <th>Employee number:</th>
+        <td> {{ employee.emp_number }} </td>
+    </tr>
+            <tr>
+        <th>Leave updated as on:</th>
+        <td> {{ employee.leave_as_on }} </td>
+    </tr>
+
+        <tr>
+        <th>Current earned leave balance:</th>
+        <td> {{ employee.count_earned_leave }} </td>
+    </tr>
+
+        <tr>
+        <th>Earned leave details:</th>
+           {% autoescape false %}
+
+        <td> {{ employee.history_earned_leave }} </td>
+        {% endautoescape %}
+
+    </tr>
+
+ 
+            <tr>
+            <th>{{form.start_date.label}}</th>
+            <td>{{ form.start_date( class='input') }}</td>
+        </tr>
+            <tr>
+            <th>{{form.end_date.label}}</th>
+            <td>{{ form.end_date( class='input') }}</td>
+        </tr>
+   <tr>
+            <th>{{form.leave_letter.label}}</th>
+            <td>{{ form.leave_letter }}</td>
+        </tr>
+</table>
+
+       <div class="field is-grouped">
+        <button class="button is-primary is-big">Save</button>
+    </div>
+ {% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification is-danger">
+        {{ messages[0] }}
+    </div>
+{% endif %}
+{% endwith %}
+</form>
+{% endblock %}

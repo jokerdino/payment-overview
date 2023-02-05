@@ -108,6 +108,24 @@ def create_app():
         methods=["GET", "POST"],
     )
 
+    app.add_url_rule(
+        "/leave_management/employee/<int:emp_key>/earned_leave",
+        view_func=leave_views.add_earned_leave,
+        methods=["GET", "POST"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/employee/<int:emp_key>/calc_earned_leave",
+        view_func=leave_views.calc_earned_leave_page,
+        methods=["GET", "POST"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/employee/<int:emp_key>/leave_encashment",
+        view_func=leave_views.add_leave_encashment,
+        methods=["GET", "POST"],
+    )
+
     lm.init_app(app)
     lm.login_view = "login_page"
 

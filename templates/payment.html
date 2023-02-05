@@ -25,7 +25,7 @@
         <th>Mode of payment:</th>
         <td> {{ payment.mode }}</td>
     </tr>
-    
+
     <tr>
         <th>Mode of entry: </th>
         <td> {{ payment.modeentry }}</td>
@@ -73,7 +73,7 @@
     <tr>
         <th>Status:</th>
         <td> {{ payment.status }}</td>
-        
+
     </tr>
     <tr><th>Created:</th>
         <td>{{payment.created}}</td>
@@ -82,7 +82,7 @@
         {% autoescape false %}
         <td>{{payment.history}}</td>
         {% endautoescape %}
-        
+
     </tr>
     {% if payment.status == "Completed" %}
     <tr><th>Completed on: </th>
