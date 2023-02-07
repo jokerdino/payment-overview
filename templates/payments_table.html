@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-{% block title %}Home {% endblock %}
 {% block content %}
         <h1 class="title"> Payments to be receipted</h1>
 
@@ -49,7 +48,7 @@
                       <td style="text-align:right">{{ "{:,}".format(payment.amount|int)}}</td>
 
                      <td>{{payment.mode}}</td>
-                     <td>{{payment.modeentry}}</td> 
+                     <td>{{payment.modeentry}}</td>
 
 {% if payment.customerid != None and
  payment.customerid|length %}
@@ -60,7 +59,7 @@
 {% endif %}
                      <td>{{payment.rel_manager}}</td>
                      <td>{{payment.broker}}</td>
-                    <td>{{payment.nature}}</td> 
+                    <td>{{payment.nature}}</td>
 
                     <td>{{payment.underwriter}}</td>
 
@@ -68,7 +67,7 @@
                     {% if payment.status != "To be receipted" %}
                     <td style="background-color: yellow">{{payment.status}}</td>
                     {% else %}
-                    <td>{{payment.status}}</td> 
+                    <td>{{payment.status}}</td>
                     {% endif %}
             </tr>
             {% endif %}

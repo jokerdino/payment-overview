@@ -147,7 +147,7 @@ def create_app():
 
     app.add_url_rule(
         "/leave_management/reports/sick_leave_half_pay",
-        view_func=leave_views.reports_sick_leave_half_pay,
+        view_func=leave_views.reports_leave_sick_half_pay,
         methods=["GET"],
     )
 
@@ -164,9 +164,25 @@ def create_app():
     )
 
     app.add_url_rule(
+        "/leave_management/employee/<int:emp_key>/leaves_taken",
+        view_func=leave_views.reports_leaves,
+        methods=["GET", "POST"],
+    )
+    app.add_url_rule(
         "/leave_management/employee/<int:emp_key>/leave_letter_status",
         view_func=leave_views.reports_leave_letter,
         methods=["GET", "POST"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/restricted_holiday",
+        view_func=leave_views.rh_list,
+        methods=["GET"],
+    )
+    app.add_url_rule(
+        "/leave_management/public_holiday",
+        view_func=leave_views.public_holiday_list,
+        methods=["GET"],
     )
 
     lm.init_app(app)

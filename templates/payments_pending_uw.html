@@ -1,6 +1,4 @@
 {% extends "layout.html" %}
-<link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
-<script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
 {% block title %}Home {% endblock %}
 {% block content %}
         <h1 class="title"> Payments pending for underwriting</h1>
@@ -29,15 +27,15 @@
                     <th>Broker</th>
                     <th>Nature of proposal</th>
                     <th data-filter-control="select" data-sortable="true">Assigned to</th>
-                   
+
                     <th>Ticket</th> <th>Current status</th>
-        
+
                 </tr>
             </thead>
             <tbody>
 
             {% for payment_key, payment in payments %}
-            {% if payment.status != "Completed"  
+            {% if payment.status != "Completed"
 		 and payment.status != "To be receipted"
          and payment.status != "Waiting for payment"
          and payment.status != "To be refunded" %}
@@ -57,15 +55,15 @@
                     <td>{{payment.date}}</td>
                     <td style="text-align:right">{{ "{:,}".format(payment.amount|int)}}</td>
                      <td>{{payment.mode}}</td>
-                     <td>{{payment.modeentry}}</td> 
-                    
+                     <td>{{payment.modeentry}}</td>
+
                      <td>{{payment.customerid}}</td>
                      <td>{{payment.rel_manager}}</td>
                      <td>{{payment.broker}}</td>
-                      <td>{{payment.nature}}</td> 
-                     
+                      <td>{{payment.nature}}</td>
+
                     <td>{{payment.underwriter}}</td>
-               
+
                     <td>{{payment.ticket}}</td>
             {% if payment.status == "Approval pending"  %}
                 <td class="under-limit" style ="background-color: red">{{ payment.status }}</td>
@@ -77,8 +75,8 @@
                 <td class="under-limit" style ="color: blue"><b>{{ payment.status }}</b></td>
 
             {% else %}
-              
-      		   <td>{{payment.status}}</td> 
+
+<td>{{payment.status}}</td>
    {% endif %}
             </tr>
             {% endif %}

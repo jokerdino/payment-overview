@@ -1,10 +1,13 @@
 {% extends "leave_layout.html" %}
 
-{% block title %}List of Leaves{% endblock %}
 {% block content %}
         <h1 class="title"> Leave list</h1>
 
         {% if leaves %}
+
+         <button class="button is-success" type="button" onclick="select_all()">Select All</button>
+  <button class="button is-warning" type="button" onclick="deselect_all()">Deselect All</button>
+
         <form action="" method="post" name="leave_list">
         <table class = "table is-striped" id='leave_table'>
 
@@ -54,16 +57,33 @@
             </tbody>
         </table>
 
-        
+
         <div class="field is-grouped">
             <div class="control">
                 <button class="button is-danger is-small">Leave letter submitted</button>
             </div>
         </div>
         </form>
-       
+        {% else %}
+        All leave letters have been submitted.
         {% endif %}
 
-  
+
+          {% block scripts %}
+          <script>
+    function select_all()  {
+       $('input[type=checkbox]').prop('checked', true);
+    }
+
+    function deselect_all()  {
+       $('input[type=checkbox]').prop('checked', false);
+    }
+         </script>
+          {% endblock %}
+
+                  <a class="button is-link is-small" href="{{ url_for ('employee_page', emp_key=emp_key) }}">
+                      Go back to employee page</a>
+
+
 {% endblock %}
 

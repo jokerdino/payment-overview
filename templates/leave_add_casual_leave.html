@@ -1,5 +1,4 @@
 {% extends "leave_layout.html" %}
-{% block title %}Employee{% endblock %}
 {% block content %}
 <h1 class="title">Add casual leave</h1>
 
@@ -27,7 +26,7 @@
 
         <td> {{ employee.history_casual_leave }} </td>
         {% endautoescape %}
- 
+
     </tr>
 
     <tr>
@@ -59,4 +58,12 @@
 {% endif %}
 {% endwith %}
 </form>
+        {% for field, errors in form.errors.items() %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ ', '.join(errors) }}
+        </div>
+        {% endfor %}
+
+                  <a class="button is-link" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
+                    Go back to employee page</a>
 {% endblock %}

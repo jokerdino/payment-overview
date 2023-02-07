@@ -1,8 +1,7 @@
 {% extends "leave_layout.html" %}
-{% block title %}Edit payment{% endblock %}
 {% block content %}
 
-<h1 class="title">Edit payment</h1>
+<h1 class="title">Create new employee record</h1>
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
     <table class=table>
@@ -10,13 +9,7 @@
 
             <th> {{form.emp_number.label}}</th>
         <td>
-            {{ form.emp_number(required=True, autofocus=True, class='input') }}
-            {% for error in form.emp_number.errors %}
-        <p class="help has-background-warning">
-        {{ error }}
-        </p>
-        {% endfor %}
-
+            {{ form.emp_number (class='input') }}
         </td></tr>
        <tr>
             <th>{{form.name.label}}</th>
@@ -50,6 +43,11 @@
         <button class="button is-primary is-big">Save</button>
     </div>
 
+        {% for field, errors in form.errors.items() %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ ', '.join(errors) }}
+        </div>
+        {% endfor %}
  {% with messages = get_flashed_messages() %}
 {% if messages %}
     <div class="notification is-danger">
@@ -58,5 +56,7 @@
 {% endif %}
 {% endwith %}
 </form>
+                  <a class="button is-link" href="{{ url_for ('leave_project') }}">
+                    Go back to leave management home</a>
 {% endblock %}
 

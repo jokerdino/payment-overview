@@ -1,18 +1,17 @@
 {% extends "leave_layout.html" %}
-{% block title %}Edit payment{% endblock %}
 {% block content %}
 
-<h1 class="title">Edit payment</h1>
+<h1 class="title">Employees who were on leave on a specific date </h1>
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
     <table class=table>
-   
+
 
        <tr>
             <th>{{form.start_date.label}}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
-  
+
 
            </table>
     <div class="field is-grouped">
@@ -27,5 +26,6 @@
 {% endif %}
 {% endwith %}
 </form>
+  <a class="button is-link" href="{{url_for('reports')}}">Reports</a>
 {% endblock %}
 

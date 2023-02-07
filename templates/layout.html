@@ -7,7 +7,7 @@
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"/>
-        <link rel="stylesheet" 
+        <link rel="stylesheet"
                href="{{ url_for('static', filename='payments.css')   }}"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bulma.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
@@ -16,17 +16,20 @@
 
     <link rel="stylesheet" type="type/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
     </head>
-    
+
     <body>
         <header>
             <nav class="navbar is-transparent" aria-label="main navigation">
                 <div class="navbar-brand">
                     <span class="navbar-item">
 
-                <a class="button is-link" href="{{ url_for('home_page') }}">Home</a>
+                <a class="button is-link" href="{{ url_for('home_page') }}">Underwriting portal</a>
                     </span>
-                    <span class="navbar-item">
 
+                    <span class="navbar-item">
+                        <a class="button is-link" href="{{ url_for('leave_project')}}">Leave management</a>
+                        </span>
+                    <span class="navbar-item">
                 <a class="button is-link" href="{{ url_for('payments_page')}}">Payments to be receipted</a>
                     </span>
                     <span class="navbar-item">
@@ -43,10 +46,6 @@
                                     <span class="navbar-item">
                 <a class="button is-link" href="{{ url_for('cd_list') }}">CD list</a>
                     </span>
-                    <span class="navbar-item">
-                        <a class="button is-link" href="{{ url_for('leave_project')}}">Go to Leave management</a>
-
-                        </span>
 
                     {% if current_user.is_authenticated %}
                 <span class="navbar-item">

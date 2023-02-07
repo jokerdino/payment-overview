@@ -1,6 +1,5 @@
 {% extends "leave_layout.html" %}
 
-{% block title %}List of Leaves{% endblock %}
 {% block content %}
         <h1 class="title"> Leave list</h1>
 
@@ -55,6 +54,7 @@
         {% endif %}
         {% endif %}
 
-  
+
+  <a class="button is-link" href="{{url_for('reports_leave_on_specific_date')}}">Reports - Leave taken on a specific date</a>
 {% endblock %}
 

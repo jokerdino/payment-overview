@@ -1,6 +1,5 @@
 {% extends "leave_layout.html" %}
 
-{% block title %}All employees {% endblock %}
 {% block content %}
         <h1 class="title"> All the employees</h1>
 
@@ -30,11 +29,12 @@
                 </td>
                   <td>
                   <a href="{{ url_for ('employee_page', emp_key=employee.id) }}">
-                   {{employee.name}}</td>
+                      {{employee.name}}</a>
+                  </td>
 
      <td>
 
-                        {{ employee.leave_as_on }}</a>
+                        {{ employee.leave_as_on }}
                 </td>
                      </tr>
 
@@ -43,17 +43,19 @@
             </tbody>
         </table>
 
-    
+
         <div class="field is-grouped">
             <div class="control">
                 <button class="button is-danger is-small">Delete</button>
             </div>
         </div>
         </form>
-     
+
         {% endif %}
 
 
-  
+
+                  <a class="button is-link" href="{{ url_for ('leave_project') }}">
+                    Go back to leave management home</a>
 {% endblock %}
 
