@@ -3,6 +3,7 @@
 {% block content %}
         <h1 class="title"> Leave list</h1>
 
+
         {% if leaves %}
         <form action="" method="post" name="leave_list">
         <table class = "table is-striped" id='leave_table'>
@@ -21,6 +22,8 @@
             <tbody>
 
             {% for leave in leaves %}
+                   {% if current_user.is_admin or 
+         current_user.emp_number == leave.emp_number   %}
             <tr>
 
 
@@ -50,19 +53,13 @@
                 </td>
                      </tr>
 
-
+{% endif %}
             {% endfor %}
             </tbody>
         </table>
 
-        {% if current_user.is_admin %}
-        <div class="field is-grouped">
-            <div class="control">
-                <button class="button is-danger is-small">Delete</button>
-            </div>
-        </div>
-        </form>
-        {% endif %}
+
+
         {% endif %}
 
 

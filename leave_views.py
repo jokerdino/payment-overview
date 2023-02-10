@@ -262,16 +262,6 @@ def reports_leave_encashment():
     )
 
 
-#    from server import db
-#    query = db.session.query(Leaves).join(Employee)#.filter(Leaves.nature_of_leave == "Leave encashment").all()
-#    for u in query.Leaves:
-#        print(u.name)
-#    return render_template(
-#        "reports_leave_encashment.html",
-#        leaves=query.filter(Leaves.nature_of_leave == "Leave encashment").all(),
-#    )
-
-
 def reports_leave_sick_half_pay():
 
     return render_template(
@@ -443,35 +433,40 @@ def add_special_leave(emp_key):
                 flash("Leave already entered.")
 
             else:
+                if check_leave_combo(employee.emp_number, type_leave, start_date):
+                    no_of_days = numOfDays(start_date, end_date) + 1
 
-                no_of_days = numOfDays(start_date, end_date) + 1
-
-                history_update = "{}: {} (From {} to {})".format(
-                    type_leave.title(), str(no_of_days), str(start_date), str(end_date)
-                )
-
-                if employee.history_special_leave != None:
-                    employee.history_special_leave = (
-                        employee.history_special_leave + "<br>" + history_update
+                    history_update = "{}: {} (From {} to {})".format(
+                        type_leave.title(),
+                        str(no_of_days),
+                        str(start_date),
+                        str(end_date),
                     )
+
+                    if employee.history_special_leave != None:
+                        employee.history_special_leave = (
+                            employee.history_special_leave + "<br>" + history_update
+                        )
+                    else:
+                        employee.history_special_leave = history_update
+
+                    db.session.add(employee)
+
+                    nature_of_leave = type_leave
+
+                    leave_to_database(
+                        employee.emp_number,
+                        start_date,
+                        end_date,
+                        nature_of_leave,
+                        None,
+                        leave_letter_status,
+                        leave_reason,
+                    )
+
+                    return redirect(url_for("employee_page", emp_key=employee.id))
                 else:
-                    employee.history_special_leave = history_update
-
-                db.session.add(employee)
-
-                nature_of_leave = type_leave
-
-                leave_to_database(
-                    employee.emp_number,
-                    start_date,
-                    end_date,
-                    nature_of_leave,
-                    None,
-                    leave_letter_status,
-                    leave_reason,
-                )
-
-                return redirect(url_for("employee_page", emp_key=employee.id))
+                    flash("invalid combination")
 
     return render_template("leave_add_special_leave.html", employee=employee, form=form)
 
@@ -524,58 +519,65 @@ def add_earned_leave(emp_key):
 
                 else:
 
-                    no_of_days = numOfDays(start_date, end_date) + 1
-
-                    if (no_of_days < 6) and check_leave_count(
-                        employee.count_casual_leave, no_of_days
+                    if check_leave_combo(
+                        employee.emp_number, "Earned leave", start_date
                     ):
+                        no_of_days = numOfDays(start_date, end_date) + 1
 
-                        flash(
-                            "Employee has sufficient CL balance. CL to be preferred instead of short term PL."
-                        )
-                    else:
-                        calculate_el_emp(employee.emp_number, start_date)
-                        if check_leave_count(employee.count_earned_leave, no_of_days):
-                            employee.count_earned_leave = update_leave(
-                                employee.count_earned_leave, no_of_days
-                            )
-                            employee.leave_as_on = end_date
+                        if (no_of_days < 6) and check_leave_count(
+                            employee.count_casual_leave, no_of_days
+                        ):
 
-                            history_update = "EL: {} (From {} to {})".format(
-                                str(no_of_days),
-                                str(start_date),
-                                str(end_date),
-                            )
-
-                            if employee.history_earned_leave != None:
-                                employee.history_earned_leave = (
-                                    employee.history_earned_leave
-                                    + "<br>"
-                                    + history_update
-                                )
-                            else:
-                                employee.history_earned_leave = history_update
-
-                            db.session.add(employee)
-
-                            nature_of_leave = "Earned leave"
-
-                            leave_to_database(
-                                employee.emp_number,
-                                start_date,
-                                end_date,
-                                nature_of_leave,
-                                None,
-                                leave_letter_status,
-                                leave_reason,
-                            )
-
-                            return redirect(
-                                url_for("employee_page", emp_key=employee.id)
+                            flash(
+                                "Employee has sufficient CL balance. CL to be preferred instead of short term PL."
                             )
                         else:
+                            calculate_el_emp(employee.emp_number, start_date)
+                            if check_leave_count(
+                                employee.count_earned_leave, no_of_days
+                            ):
+                                employee.count_earned_leave = update_leave(
+                                    employee.count_earned_leave, no_of_days
+                                )
+                                employee.leave_as_on = end_date
 
-                            flash("Insufficient leave balance.")
+                                history_update = "EL: {} (From {} to {})".format(
+                                    str(no_of_days),
+                                    str(start_date),
+                                    str(end_date),
+                                )
+
+                                if employee.history_earned_leave != None:
+                                    employee.history_earned_leave = (
+                                        employee.history_earned_leave
+                                        + "<br>"
+                                        + history_update
+                                    )
+                                else:
+                                    employee.history_earned_leave = history_update
+
+                                db.session.add(employee)
+
+                                nature_of_leave = "Earned leave"
+
+                                leave_to_database(
+                                    employee.emp_number,
+                                    start_date,
+                                    end_date,
+                                    nature_of_leave,
+                                    None,
+                                    leave_letter_status,
+                                    leave_reason,
+                                )
+
+                                return redirect(
+                                    url_for("employee_page", emp_key=employee.id)
+                                )
+                            else:
+
+                                flash("Insufficient leave balance.")
+                    else:
+                        flash("invalid combo")
 
     return render_template("leave_add_earned_leave.html", employee=employee, form=form)
 
@@ -733,12 +735,18 @@ def add_leave_encashment(emp_key):
                     else:
                         employee.history_leave_encashment = history_update
 
+                    el_history_update = "Leave encash: Block {} - {} (On {})".format(
+                        block_year,
+                        str(encashed_days),
+                        str(start_date),
+                    )
+
                     if employee.history_earned_leave != None:
                         employee.history_earned_leave = (
-                            employee.history_earned_leave + "<br>" + history_update
+                            employee.history_earned_leave + "<br>" + el_history_update
                         )
                     else:
-                        employee.history_earned_leave = history_update
+                        employee.history_earned_leave = el_history_update
 
                     db.session.add(employee)
 
@@ -812,39 +820,46 @@ def add_sick_leave(emp_key):
                     no_of_days = no_of_days * 2
 
                 if check_leave_count(employee.count_sick_leave, no_of_days):
-                    employee.count_sick_leave = update_leave(
-                        employee.count_sick_leave, no_of_days
-                    )
+                    if check_leave_combo(employee.emp_number, "Sick leave", start_date):
 
-                    history_update = "{}: {} (From {} to {})".format(
-                        type_leave.title(),
-                        str(no_of_days),
-                        str(start_date),
-                        str(end_date),
-                    )
-
-                    if employee.history_sick_leave != None:
-                        employee.history_sick_leave = (
-                            employee.history_sick_leave + "<br>" + history_update
+                        employee.count_sick_leave = update_leave(
+                            employee.count_sick_leave, no_of_days
                         )
+
+                        history_update = "{}: {} (From {} to {})".format(
+                            type_leave.title(),
+                            str(no_of_days),
+                            str(start_date),
+                            str(end_date),
+                        )
+
+                        if employee.history_sick_leave != None:
+                            employee.history_sick_leave = (
+                                employee.history_sick_leave + "<br>" + history_update
+                            )
+                        else:
+                            employee.history_sick_leave = history_update
+
+                        db.session.add(employee)
+
+                        nature_of_leave = "Sick leave"
+
+                        leave_to_database(
+                            employee.emp_number,
+                            start_date,
+                            end_date,
+                            nature_of_leave,
+                            type_leave,
+                            leave_letter_status,
+                            leave_reason,
+                        )
+                        return redirect(url_for("employee_page", emp_key=employee.id))
+
                     else:
-                        employee.history_sick_leave = history_update
+                        flash(
+                            "Sick leave is only allowed in continuation with earned leave, maternity leave, paternity leave, quarantine leave, LOP and strike."
+                        )
 
-                    db.session.add(employee)
-
-                    nature_of_leave = "Sick leave"
-
-                    leave_to_database(
-                        employee.emp_number,
-                        start_date,
-                        end_date,
-                        nature_of_leave,
-                        type_leave,
-                        leave_letter_status,
-                        leave_reason,
-                    )
-
-                    return redirect(url_for("employee_page", emp_key=employee.id))
                 else:
 
                     flash("Insufficient leave balance.")
@@ -931,12 +946,45 @@ def add_rh_leave(emp_key):
     return render_template("leave_add_rh_leave.html", employee=employee, form=form)
 
 
+def casual_leave_check(emp_key, no_of_days, start_date, end_date, type_leave):
+
+    from server import db
+
+    employee = Employee.query.get_or_404(emp_key)
+
+    if check_leave_count(employee.count_casual_leave, no_of_days):
+        employee.count_casual_leave = update_leave(
+            employee.count_casual_leave, no_of_days
+        )
+
+        history_update = "{}: {} (From {} to {})".format(
+            type_leave.title(),
+            str(no_of_days),
+            str(start_date),
+            str(end_date),
+        )
+
+        if employee.history_casual_leave != None:
+            employee.history_casual_leave = (
+                employee.history_casual_leave + "<br>" + history_update
+            )
+        else:
+            employee.history_casual_leave = history_update
+
+        db.session.add(employee)
+        return True
+
+    else:
+        return False
+
+
 def add_casual_leave(emp_key):
     from server import db
 
     employee = Employee.query.get_or_404(emp_key)
     form = CasualLeaveForm()
     if form.validate_on_submit():
+
         type_leave = form.data["type_leave"]
         start_date = form.data["start_date"]
         end_date = form.data["end_date"]
@@ -974,54 +1022,57 @@ def add_casual_leave(emp_key):
 
             else:
 
-                no_of_days = numOfDays(start_date, end_date) + 1
-                if type_leave == "half":
+                if check_leave_combo(employee.emp_number, "Casual leave", start_date):
+                    no_of_days = numOfDays(start_date, end_date) + 1
+                    if type_leave == "half":
 
-                    no_of_days = no_of_days / 2
-                    leave_updated_date = date(start_date.year, 1, 1)
+                        no_of_days = no_of_days / 2
+                        leave_updated_date = date(start_date.year, 1, 1)
 
-                    count_half_casual_leave_days = (
-                        db.session.query(func.count(Leaves.id))
-                        .filter(
-                            Leaves.emp_number == employee.emp_number,
-                            Leaves.date_of_leave >= leave_updated_date,
-                            Leaves.date_of_leave < start_date,
-                            Leaves.nature_of_leave == "Casual leave",
-                            Leaves.type_leave == "half",
+                        count_half_casual_leave_days = (
+                            db.session.query(func.count(Leaves.id))
+                            .filter(
+                                Leaves.emp_number == employee.emp_number,
+                                Leaves.date_of_leave >= leave_updated_date,
+                                Leaves.date_of_leave < start_date,
+                                Leaves.nature_of_leave == "Casual leave",
+                                Leaves.type_leave == "half",
+                            )
+                            .scalar()
                         )
-                        .scalar()
-                    )
-                    if (count_half_casual_leave_days + no_of_days * 2) > 6:
+                        if (count_half_casual_leave_days + no_of_days * 2) > 6:
 
-                        flash(
-                            "%s half day CL already taken in this calendar year. Cannot take %s half day CL."
-                            % (count_half_casual_leave_days, no_of_days)
-                        )
+                            flash(
+                                "%s half day CL already taken in this calendar year. Cannot take %s half day CL."
+                                % (count_half_casual_leave_days, no_of_days)
+                            )
+                        else:
+                            if casual_leave_check(
+                                emp_key, no_of_days, start_date, end_date, type_leave
+                            ):
+
+                                nature_of_leave = "Casual leave"
+
+                                leave_to_database(
+                                    employee.emp_number,
+                                    start_date,
+                                    end_date,
+                                    nature_of_leave,
+                                    type_leave,
+                                    leave_letter_status,
+                                    leave_reason,
+                                )
+                                return redirect(
+                                    url_for("employee_page", emp_key=employee.id)
+                                )
+
+                            else:
+                                flash("Insufficient leave balance.")
 
                     else:
-
-                        if check_leave_count(employee.count_casual_leave, no_of_days):
-                            employee.count_casual_leave = update_leave(
-                                employee.count_casual_leave, no_of_days
-                            )
-
-                            history_update = "{}: {} (From {} to {})".format(
-                                type_leave.title(),
-                                str(no_of_days),
-                                str(start_date),
-                                str(end_date),
-                            )
-
-                            if employee.history_casual_leave != None:
-                                employee.history_casual_leave = (
-                                    employee.history_casual_leave
-                                    + "<br>"
-                                    + history_update
-                                )
-                            else:
-                                employee.history_casual_leave = history_update
-
-                            db.session.add(employee)
+                        if casual_leave_check(
+                            emp_key, no_of_days, start_date, end_date, type_leave
+                        ):
 
                             nature_of_leave = "Casual leave"
 
@@ -1034,12 +1085,125 @@ def add_casual_leave(emp_key):
                                 leave_letter_status,
                                 leave_reason,
                             )
-
                             return redirect(
                                 url_for("employee_page", emp_key=employee.id)
                             )
-                        else:
 
+                        else:
                             flash("Insufficient leave balance.")
+                else:
+                    flash("invalid combination.")
 
     return render_template("leave_add_casual_leave.html", employee=employee, form=form)
+
+
+def check_leave_combo(emp_number, nature_of_leave, start_date):
+
+    from server import db
+
+    previous_date = start_date - timedelta(1)
+
+    casual_leave_allowed = [
+        "Casual leave",
+        "Quarantine",
+        "LOP",
+        "Strike",
+        "Restricted holiday",
+        "Leave encashment",
+    ]
+    sick_leave_allowed = [
+        "Sick leave",
+        "Earned leave",
+        "Paternity",
+        "Maternity",
+        "Quarantine",
+        "LOP",
+        "Strike",
+        "Leave encashment",
+        "Restricted holiday",
+    ]
+    earned_leave_allowed = [
+        "Sick leave",
+        "Earned leave",
+        "Maternity",
+        "Paternity",
+        "LOP",
+        "Strike",
+        "Leave encashment",
+        "Restricted holiday",
+        "Quarantine",
+    ]
+    maternity_leave_allowed = [
+        "Earned leave",
+        "Sick leave",
+        "Quarantine",
+        "LOP",
+        "Strike",
+        "Maternity",
+        "Restricted holiday",
+        "Leave encashment",
+    ]
+    paternity_leave_allowed = [
+        "Earned leave",
+        "Sick leave",
+        "Quarantine",
+        "LOP",
+        "Strike",
+        "Paternity",
+        "Restricted holiday",
+        "Leave encashment",
+    ]
+    quarantine_leave_allowed = [
+        "Quarantine",
+        "Restricted holiday",
+        "Leave encashment",
+        "Casual leave",
+        "Earned leave",
+        "Sick leave",
+        "Maternity",
+        "Paternity",
+        "LOP",
+        "Strike",
+    ]
+
+    exists = (
+        db.session.query(Leaves.nature_of_leave)
+        .filter(Leaves.emp_number == emp_number, Leaves.date_of_leave == previous_date)
+        .filter(Leaves.nature_of_leave != "Leave encashment")
+        .first()
+    )
+
+    if not exists:
+        return True
+    else:
+        # check if the nature of leaves is not in the allowed list.
+        if nature_of_leave == "Sick leave":
+            if not exists.nature_of_leave in sick_leave_allowed:
+                return False
+            else:
+                return True
+        elif nature_of_leave == "Casual leave":
+            if not exists.nature_of_leave in casual_leave_allowed:
+                return False
+            else:
+                return True
+        elif nature_of_leave == "Earned leave":
+            if not exists.nature_of_leave in earned_leave_allowed:
+                return False
+            else:
+                return True
+        elif nature_of_leave == "Maternity":
+            if not exists.nature_of_leave in maternity_leave_allowed:
+                return False
+            else:
+                return True
+        elif nature_of_leave == "Paternity":
+            if not exists.nature_of_leave in paternity_leave_allowed:
+                return False
+            else:
+                return True
+        elif nature_of_leave == "Quarantine":
+            if not exists.nature_of_leave in quarantine_leave_allowed:
+                return False
+            else:
+                return True

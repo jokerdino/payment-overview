@@ -11,12 +11,12 @@
                 <tr>
 
                       <th>Employee number</th>
-
-                      <th>Employee name</th>
+                      <th> Employee name</th>
                     <th>Nature of leave</th>
-                    <th>Type of leave</th>
-                    <th>Date of Leave</th>
-                    <th>Leave reason</th>
+                    <th>Block year</th>
+                    <th>Date of Leave encashment</th>
+                    <th>Number of days taken </th>
+
                 </tr>
             </thead>
             <tbody>
@@ -29,12 +29,12 @@
 
                 <td>
 
-                        {{ leave.emp_number }}
+                        {{ leave.emp_number }}</a>
                 </td>
 
                                 <td>
 
-                        {{ leave.employee.name }}
+                        {{ leave.employee.name }}</a>
                 </td>
                   <td>
 
@@ -47,10 +47,9 @@
 
                         {{ leave.date_of_leave }}</a>
                 </td>
-                          <td>
-
-                        {{ leave.leave_reason }}</a>
+                <td> {{leave.leave_letter_status}}
                 </td>
+
                      </tr>
 
 {% endif %}
@@ -88,7 +87,6 @@
                         });
         </script>
         {% endblock %}
-
 
 {% endblock %}
 

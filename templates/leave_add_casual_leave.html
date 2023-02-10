@@ -2,6 +2,8 @@
 {% block content %}
 <h1 class="title">Add casual leave</h1>
 
+   {% if current_user.is_admin or 
+         current_user.emp_number == employee.emp_number %}
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
 <table class="table">
@@ -55,6 +57,8 @@
        <div class="field is-grouped">
         <button class="button is-primary is-big">Save</button>
     </div>
+
+            {% endif %}
  {% with messages = get_flashed_messages() %}
 {% if messages %}
     <div class="notification is-danger">
@@ -68,6 +72,7 @@
             {{ ', '.join(errors) }}
         </div>
         {% endfor %}
+
 
                   <a class="button is-link" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
                     Go back to employee page</a>

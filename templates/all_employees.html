@@ -9,7 +9,9 @@
 
             <thead>
                 <tr>
+                    {% if current_user.is_admin %}
 <th>Select</th>
+{% endif %}
                       <th>Employee number</th>
                     <th>Employee name</th>
                     <th>Casual leave balance </th>
@@ -24,64 +26,49 @@
             <tbody>
 
             {% for employee in employees %}
-            <tr>
-<td>
+            {% if current_user.is_admin or 
+         current_user.emp_number == employee.emp_number   %}
+                        <tr>
+                        {% if current_user.is_admin %}
+<td>  
                 <label class="checkbox">
                     <input type="checkbox" name="employee_keys" value="{{ employee.id }}"/>
                 </label></td>
-                <td>
-
-                        {{ employee.emp_number }}
-                </td>
-                  <td>
-                  <a href="{{ url_for ('employee_page', emp_key=employee.id) }}">
-                      {{employee.name}}</a>
-                  </td>
- <td>{{ employee.count_casual_leave }}
- </td>
- <td>{{ employee.count_sick_leave }}
- </td>
- <td>{{ employee.count_earned_leave | dec_to_proper_frac }} 
- </td>
+                {% endif %}
+                <td> {{ employee.emp_number }} </td>
+                  <td> <a href="{{ url_for ('employee_page', emp_key=employee.id) }}"> {{employee.name}}</a> </td>
+ <td>{{ employee.count_casual_leave }} </td>
+ <td>{{ employee.count_sick_leave }} </td>
+ <td>{{ employee.count_earned_leave | dec_to_proper_frac }} </td>
  <td>{{ employee.count_restricted_holiday }}
 
+<td>{{ employee.leave_as_on }}</td>
+<td>{{ employee.lapsed_sick_leave}} </td>
 
-     <td>
-
-                        {{ employee.leave_as_on }}
-                </td>
-                
-                     <td>
-
-                        {{ employee.lapsed_sick_leave}}
-                </td>
-                
-                     <td>
-
-                        {{ employee.lapsed_earned_leave | dec_to_proper_frac }}
-                </td>
+<td> {{ employee.lapsed_earned_leave | dec_to_proper_frac }} </td>
                      </tr>
-
-
+ {% endif %}
             {% endfor %}
             </tbody>
         </table>
 
-
+    {% if current_user.is_admin %}
         <div class="field is-grouped">
             <div class="control">
                 <button class="button is-danger is-small">Delete</button>
             </div>
         </div>
-        </form>
 
+        {% endif %}
+        </form>
+ 
         {% endif %}
 
  <br>
 
-
+ {% if current_user.is_admin %}
 <a class="button is-link" href="{{url_for('create_employee')}}">Create new employee</a>
-
+{% endif %}
 
                   <a class="button is-link" href="{{ url_for ('leave_project') }}">
                     Go back to leave management home</a>

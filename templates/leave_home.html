@@ -15,7 +15,10 @@ LCB Chennai 500200 - Leave management</h1>
 
     <h3>Leave management
     </h3>
+     {% if current_user.is_admin %}
 <a class="button is-link" href="{{url_for('create_employee')}}">Create new employee</a>
+
+{% endif %}
   <a class="button is-link" href="{{url_for('show_all_employees')}}">Show all employees</a>
   <a class="button is-link" href="{{url_for('reports')}}">Reports</a>
         {% endblock %}

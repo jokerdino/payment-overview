@@ -1,6 +1,8 @@
 {% extends "leave_layout.html" %}
 {% block content %}
 <h1 class="title">Add leave encashment</h1>
+   {% if current_user.is_admin or 
+         current_user.emp_number == employee.emp_number   %}
 
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
@@ -82,6 +84,7 @@ function outputUpdate(encashed_days) {
 
         </script>
         {% endblock %}
+        {% endif %}
 
                   <a class="button is-link" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
                       Go back to employee page</a>
