@@ -41,6 +41,7 @@ def signup():
         password = form.data["password"]
         password_hash = generate_password_hash(password, method="sha256")
 
+        emp_number = form.data["emp_number"]
         user_db = current_app.config["user_db"]
 
         try:
@@ -50,7 +51,9 @@ def signup():
                 flash("Username already exists.")
                 return redirect(url_for("signup"))
         except TypeError as e:
-            user = User(username=username, password=password_hash)
+            user = User(
+                username=username, password=password_hash, emp_number=emp_number
+            )
             user_db.add_user(user)
             return redirect(url_for("login_page"))
 

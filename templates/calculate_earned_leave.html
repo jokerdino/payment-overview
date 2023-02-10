@@ -14,7 +14,7 @@
         <td> {{ employee.emp_number }} </td>
     </tr>
             <tr>
-        <th>Leave updated as on:</th>
+        <th>Earned Leave updated as on:</th>
         <td> {{ employee.leave_as_on }} </td>
     </tr>
 
@@ -37,11 +37,22 @@
             <th>{{form.start_date.label}}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
+
+        <tr>
+        <th>{{ form.leaves_entered.label}}</th>
+        <td>{{ form.leaves_entered}}</td>
+        </tr>
 </table>
 
        <div class="field is-grouped">
         <button class="button is-primary is-big">Save</button>
     </div>
+     {% for field, errors in form.errors.items() %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ ', '.join(errors) }}
+        </div>
+        {% endfor %}
+
  {% with messages = get_flashed_messages() %}
 {% if messages %}
     <div class="notification is-danger">

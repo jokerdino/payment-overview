@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import DateField, PasswordField, StringField
-from wtforms.validators import DataRequired, Optional
+from wtforms import DateField, IntegerField, PasswordField, StringField
+from wtforms.validators import DataRequired, NumberRange, Optional
 from wtforms_components import SelectField
 
 
@@ -148,6 +148,10 @@ class PaymentEditForm(FlaskForm):
 class SignupForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
+    emp_number = IntegerField(
+        "Employee number",
+        validators=[NumberRange(min=10000, max=99999), DataRequired()],
+    )
 
 
 class LoginForm(FlaskForm):

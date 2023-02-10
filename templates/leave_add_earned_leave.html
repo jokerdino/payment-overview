@@ -14,7 +14,7 @@
         <td> {{ employee.emp_number }} </td>
     </tr>
             <tr>
-        <th>Leave updated as on:</th>
+        <th>Earned Leave updated as on:</th>
         <td> {{ employee.leave_as_on }} </td>
     </tr>
 
@@ -40,6 +40,11 @@
             <tr>
             <th>{{form.end_date.label}}</th>
             <td>{{ form.end_date( class='input') }}</td>
+        </tr>
+
+                   <tr>
+            <th>{{form.leave_reason.label}}</th>
+            <td>{{ form.leave_reason (class='input') }}</td>
         </tr>
    <tr>
             <th>{{form.leave_letter.label}}</th>

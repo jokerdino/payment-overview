@@ -15,10 +15,12 @@
                 <tr>
      <th>Select</th>
                       <th>Employee number</th>
+                      <th> Employee name </th>
                     <th>Nature of leave</th>
                     <th>Type of leave</th>
                     <th>Date of Leave</th>
                     <th>Leave letter status</th>
+                    <th>Leave reason</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,7 +35,11 @@
 
                 <td>
 
-                        {{ leave.emp_number }}</a>
+                        {{ leave.emp_number }}
+                </td>
+                                <td>
+
+                        {{ leave.employee.name }}
                 </td>
                   <td>
 
@@ -49,6 +55,10 @@
                    <td>
 
                         {{ leave.leave_letter_status}}
+                </td>
+                          <td>
+
+                        {{ leave.leave_reason }}</a>
                 </td>
                      </tr>
 
@@ -71,6 +81,22 @@
 
           {% block scripts %}
           <script>
+
+                      $(document).ready(function () {
+                            $('#leave_table').DataTable({
+                                dom: 'lfBrtip',
+                                buttons: [
+                                                'copyHtml5',
+                                                'csvHtml5',
+                                                'excelHtml5'],
+                                order: [[0,'asc']],
+                                            pagingType: 'full_numbers',
+                                lengthMenu: [
+                                             [10,25,50,100,-1],
+                                            [10,25,50,100,'All'],]
+                                        });
+                        });
+
     function select_all()  {
        $('input[type=checkbox]').prop('checked', true);
     }
@@ -84,6 +110,7 @@
                   <a class="button is-link is-small" href="{{ url_for ('employee_page', emp_key=emp_key) }}">
                       Go back to employee page</a>
 
+  
 
 {% endblock %}
 

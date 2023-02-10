@@ -11,9 +11,11 @@
                 <tr>
 
                       <th>Employee number</th>
+                      <th>Employee name</th>
                     <th>Nature of leave</th>
                     <th>Type of leave</th>
                     <th>Date of Leave</th>
+                    <th>Leave reason</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,8 +26,13 @@
 
                 <td>
 
-                        {{ leave.emp_number }}</a>
+                        {{ leave.emp_number }}
                 </td>
+                                <td>
+
+                        {{ leave.employee.name }}
+                </td>
+
                   <td>
 
                    {{ leave.nature_of_leave}}</td>
@@ -36,6 +43,10 @@
      <td>
 
                         {{ leave.date_of_leave }}</a>
+                </td>
+                   <td>
+
+                        {{ leave.leave_reason }}</a>
                 </td>
                      </tr>
 
@@ -56,5 +67,25 @@
 
 
   <a class="button is-link" href="{{url_for('reports_leave_on_specific_date')}}">Reports - Leave taken on a specific date</a>
+
+        {% block scripts %}
+        <script>
+            $(document).ready(function () {
+                            $('#leave_table').DataTable({
+                                dom: 'lfBrtip',
+                                buttons: [
+                                                'copyHtml5',
+                                                'csvHtml5',
+                                                'excelHtml5'],
+                                order: [[0,'asc']],
+                                            pagingType: 'full_numbers',
+                                lengthMenu: [
+                                             [10,25,50,100,-1],
+                                            [10,25,50,100,'All'],]
+                                        });
+                        });
+        </script>
+        {% endblock %}
+
 {% endblock %}
 

@@ -12,7 +12,7 @@
         <td> {{ employee.emp_number }} </td>
     </tr>
         <tr>
-        <th>Leave updated as on:</th>
+        <th>Earned Leave updated as on:</th>
         <td> {{ employee.leave_as_on }} </td>
     </tr>
 
@@ -52,7 +52,7 @@
  </td>
  <td>{{ employee.count_sick_leave }}
  </td>
- <td>{{ employee.count_earned_leave | dec_to_proper_frac }}
+ <td>{{ employee.count_earned_leave | dec_to_proper_frac }} (As on {{ employee.leave_as_on }})
  </td>
  <td>{{ employee.count_restricted_holiday }}
  </td>
@@ -76,7 +76,10 @@
  </tr>
  </table >
 
- <br>
+
+
+<br>
+
 
   <a class="button is-link" href="{{url_for('reports_leaves', emp_key=employee.id )}}">Leaves taken</a>
   <a class="button is-link" href="{{url_for('reports_leave_letter', emp_key=employee.id )}}">Leave letter status</a>
@@ -99,6 +102,12 @@
           <a class= "button is-link" href="{{url_for('show_all_employees')}}"> Go back</a>
 
         <button class="button is-primary is-big">New Year reset</button>
+
+
+ <br>
+
+
+<a class="button is-link" href="{{url_for('create_employee')}}">Create new employee</a>
 
     </form>
 {% endblock %}

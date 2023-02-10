@@ -3,9 +3,10 @@ from flask_login import UserMixin
 
 
 class User(UserMixin):
-    def __init__(self, username, password):
+    def __init__(self, username, password, emp_number):
         self.username = username
         self.password = password
+        self.emp_number = emp_number
         self.active = True
 
         self.is_admin = False

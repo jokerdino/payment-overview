@@ -18,6 +18,8 @@ class Employee(db.Model):
     history_special_leave = db.Column(db.Text)
     history_leave_encashment = db.Column(db.Text)
     history_restricted_holiday = db.Column(db.Text)
+    lapsed_sick_leave = db.Column(db.Integer)
+    lapsed_earned_leave = db.Column(db.Integer)
 
     def __repr__(self):
         return f"<Employee {self.emp_number!r}: {self.name!r}>"
@@ -36,9 +38,13 @@ class Employee(db.Model):
 
 class Leaves(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
-    # emp_id = db.Column(db.Integer, db.ForeignKey("employee.id"))
+    #  emp_id = db.Column(db.Integer, db.ForeignKey("employee.id"))
     emp_number = db.Column(db.Integer, db.ForeignKey("employee.emp_number"))
+    employee = db.relationship(
+        "Employee", backref=db.backref("employee", uselist=False)
+    )
     date_of_leave = db.Column(db.String)
     nature_of_leave = db.Column(db.String)
     type_leave = db.Column(db.String)
     leave_letter_status = db.Column(db.String)
+    leave_reason = db.Column(db.String)
