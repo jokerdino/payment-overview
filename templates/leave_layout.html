@@ -8,87 +8,76 @@
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"/>
         <link rel="stylesheet"
-               href="{{ url_for('static', filename='payments.css')   }}"/>
+              href="{{ url_for('static', filename='payments.css')   }}"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bulma.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
 
-    <link rel="stylesheet" type="type/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="type/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
     </head>
 
     <body>
         <header>
             <nav class="navbar has-background-warning-light" aria-label="main navigation">
                 <div class="navbar-brand">
-                    <span class="navbar-item">
-                        <a class="button is-link" href="{{ url_for('home_page')}}">Underwriting portal</a>
+                    <div class="navbar-start">
+                        <div class="buttons">
+                            <div class="navbar-item">
+                                <a class="button is-link" href="{{ url_for('home_page')}}">Underwriting portal</a>
 
-                        </span>
-                    <span class="navbar-item">
-               <a class="button is-link" href="{{ url_for('leave_project') }}">Leave management</a>
-                    </span>
-                    {% if current_user.is_admin %}
-                    <span class="navbar-item">
-                    <a class="button is-link" href="{{url_for('view_all_users')}}">Show all users</a>
-                    </span>
-                    <span class="navbar-item">
-               <a class="button is-link" href="{{ url_for('show_all_employees') }}">Show all employees</a>
-                    </span>
-                     {% endif %}
-                    <span class="navbar-item">
-               <a class="button is-link" href="{{ url_for('reports') }}">Leave Reports</a>
-                    </span>
-                    <span class="navbar-item">
-               <a class="button is-link" href="{{ url_for('public_holiday_list') }}">Public holidays list</a>
-                    </span>
-                    <span class="navbar-item">
-               <a class="button is-link" href="{{ url_for('rh_list') }}">Restricted holidays list</a>
-                    </span>
-
-
-                <span class="navbar-item ">
-                {% if not current_user.is_authenticated %}
-                    <a class="button is-link" href="{{ url_for('signup') }}"> Signup</a><div>
-                    </span>
-                     <span class="navbar-item ">
-                    <a class="button is-link" href="{{ url_for('login_page') }}"> Login</a>
-                    </span>
-                {% else %}
-                        <span class="navbar-item ">
-                 <a href="{{ url_for ('view_user_page', user_key=current_user.id) }}">
-                   {{ current_user.username }}</a>
-                   </span>
-                    <span class="navbar-item ">
-                   <a class="button is-link" href="{{ url_for('logout_page') }}"> Log out</a>
-                {% endif %}
-                </span>
+                                <a class="button is-link" href="{{ url_for('leave_project') }}">Leave management</a>
+                                {% if current_user.is_admin %}
+                                <a class="button is-link" href="{{url_for('view_all_users')}}">Show all users</a>
+                                <a class="button is-link" href="{{ url_for('show_all_employees') }}">Show all employees</a>
+                                {% endif %}
+                                <a class="button is-link" href="{{ url_for('reports') }}">Leave Reports</a>
+                                <a class="button is-link" href="{{ url_for('public_holiday_list') }}">Public holidays list</a>
+                                <a class="button is-link" href="{{ url_for('rh_list') }}">Restricted holidays list</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-     </nav>
-</header>
 
-    <div class="container">
-      <h1>{{ title }}</h1>
-      <hr>
-      {% block content %}{% endblock %}
-    </div>
-    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bulma.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    {% block scripts %}
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            {% if not current_user.is_authenticated %}
+                            <a class="button is-success" href="{{ url_for('signup') }}"> Signup</a><div>
+                                <a class="button is-link" href="{{ url_for('login_page') }}"> Login</a>
+                                {% else %}
+                                <a class="button is-warning" href="{{ url_for ('view_user_page', user_key=current_user.id) }}">
+                                    {{ current_user.username }}</a>
+                                <a class="button is-link" href="{{ url_for('logout_page') }}"> Log out</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+            </nav>
+        </header>
 
-{% endblock %}
+        <div class="container">
+            <h1>{{ title }}</h1>
+            <hr>
+            {% block content %}{% endblock %}
+        </div>
+        <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bulma.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        {% block scripts %}
 
-    <footer class="footer">
-    <div class="content has-text-centered">
-            <small>United India - LCB Chennai 500200</small></br>
-<small>Made by 44515</small>
-</div>
+        {% endblock %}
+
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <small>United India - LCB Chennai 500200</small></br>
+                <small>Made by 44515</small>
+            </div>
         </footer>
     </body>
 </html>

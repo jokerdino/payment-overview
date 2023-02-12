@@ -5,33 +5,33 @@
     <div class="hero-body">
         <div class"container has-text-centered">
 
-        <h1 class="title"> Pending scroll register </h1>
+            <h1 class="title"> Pending scroll register </h1>
 
         </div>
 
-{% for table in tables %}
+        {% for table in tables %}
 
-{{table|safe}}
-{% endfor %}
+        {{table|safe}}
+        {% endfor %}
 
         {% block scripts %}
         <script>
             $(document).ready(function () {
                             $('#table').DataTable({
-                                dom: 'lfBrtip',
-                                buttons: [
-                                                'copyHtml5',
-                                                'csvHtml5',
-                                                'excelHtml5'],
-                                order: [[1,'asc']],
+                                            dom: 'lfBrtip',
+                                            buttons: [
+                                                            'copyHtml5',
+                                                            'csvHtml5',
+                                                            'excelHtml5'],
+                                            order: [[1,'asc']],
                                             pagingType: 'full_numbers',
-                                "columnDefs":  [{"targets": [11],
-                                                 "visible": false,}],
-                                lengthMenu: [
-                                             [10,25,50,100,-1],
-                                            [10,25,50,100,'All'],]
+                                            "columnDefs":  [{"targets": [11],
+                                                            "visible": false,}],
+                                            lengthMenu: [
+                                                            [10,25,50,100,-1],
+                                                            [10,25,50,100,'All'],]
                                         });
                         });
         </script>
         {% endblock %}
-{% endblock %}
+        {% endblock %}

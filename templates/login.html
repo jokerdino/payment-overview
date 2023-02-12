@@ -6,56 +6,56 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <div class="column is-4 is=offset-4">
-            <h3 class="title has-text-grey">Login</h3>
-            <div class="box">
-                <form action="" method="post" name="login">
-                    {{ form.csrf_token }}
+                <h3 class="title has-text-grey">Login</h3>
+                <div class="box">
+                    <form action="" method="post" name="login">
+                        {{ form.csrf_token }}
 
-                    <div class="field">
-                        <div class="control">
-                            {{ form.username(required=True, autofocus=True,
-                                                class='input is-large',
-                                                placeholder='your username') }}
-                        </div>
-                        {% for error in form.username.errors %}
-                        <p class="help has-background-warning">
-                        {{ error }}
-                        </p>
-                        {% endfor %}
-                    </div>
-
-                    <div class="field">
-                        <div class="control">
-                            {{ form.password(required=True, class='input is-large',
-                            placeholder="your password") }}
+                        <div class="field">
+                            <div class="control">
+                                {{ form.username(required=True, autofocus=True,
+                                class='input is-large',
+                                placeholder='your username') }}
+                            </div>
+                            {% for error in form.username.errors %}
+                            <p class="help has-background-warning">
+                            {{ error }}
+                            </p>
+                            {% endfor %}
                         </div>
 
-                        {% for error in form.password.errors %}
-                        <p class="help has-background-warning">
-                        {{ error }}
-                        </p>
-                        {% endfor %}
-                    </div>
+                        <div class="field">
+                            <div class="control">
+                                {{ form.password(required=True, class='input is-large',
+                                placeholder="your password") }}
+                            </div>
 
-                    <button class="button is-block is-info is-large is-fullwidth">
-                        Login
-                    </button>
-                    {% with messages = get_flashed_messages() %}
-{% if messages %}
-    <div class="notification is-danger">
-        {{ messages[0] }}
-    </div>
-{% endif %}
-{% endwith %}
-                </form>
+                            {% for error in form.password.errors %}
+                            <p class="help has-background-warning">
+                            {{ error }}
+                            </p>
+                            {% endfor %}
+                        </div>
 
+                        <button class="button is-block is-info is-large is-fullwidth">
+                            Login
+                        </button>
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        <div class="notification is-danger">
+                            {{ messages[0] }}
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                    </form>
+
+                </div>
             </div>
         </div>
+        <div class="column is-8 is=offset-8"> <a class="button is-link" href="{{ url_for('signup') }}"> Signup</a>
+            <a class="button is-link" href="{{ url_for('reset_password_page') }}"> Reset password</a></div>
     </div>
-                     <div class="column is-8 is=offset-8"> <a class="button is-link" href="{{ url_for('signup') }}"> Signup</a>
-                <a class="button is-link" href="{{ url_for('reset_password_page') }}"> Reset password</a></div>
-    </div>
-                    
- 
+
+
 </section>
 {% endblock %}

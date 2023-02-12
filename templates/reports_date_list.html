@@ -1,71 +1,71 @@
 {% extends "leave_layout.html" %}
 
 {% block content %}
-        <h1 class="title"> Leave list</h1>
+<h1 class="title"> Leave list</h1>
 
 
-        {% if leaves %}
-        <form action="" method="post" name="leave_list">
-        <table class="table is-striped" id='leave_table'>
+{% if leaves %}
+<form action="" method="post" name="leave_list">
+    <table class="table is-striped" id='leave_table'>
 
-            <thead>
-                <tr>
-
-                      <th>Employee number</th>
-                      <th>Employee name</th>
-                    <th>Nature of leave</th>
-                    <th>Type of leave</th>
-                    <th>Date of Leave</th>
-                    <th>Leave reason</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            {% for leave in leaves %}
-                   {% if current_user.is_admin or 
-         current_user.emp_number == leave.emp_number   %}
+        <thead>
             <tr>
 
- <td> {{ leave.emp_number }} </td>
- <td> {{ leave.employee.name }} </td>
+                <th>Employee number</th>
+                <th>Employee name</th>
+                <th>Nature of leave</th>
+                <th>Type of leave</th>
+                <th>Date of Leave</th>
+                <th>Leave reason</th>
+            </tr>
+        </thead>
+        <tbody>
 
-<td> {{ leave.nature_of_leave}}</td>
-<td> {{ leave.type_leave}}</td>
+            {% for leave in leaves %}
+            {% if current_user.is_admin or 
+            current_user.emp_number == leave.emp_number   %}
+            <tr>
 
-     <td> {{ leave.date_of_leave }} </td>
-                   <td> {{ leave.leave_reason }} </td>
-                     </tr>
+                <td> {{ leave.emp_number }} </td>
+                <td> {{ leave.employee.name }} </td>
 
-{% endif %}
+                <td> {{ leave.nature_of_leave}}</td>
+                <td> {{ leave.type_leave}}</td>
+
+                <td> {{ leave.date_of_leave }} </td>
+                <td> {{ leave.leave_reason }} </td>
+            </tr>
+
+            {% endif %}
             {% endfor %}
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 
 
 
-        {% endif %}
+    {% endif %}
 
 
-  <a class="button is-danger is-light" href="{{url_for('reports_leave_on_specific_date')}}">Reports - Leave taken on a specific date</a>
+    <a class="button is-danger is-light" href="{{url_for('reports_leave_on_specific_date')}}">Reports - Leave taken on a specific date</a>
 
-        {% block scripts %}
-        <script>
-            $(document).ready(function () {
-                            $('#leave_table').DataTable({
+    {% block scripts %}
+    <script>
+        $(document).ready(function () {
+                    $('#leave_table').DataTable({
                                 dom: 'lfBrtip',
                                 buttons: [
-                                                'copyHtml5',
-                                                'csvHtml5',
-                                                'excelHtml5'],
+                                            'copyHtml5',
+                                            'csvHtml5',
+                                            'excelHtml5'],
                                 order: [[0,'asc']],
-                                            pagingType: 'full_numbers',
+                                pagingType: 'full_numbers',
                                 lengthMenu: [
-                                             [10,25,50,100,-1],
+                                            [10,25,50,100,-1],
                                             [10,25,50,100,'All'],]
-                                        });
-                        });
-        </script>
-        {% endblock %}
+                            });
+                });
+    </script>
+    {% endblock %}
 
-{% endblock %}
+    {% endblock %}
 

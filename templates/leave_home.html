@@ -5,23 +5,24 @@
     <div class="hero-body">
         <div class="container has-text-centered">
 
-        <h1 class="title">
-LCB Chennai 500200 - Leave management</h1>
+            <h1 class="title">
+                LCB Chennai 500200 - Leave management</h1>
         </div>
 
 </section>
 
-
+{% if current_user.is_authenticated %}
 {% if current_user.employee.id %}
-    <a class="button is-link" href="{{ url_for ('employee_page', emp_key=current_user.employee.id) }}">
-                    See your leave record</a>
-                    {% endif %}
-     {% if current_user.is_admin %}
+<a class="button is-link" href="{{ url_for ('employee_page', emp_key=current_user.employee.id) }}">
+    See your leave record</a>
+{% endif %}
+{% if current_user.is_admin %}
 <a class="button is-success" href="{{url_for('create_employee')}}">Create new employee</a>
-  <a class="button is-link" href="{{url_for('view_all_users')}}">Show all users</a>
+<a class="button is-link" href="{{url_for('view_all_users')}}">Show all users</a>
 
-  <a class="button is-link" href="{{url_for('show_all_employees')}}">Show all employees</a>
-  <a class="button is-link" href="{{url_for('reports')}}">Reports</a>
-  {% endif %}
-        {% endblock %}
+<a class="button is-link" href="{{url_for('show_all_employees')}}">Show all employees</a>
+<a class="button is-link" href="{{url_for('reports')}}">Reports</a>
+{% endif %}
+{% endif %}
+{% endblock %}
 

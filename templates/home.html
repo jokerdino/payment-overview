@@ -5,8 +5,8 @@
     <div class="hero-body">
         <div class="container has-text-centered">
 
-        <h1 class="title">
-LCB Chennai 500200 - payments, receipts, underwriting proposal tracker</h1>
+            <h1 class="title">
+                LCB Chennai 500200 - payments, receipts, underwriting proposal tracker</h1>
         </div>
 
 </section>
@@ -22,7 +22,7 @@ LCB Chennai 500200 - payments, receipts, underwriting proposal tracker</h1>
 <div class="has-text-centered">
     <h3>Status summary - underwriter and relationship manager breakup
     </h3>
-    </div>
+</div>
 {% for table in tables %}
 
 {{table|safe}}
@@ -30,23 +30,23 @@ LCB Chennai 500200 - payments, receipts, underwriting proposal tracker</h1>
 
 <br>
 <img src="{{url_for('static',filename='file.png')}}" alt="User Image" />
-</div>
-<hr>
-{% block scripts %}
+    </div>
+    <hr>
+    {% block scripts %}
 
-       <script>
-            $(document).ready(function () {
-                            $('#table').DataTable({
-                       "bPaginate": false,
-                      "columnDefs": [
-                {
-                    "targets": [0],
-                    "visible": false,
-                }],
-                       "info": false
-         });
-                        });
-        </script>
-        {% endblock %}
-        {% endblock %}
+    <script>
+        $(document).ready(function () {
+                    $('#table').DataTable({
+                                "bPaginate": false,
+                                "columnDefs": [
+                                            {
+                                                        "targets": [0],
+                                                        "visible": false,
+                                                    }],
+                                "info": false
+                            });
+                });
+    </script>
+    {% endblock %}
+    {% endblock %}
 

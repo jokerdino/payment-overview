@@ -1,89 +1,89 @@
 {% extends "leave_layout.html" %}
 {% block content %}
 <h1 class="title">Add leave encashment</h1>
-   {% if current_user.is_admin or 
-         current_user.emp_number == employee.emp_number   %}
+{% if current_user.is_admin or 
+current_user.emp_number == employee.emp_number   %}
 
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
-<table class="table">
-    <tr>
-        <th>Employee name:</th>
-        <td>{{ employee.name }}</td>
-    </tr>
-    <tr>
-        <th>Employee number:</th>
-        <td> {{ employee.emp_number }} </td>
-    </tr>
-            <tr>
-        <th>Earned Leave updated as on:</th>
-        <td> {{ employee.leave_as_on }} </td>
-    </tr>
-
+    <table class="table">
         <tr>
-        <th>Current earned leave balance:</th>
-        <td> {{ employee.count_earned_leave| dec_to_proper_frac }} </td>
-    </tr>
-
-        <tr>
-        <th>Earned leave details:</th>
-           {% autoescape false %}
-
-        <td> {{ employee.history_earned_leave }} </td>
-        {% endautoescape %}
-
-    </tr>
-        <tr>
-        <th>Leave encashment details:</th>
-           {% autoescape false %}
-
-        <td> {{ employee.history_leave_encashment }} </td>
-        {% endautoescape %}
-
-    </tr>
-             <tr>
-            <th>{{form.block_year.label}}</th>
-            <td>{{ form.block_year }}</td>
+            <th>Employee name:</th>
+            <td>{{ employee.name }}</td>
         </tr>
-            <tr>
+        <tr>
+            <th>Employee number:</th>
+            <td> {{ employee.emp_number }} </td>
+        </tr>
+        <tr>
+            <th>Earned Leave updated as on:</th>
+            <td> {{ employee.leave_as_on }} </td>
+        </tr>
+
+        <tr>
+            <th>Current earned leave balance:</th>
+            <td> {{ employee.count_earned_leave| dec_to_proper_frac }} </td>
+        </tr>
+
+        <tr>
+            <th>Earned leave details:</th>
+            {% autoescape false %}
+
+            <td> {{ employee.history_earned_leave }} </td>
+            {% endautoescape %}
+
+        </tr>
+        <tr>
+            <th>Leave encashment details:</th>
+            {% autoescape false %}
+
+            <td> {{ employee.history_leave_encashment }} </td>
+            {% endautoescape %}
+
+        </tr>
+        <tr>
+            <th>{{form.block_year.label}}</th>
+            <td>{{ form.block_year(class="select") }}</td>
+        </tr>
+        <tr>
             <th>{{form.start_date.label}}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
 
-<tr>
-   <th>    {{ form.encashed_days.label }} </th>
-     <td>  {{ form.encashed_days(min=0, max=15,oninput="outputUpdate(value)") }}
-       <output for="encashed_days" id="selected-days">{{ form.encashed_days.data }}</output></td>
-</tr>
+        <tr>
+            <th>    {{ form.encashed_days.label }} </th>
+            <td>  {{ form.encashed_days(min=0, max=15,oninput="outputUpdate(value)") }}
+                <output for="encashed_days" id="selected-days">{{ form.encashed_days.data }}</output></td>
+        </tr>
 
 
-</table>
-<div class="buttons is-centered">
- <button class="button is-primary is-big">Save</button>
-         <a class="button is-danger is-light" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
-                    Go back to employee page</a></div>
-{% for field, errors in form.errors.items() %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ ', '.join(errors) }}
-        </div>
-        {% endfor %}
+    </table>
+    <div class="buttons is-centered">
+        <button class="button is-primary is-big">Save</button>
+        <a class="button is-danger is-light" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
+            Go back to employee page</a></div>
+    {% for field, errors in form.errors.items() %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ ', '.join(errors) }}
+    </div>
+    {% endfor %}
 
- {% with messages = get_flashed_messages() %}
-{% if messages %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
     <div class="notification is-danger">
         {{ messages[0] }}
     </div>
-{% endif %}
-{% endwith %}
+    {% endif %}
+    {% endwith %}
 </form>
-        {% block scripts %}
+{% block scripts %}
 <script>
-function outputUpdate(encashed_days) {
-    document.querySelector('#selected-days').value = encashed_days;
-}
+    function outputUpdate(encashed_days) {
+            document.querySelector('#selected-days').value = encashed_days;
+        }
 
-        </script>
-        {% endblock %}
-        {% endif %}
+</script>
+{% endblock %}
+{% endif %}
 
 {% endblock %}

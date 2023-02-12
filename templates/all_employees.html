@@ -1,96 +1,96 @@
 {% extends "leave_layout.html" %}
 
 {% block content %}
-        <h1 class="title"> All the employees</h1>
+<h1 class="title"> All the employees</h1>
 
-        {% if employees %}
-        <form action="" method="post" name="employee_list">
-        <table class = "table is-striped" id='employee_table'>
+{% if employees %}
+<form action="" method="post" name="employee_list">
+    <table class = "table is-striped" id='employee_table'>
 
-            <thead>
-                <tr>
-                    {% if current_user.is_admin %}
-<th>Select</th>
-{% endif %}
-                      <th>Employee number</th>
-                    <th>Employee name</th>
-                    <th>Casual leave balance </th>
-                     <th>Sick leave balance </th>
-                      <th>Earned leave balance </th>
-                       <th>Restricted holiday balance </th>
-                        <th>Earned Leave updated as on: </th>
-                         <th>Lapsed sick leave </th>
-                          <th>Lapsed earned leave</th>
-                </tr>
-            </thead>
-            <tbody>
+        <thead>
+            <tr>
+                {% if current_user.is_admin %}
+                <th>Select</th>
+                {% endif %}
+                <th>Employee number</th>
+                <th>Employee name</th>
+                <th>Casual leave balance </th>
+                <th>Sick leave balance </th>
+                <th>Earned leave balance </th>
+                <th>Restricted holiday balance </th>
+                <th>Earned Leave updated as on: </th>
+                <th>Lapsed sick leave </th>
+                <th>Lapsed earned leave</th>
+            </tr>
+        </thead>
+        <tbody>
 
             {% for employee in employees %}
             {% if current_user.is_admin or 
-         current_user.emp_number == employee.emp_number   %}
-                        <tr>
-                        {% if current_user.is_admin %}
-<td>  
-                <label class="checkbox">
-                    <input type="checkbox" name="employee_keys" value="{{ employee.id }}"/>
-                </label></td>
-                {% endif %}
-                <td> {{ employee.emp_number }} </td>
-                  <td> <a href="{{ url_for ('employee_page', emp_key=employee.id) }}"> {{employee.name}}</a> </td>
- <td>{{ employee.count_casual_leave }} </td>
- <td>{{ employee.count_sick_leave }} </td>
- <td>{{ employee.count_earned_leave | dec_to_proper_frac }} </td>
- <td>{{ employee.count_restricted_holiday }}
+        current_user.emp_number == employee.emp_number %}
+            <tr>
+                {% if current_user.is_admin %}
+                <td>  
+                    <label class="checkbox">
+                        <input type="checkbox" name="employee_keys" value="{{ employee.id }}"/>
+                    </label></td>
+                    {% endif %}
+                    <td> {{ employee.emp_number }} </td>
+                    <td> <a href="{{ url_for ('employee_page', emp_key=employee.id) }}"> {{employee.name}}</a> </td>
+                    <td>{{ employee.count_casual_leave }} </td>
+                    <td>{{ employee.count_sick_leave }} </td>
+                    <td>{{ employee.count_earned_leave | dec_to_proper_frac }} </td>
+                    <td>{{ employee.count_restricted_holiday }}
 
-<td>{{ employee.leave_as_on }}</td>
-<td>{{ employee.lapsed_sick_leave}} </td>
+                        <td>{{ employee.leave_as_on }}</td>
+                        <td>{{ employee.lapsed_sick_leave}} </td>
 
-<td> {{ employee.lapsed_earned_leave | dec_to_proper_frac }} </td>
-                     </tr>
- {% endif %}
+                        <td> {{ employee.lapsed_earned_leave | dec_to_proper_frac }} </td>
+            </tr>
+            {% endif %}
             {% endfor %}
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 
     {% if current_user.is_admin %}
-        <div class="field is-grouped">
-            <div class="control">
-                <button class="button is-danger">Delete</button>
-            </div>
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-danger">Delete</button>
         </div>
+    </div>
 
-        {% endif %}
-        </form>
- 
-        {% endif %}
+    {% endif %}
+</form>
 
- <br>
+{% endif %}
 
- {% if current_user.is_admin %}
+<br>
+
+{% if current_user.is_admin %}
 <a class="button is-success" href="{{url_for('create_employee')}}">Create new employee</a>
 {% endif %}
 
-                  <a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
-                    Go to leave management home</a>
+<a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
+    Go to leave management home</a>
 
-        {% block scripts %}
-        <script>
-            $(document).ready(function () {
-                            $('#employee_table').DataTable({
-                                dom: 'lfBrtip',
-                                buttons: [
-                                                'copyHtml5',
-                                                'csvHtml5',
-                                                'excelHtml5'],
-                                order: [[0,'asc']],
-                                            pagingType: 'full_numbers',
-                                lengthMenu: [
-                                             [10,25,50,100,-1],
-                                            [10,25,50,100,'All'],]
-                                        });
-                        });
-        </script>
-        {% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+            $('#employee_table').DataTable({
+                    dom: 'lfBrtip',
+                    buttons: [
+                            'copyHtml5',
+                            'csvHtml5',
+                            'excelHtml5'],
+                    order: [[0,'asc']],
+                    pagingType: 'full_numbers',
+                    lengthMenu: [
+                            [10,25,50,100,-1],
+                            [10,25,50,100,'All'],]
+                });
+        });
+</script>
+{% endblock %}
 
 
 {% endblock %}

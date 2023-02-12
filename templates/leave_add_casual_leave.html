@@ -2,78 +2,78 @@
 {% block content %}
 <h1 class="title">Add casual leave</h1>
 
-   {% if current_user.is_admin or 
-         current_user.emp_number == employee.emp_number %}
+{% if current_user.is_admin or 
+current_user.emp_number == employee.emp_number %}
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
-<table class="table">
-    <tr>
-        <th>Employee name:</th>
-        <td>{{ employee.name }}</td>
-    </tr>
-    <tr>
-        <th>Employee number:</th>
-        <td> {{ employee.emp_number }} </td>
-    </tr>
+    <table class="table">
+        <tr>
+            <th>Employee name:</th>
+            <td>{{ employee.name }}</td>
+        </tr>
+        <tr>
+            <th>Employee number:</th>
+            <td> {{ employee.emp_number }} </td>
+        </tr>
 
         <tr>
-        <th>Current casual leave balance:</th>
-        <td> {{ employee.count_casual_leave }} </td>
-    </tr>
+            <th>Current casual leave balance:</th>
+            <td> {{ employee.count_casual_leave }} </td>
+        </tr>
 
         <tr>
-        <th>Casual leave details:</th>
-           {% autoescape false %}
+            <th>Casual leave details:</th>
+            {% autoescape false %}
 
 
-        <td> {{ employee.history_casual_leave }} </td>
-        {% endautoescape %}
+            <td> {{ employee.history_casual_leave }} </td>
+            {% endautoescape %}
 
-    </tr>
+        </tr>
 
-    <tr>
+        <tr>
             <th>{{form.type_leave.label}}</th>
             <td>{{ form.type_leave }}</td>
         </tr>
-            <tr>
+        <tr>
             <th>{{form.start_date.label}}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
-            <tr>
+        <tr>
             <th>{{form.end_date.label}}</th>
             <td>{{ form.end_date( class='input') }}</td>
         </tr>
 
-           <tr>
+        <tr>
             <th>{{form.leave_reason.label}}</th>
             <td>{{ form.leave_reason (class='input') }}</td>
         </tr>
-   <tr>
+        <tr>
             <th>{{form.leave_letter.label}}</th>
             <td>{{ form.leave_letter }}</td>
         </tr>
-</table>
+    </table>
 
 
 
-            {% endif %}
- {% with messages = get_flashed_messages() %}
-{% if messages %}
+    {% endif %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
     <div class="notification is-danger">
         {{ messages[0] }}
     </div>
-{% endif %}
-{% endwith %}
+    {% endif %}
+    {% endwith %}
 </form>
-        {% for field, errors in form.errors.items() %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ ', '.join(errors) }}
-        </div>
-        {% endfor %}
+{% for field, errors in form.errors.items() %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ ', '.join(errors) }}
+</div>
+{% endfor %}
 
 
 <div class="buttons is-centered">
- <button class="button is-primary is-big">Save</button>
-         <a class="button is-danger is-light" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
-                    Go back to employee page</a></div>
+    <button class="button is-primary is-big">Save</button>
+    <a class="button is-danger is-light" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
+        Go back to employee page</a></div>
 {% endblock %}

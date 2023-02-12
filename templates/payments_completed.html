@@ -1,96 +1,96 @@
 {% extends "layout.html" %}
 {% block content %}
-        <h1 class="title"> Payments Completed</h1>
+<h1 class="title"> Payments Completed</h1>
 
-        {% if payments %}
-        <form action="" method="post" name="payment_list">
-        <table class = "table is-striped" id='payment_table'>
+{% if payments %}
+<form action="" method="post" name="payment_list">
+    <table class = "table is-striped" id='payment_table'>
 
-            <thead>
-                <tr>
-{% if current_user.is_admin %}
-                    <th>Select</th>
-                    {% endif %}
+        <thead>
+            <tr>
+                {% if current_user.is_admin %}
+                <th>Select</th>
+                {% endif %}
 
-                      <th>Customer name</th>
-                    <th>Date of payment</th>
-                    <th>Amount</th>
-                    <th>Mode of payment</th>
-                    <th>Mode of entry</th>
-                    <th>Customer ID</th>
-                    <th>Relationship manager</th>
-                    <th>Broker</th>
-                    <th>Nature of proposal</th>
-                    <th>Assigned to</th>
+                <th>Customer name</th>
+                <th>Date of payment</th>
+                <th>Amount</th>
+                <th>Mode of payment</th>
+                <th>Mode of entry</th>
+                <th>Customer ID</th>
+                <th>Relationship manager</th>
+                <th>Broker</th>
+                <th>Nature of proposal</th>
+                <th>Assigned to</th>
 
-                    <th>Ticket</th> <th>Current status</th>
-                </tr>
-            </thead>
-            <tbody>
+                <th>Ticket</th> <th>Current status</th>
+            </tr>
+        </thead>
+        <tbody>
 
             {% for payment_key, payment in payments %}
             {% if payment.status == "Completed" %}
             <tr>
                 {% if current_user.is_admin %}
                 <td>
-                <label class="checkbox">
-                    <input type="checkbox" name="payment_keys" value="{{ payment_key }}"/>
-                </label></td>
-                {% endif %}
+                    <label class="checkbox">
+                        <input type="checkbox" name="payment_keys" value="{{ payment_key }}"/>
+                    </label></td>
+                    {% endif %}
 
-                <td>
-                    <a href="{{ url_for ('payment_page', payment_key=payment_key) }}">
+                    <td>
+                        <a href="{{ url_for ('payment_page', payment_key=payment_key) }}">
 
-                        {{ payment.customer }}</a>
-                </td>
+                            {{ payment.customer }}</a>
+                    </td>
                     <td>{{payment.date}}</td>
-                     <td style="text-align:right">{{ "{:,}".format(payment.amount|int)}}</td>
+                    <td style="text-align:right">{{ "{:,}".format(payment.amount|int)}}</td>
 
-                     <td>{{payment.mode}}</td>
-                     <td>{{payment.modeentry}}</td>
+                    <td>{{payment.mode}}</td>
+                    <td>{{payment.modeentry}}</td>
 
-                     <td>{{payment.customerid}}</td>
-                     <td>{{payment.rel_manager}}</td>
-                     <td>{{payment.broker}}</td>
-                      <td>{{payment.nature}}</td>
+                    <td>{{payment.customerid}}</td>
+                    <td>{{payment.rel_manager}}</td>
+                    <td>{{payment.broker}}</td>
+                    <td>{{payment.nature}}</td>
 
                     <td>{{payment.underwriter}}</td>
 
                     <td>{{payment.ticket}}</td>
-      <td>{{payment.status}}</td>
+                    <td>{{payment.status}}</td>
             </tr>
             {% endif %}
             {% endfor %}
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 
-        {% if current_user.is_admin %}
-        <div class="field is-grouped">
-            <div class="control">
-                <button class="button is-danger is-small">Delete</button>
-            </div>
+    {% if current_user.is_admin %}
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-danger is-small">Delete</button>
         </div>
-        </form>
-        {% endif %}
-        {% endif %}
+    </div>
+</form>
+{% endif %}
+{% endif %}
 
 
-        {% block scripts %}
-        <script>
-            $(document).ready(function () {
-                            $('#payment_table').DataTable({
-                                dom: 'lfBrtip',
-                                buttons: [
-                                                'copyHtml5',
-                                                'csvHtml5',
-                                                'excelHtml5'],
-                                order: [[1,'desc']],
-                                            pagingType: 'full_numbers',
-                                lengthMenu: [
-                                             [10,25,50,100,-1],
-                                            [10,25,50,100,'All'],]
-                                        });
-                        });
-        </script>
-        {% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+            $('#payment_table').DataTable({
+                    dom: 'lfBrtip',
+                    buttons: [
+                            'copyHtml5',
+                            'csvHtml5',
+                            'excelHtml5'],
+                    order: [[1,'desc']],
+                    pagingType: 'full_numbers',
+                    lengthMenu: [
+                            [10,25,50,100,-1],
+                            [10,25,50,100,'All'],]
+                });
+        });
+</script>
+{% endblock %}
 {% endblock %}

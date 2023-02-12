@@ -4,7 +4,7 @@ from fractions import Fraction
 
 import pandas as pd
 from flask import flash, redirect, render_template, request, url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 from sqlalchemy import func, or_
 
 from employees import Employee, Leaves
@@ -99,6 +99,7 @@ def dec_to_proper_frac(count_earned_leave):
         return count_earned_leave
 
 
+@login_required
 def leave_project():
     return render_template("leave_home.html")
 

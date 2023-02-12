@@ -5,63 +5,63 @@
 {% if current_user.is_admin %}
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
-<table class="table">
-    <tr>
-        <th>Employee name:</th>
-        <td>{{ employee.name }}</td>
-    </tr>
-    <tr>
-        <th>Employee number:</th>
-        <td> {{ employee.emp_number }} </td>
-    </tr>
-            <tr>
-        <th>Earned Leave updated as on:</th>
-        <td> {{ employee.leave_as_on }} </td>
-    </tr>
+    <table class="table">
+        <tr>
+            <th>Employee name:</th>
+            <td>{{ employee.name }}</td>
+        </tr>
+        <tr>
+            <th>Employee number:</th>
+            <td> {{ employee.emp_number }} </td>
+        </tr>
+        <tr>
+            <th>Earned Leave updated as on:</th>
+            <td> {{ employee.leave_as_on }} </td>
+        </tr>
 
         <tr>
-        <th>Current earned leave balance:</th>
-        <td> {{ employee.count_earned_leave| dec_to_proper_frac }} </td>
-    </tr>
+            <th>Current earned leave balance:</th>
+            <td> {{ employee.count_earned_leave| dec_to_proper_frac }} </td>
+        </tr>
 
         <tr>
-        <th>Earned leave details:</th>
-           {% autoescape false %}
+            <th>Earned leave details:</th>
+            {% autoescape false %}
 
-        <td> {{ employee.history_earned_leave }} </td>
-        {% endautoescape %}
+            <td> {{ employee.history_earned_leave }} </td>
+            {% endautoescape %}
 
-    </tr>
+        </tr>
 
 
-            <tr>
+        <tr>
             <th>{{form.start_date.label}}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
 
         <tr>
-        <th>{{ form.leaves_entered.label}}</th>
-        <td>{{ form.leaves_entered}}</td>
+            <th>{{ form.leaves_entered.label}}</th>
+            <td>{{ form.leaves_entered}}</td>
         </tr>
-</table>
+    </table>
 
-<div class="buttons is-centered">
- <button class="button is-primary is-big">Save</button>
-         <a class="button is-danger is-light" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
-                    Go back to employee page</a></div>
-     {% for field, errors in form.errors.items() %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ ', '.join(errors) }}
-        </div>
-        {% endfor %}
+    <div class="buttons is-centered">
+        <button class="button is-primary is-big">Save</button>
+        <a class="button is-danger is-light" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
+            Go back to employee page</a></div>
+    {% for field, errors in form.errors.items() %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ ', '.join(errors) }}
+    </div>
+    {% endfor %}
 
- {% with messages = get_flashed_messages() %}
-{% if messages %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
     <div class="notification is-danger">
         {{ messages[0] }}
     </div>
-{% endif %}
-{% endwith %}
+    {% endif %}
+    {% endwith %}
 </form>
 
 {% endif %}

@@ -8,53 +8,53 @@
         <tr>
 
             <th> {{form.emp_number.label}}</th>
-        <td> {{ form.emp_number (class='input') }} </td></tr>
-       <tr>
+            <td> {{ form.emp_number (class='input') }} </td></tr>
+        <tr>
             <th>{{form.name.label}}</th>
-            <td>{{ form.name( class='input') }}</td>
+            <td>{{ form.name (class='input') }}</td>
         </tr>
-       <tr>
+        <tr>
             <th>{{form.leave_as_on.label}}</th>
-            <td>{{ form.leave_as_on( class='input') }}</td>
+            <td>{{ form.leave_as_on (class='input') }}</td>
         </tr>
-       <tr>
+        <tr>
             <th>{{form.casual_leave.label}}</th>
-            <td>{{ form.casual_leave( class='input') }}</td>
+            <td>{{ form.casual_leave (class='input') }}</td>
         </tr>
-       <tr>
+        <tr>
             <th>{{form.earned_leave.label}}</th>
-            <td>{{ form.earned_leave( class='input') }}</td>
+            <td>{{ form.earned_leave (class='input') }}</td>
         </tr>
-       <tr>
+        <tr>
             <th>{{form.sick_leave.label}}</th>
-            <td>{{ form.sick_leave( class='input') }}</td>
+            <td>{{ form.sick_leave (class='input') }}</td>
         </tr>
-       <tr>
+        <tr>
             <th>{{form.restricted_holiday.label}}</th>
-            <td>{{ form.restricted_holiday( class='input') }}</td>
+            <td>{{ form.restricted_holiday (class='input') }}</td>
         </tr>
 
 
-           </table>
+    </table>
     <div class="buttons is-centered">
         <button class="button is-primary is-big">Save</button>
 
-         <a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
-                    Go back to leave management home</a>
+        <a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
+            Go back to leave management home</a>
     </div>
 
-        {% for field, errors in form.errors.items() %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ ', '.join(errors) }}
-        </div>
-        {% endfor %}
- {% with messages = get_flashed_messages() %}
-{% if messages %}
+    {% for field, errors in form.errors.items() %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ ', '.join(errors) }}
+    </div>
+    {% endfor %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
     <div class="notification is-danger">
         {{ messages[0] }}
     </div>
-{% endif %}
-{% endwith %}
+    {% endif %}
+    {% endwith %}
 </form>
 
 {% endblock %}

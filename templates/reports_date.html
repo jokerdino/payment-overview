@@ -7,26 +7,26 @@
     <table class=table>
 
 
-       <tr>
+        <tr>
             <th>{{form.start_date.label}}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
 
 
-           </table>
+    </table>
     <div class="buttons is-centered">
         <button class="button is-primary is-big">Submit</button>
-         <a class="button is-danger is-light" href="{{url_for('reports')}}">Go back to Reports</a>
+        <a class="button is-danger is-light" href="{{url_for('reports')}}">Go back to Reports</a>
     </div>
 
- {% with messages = get_flashed_messages() %}
-{% if messages %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
     <div class="notification is-danger">
         {{ messages[0] }}
     </div>
-{% endif %}
-{% endwith %}
+    {% endif %}
+    {% endwith %}
 </form>
- 
+
 {% endblock %}
 

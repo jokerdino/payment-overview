@@ -1,68 +1,59 @@
 {% extends "leave_layout.html" %}
 {% block content %}
 <h1 class="title">User details</h1>
-         {% if current_user.is_admin or 
-         current_user.emp_number == user.emp_number  %}
- <form action="" method="post" name="user_page">
+{% if current_user.is_admin or 
+current_user.emp_number == user.emp_number  %}
+<form action="" method="post" name="user_page">
 
-<table class="table">
+    <table class="table">
 
-    <tr>
-        <th>User employee number:</th>
-        <td>{{ user.emp_number }}</td>
-    </tr>
-    <tr>
-        <th>Username:</th>
-        <td> {{ user.username }} </td>
-    </tr>
- 
- {% if current_user.is_admin %}
-         <tr>   <th>Password reset code:</th>
-        <td> {{ user.reset_code }} </td>
-    </tr>
+        <tr>
+            <th>User employee number:</th>
+            <td>{{ user.emp_number }}</td>
+        </tr>
+        <tr>
+            <th>Username:</th>
+            <td> {{ user.username }} </td>
+        </tr>
 
-       <tr>
-        <th> {{ form.reset_password_page.label}}</th>
-        <td> {{ form.reset_password_page }} </td>
-    </tr>
+        {% if current_user.is_admin %}
+        <tr>   <th>Password reset code:</th>
+            <td> {{ user.reset_code }} </td>
+        </tr>
+
+        <tr>
+            <th> {{ form.reset_password_page.label}}</th>
+            <td> {{ form.reset_password_page }} </td>
+        </tr>
 
         <tr>   <th>{{form.is_admin.label}}</th>
-        <td> {{ form.is_admin }} </td>
-    </tr>
+            <td> {{ form.is_admin }} </td>
+        </tr>
+
+        {% endif %}
 
 
-{% endif %}
-
- 
-
- </tr>
- </table >
+        </tr>
+    </table>
 
 
+    <br>
+
+    <br>
+    {% if current_user.is_admin %}
 
 
-
-  <br>
-
- 
-
-
-
- <br>
- {% if current_user.is_admin %}
- 
- 
     <div class="field is-grouped">
         <button class="button is-primary is-big">Save</button>
     </div>
 
-{% endif %}
-    </form>
     {% endif %}
+</form>
+{% endif %}
 {% if user.employee.id %}
-    <a class="button is-link" href="{{ url_for ('employee_page', emp_key=user.employee.id) }}">
-                    See leave record</a>
-                    {% endif %}
-    
-             <a class= "button is-link" href="{{url_for('view_all_users')}}"> Go back</a>
+<a class="button is-link" href="{{ url_for ('employee_page', emp_key=user.employee.id) }}">
+    See leave record</a>
+{% endif %}
+
+<a class= "button is-link" href="{{url_for('view_all_users')}}"> Go back</a>
 {% endblock %}
