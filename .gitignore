@@ -5,3 +5,4 @@ __pycache__/
 *.xls
 telegram_secrets.py
 *.yaml
+*.png

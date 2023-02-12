@@ -2,6 +2,8 @@ import datetime
 from datetime import date, timedelta
 from fractions import Fraction
 
+import calplot
+import matplotlib.pyplot as plt
 import pandas as pd
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
@@ -184,6 +186,34 @@ def employee_page(emp_key):
     employee = Employee.query.get_or_404(emp_key)
     from server import db
 
+    df = pd.read_sql(
+        db.session.query(Leaves)
+        .filter(Leaves.emp_number == employee.emp_number)
+        .statement,
+        db.get_engine(),
+    )
+
+    df["value"] = 1
+
+    df["date_of_leave"] = pd.to_datetime(df.date_of_leave, yearfirst=True)
+    df.set_index("date_of_leave", inplace=True)
+    title = "Leaves taken by " + employee.name
+    try:
+        calplot.calplot(
+            df["value"],
+            cmap="Reds",
+            vmin=0,
+            vmax=2,
+            figsize=(16, 8),
+            suptitle=title,
+            how="sum",
+        )
+        file_name = employee.name + ".png"
+        plt.savefig("static/" + file_name)
+    except ValueError as e:
+        file_name = None
+        print("No leaves taken.")
+
     if request.method == "POST":
 
         employee.count_casual_leave = 12
@@ -203,7 +233,7 @@ def employee_page(emp_key):
 
         return render_template("employee_page.html", employee=employee)
 
-    return render_template("employee_page.html", employee=employee)
+    return render_template("employee_page.html", employee=employee, image=file_name)
 
 
 def leave_to_database(

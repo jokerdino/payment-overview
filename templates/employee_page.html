@@ -91,4 +91,11 @@ current_user.emp_number == employee.emp_number   %}
     {% endif %}
 </form>
 {% endif %}
+
+<div class="is-centered">
+
+{%if image %}
+<img src= "{{url_for('static', filename=image)}}" alt="Calender leave heatmap" />
+{% endif %}
+</div>
 {% endblock %}
