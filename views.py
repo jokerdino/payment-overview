@@ -14,6 +14,7 @@ from flask import (
     url_for,
 )
 from plotnine import aes, facet_wrap, geom_bar, ggplot, ggsave, ggtitle, labs
+from sqlalchemy import or_
 from werkzeug.security import check_password_hash, generate_password_hash
 
 plt.switch_backend("agg")
@@ -22,40 +23,16 @@ plt.switch_backend("agg")
 from flask_login import current_user, login_required, login_user, logout_user
 
 import telegram_secrets
+
+# from user import User
+from employees import User
 from forms import LoginForm, PaymentEditForm, SignupForm
 from payment import Payment
 from sqlite_excel import convert_input, export_database
-from user import User
 
 
 def favicon():
     return url_for("static", filename="favicon.ico")
-
-
-def signup():
-    form = SignupForm()
-    if request.method == "GET":
-        return render_template("signup.html", form=form)
-    else:
-        username = form.data["username"]
-        password = form.data["password"]
-        password_hash = generate_password_hash(password, method="sha256")
-
-        emp_number = form.data["emp_number"]
-        user_db = current_app.config["user_db"]
-
-        try:
-            exist_name = user_db.get_user(username)
-            old_username = exist_name.username
-            if username == old_username:
-                flash("Username already exists.")
-                return redirect(url_for("signup"))
-        except TypeError as e:
-            user = User(
-                username=username, password=password_hash, emp_number=emp_number
-            )
-            user_db.add_user(user)
-            return redirect(url_for("login_page"))
 
 
 def cd_list():
@@ -495,15 +472,49 @@ def payment_edit_page(payment_key):
     return render_template("payment_edit.html", form=form)
 
 
+def signup():
+    from server import db
+
+    form = SignupForm()
+    if request.method == "GET":
+        return render_template("signup.html", form=form)
+    else:
+        username = form.data["username"]
+        password = form.data["password"]
+        password_hash = generate_password_hash(password, method="sha256")
+
+        emp_number = form.data["emp_number"]
+
+        user = User.query.filter(
+            or_(User.username == username, User.emp_number == emp_number)
+        ).first()
+        if user:
+            flash("Username or employee number already exists.")
+            # return redirect(url_for("signup"))
+
+        else:
+            user = User(
+                username=username, password=password_hash, emp_number=emp_number
+            )
+            db.session.add(user)
+            db.session.commit()
+
+            return redirect(url_for("login_page"))
+    return render_template("signup.html", form=form)
+
+
 def login_page():
 
     if current_user.is_authenticated:
         return redirect(url_for("home_page"))
     form = LoginForm()
-    user_db = current_app.config["user_db"]
+
+    from server import db
+
     if form.validate_on_submit():
         username = form.data["username"]
-        user = user_db.get_user(username)
+        user = db.session.query(User).filter(User.username == username).first()
+        #  user = user_db.get_user(username)
         if user is not None:
             password = form.data["password"]
 
@@ -511,9 +522,12 @@ def login_page():
                 login_user(user)
 
                 next_page = request.args.get("next", url_for("home_page"))
+                #  print("login page")
                 return redirect(next_page)
             else:
                 flash("Invalid credentials.")
+        else:
+            flash("Invalid credentials.")
     return render_template("login.html", form=form)
 
 

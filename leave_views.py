@@ -4,6 +4,7 @@ from fractions import Fraction
 
 import pandas as pd
 from flask import flash, redirect, render_template, request, url_for
+from flask_login import current_user
 from sqlalchemy import func, or_
 
 from employees import Employee, Leaves
@@ -229,6 +230,8 @@ def leave_to_database(
             type_leave=type_leave,
             leave_letter_status=leave_letter_status,
             leave_reason=leave_reason,
+            created_on=datetime.datetime.now(),
+            created_by=current_user.username,
         )
         db.session.add(leave)
         db.session.commit()
@@ -1101,7 +1104,10 @@ def check_leave_combo(emp_number, nature_of_leave, start_date):
 
     from server import db
 
-    previous_date = start_date - timedelta(1)
+    if start_date.weekday() == 0:
+        previous_date = start_date - timedelta(3)
+    else:
+        previous_date = start_date - timedelta(1)
 
     casual_leave_allowed = [
         "Casual leave",

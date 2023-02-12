@@ -5,18 +5,19 @@ from flask_login import LoginManager
 from waitress import serve
 
 import leave_views
+import user_views
 import views
 from database import Database
-from employees import db
-from user import get_user
-from user_database import UserDatabase
+from employees import User, db
+
+# from user_database import UserDatabase
 
 lm = LoginManager()
 
 
 @lm.user_loader
-def load_user(username):
-    return get_user(username)
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 def create_app():
@@ -184,18 +185,35 @@ def create_app():
         view_func=leave_views.public_holiday_list,
         methods=["GET"],
     )
+    app.add_url_rule(
+        "/user",
+        view_func=user_views.view_all_users,
+        methods=["GET"],
+    )
+
+    app.add_url_rule(
+        "/user/<int:user_key>",
+        view_func=user_views.view_user_page,
+        methods=["GET", "POST"],
+    )
+
+    app.add_url_rule(
+        "/user/reset_password",
+        view_func=user_views.reset_password_page,
+        methods=["GET", "POST"],
+    )
 
     lm.init_app(app)
     lm.login_view = "login_page"
 
     if platform.system() == "Windows":
         db = Database(r"D:\payment-board\payments.sqlite")
-        user_db = UserDatabase("D:\\payment-board\\user.sqlite")
+    #    user_db = UserDatabase("D:\\payment-board\\user.sqlite")
     else:
         db = Database("payments.sqlite")
-        user_db = UserDatabase("user.sqlite")
+    #   user_db = UserDatabase("user.sqlite")
     app.config["db"] = db
-    app.config["user_db"] = user_db
+    # app.config["user_db"] = user_db
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///employees.sqlite"
 
@@ -208,6 +226,8 @@ def create_app():
 if __name__ == "__main__":
     app = create_app()
     db.init_app(app)
+    # migrate = Migrate(app, db)
+
     with app.app_context():
         db.create_all()
         # db.drop_all()

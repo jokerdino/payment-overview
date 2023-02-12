@@ -1,6 +1,34 @@
+from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 
+# db = SQLAlchemy()
+
+
+# from flask_sqlalchemy import SQLAlchemy
+
+
 db = SQLAlchemy()
+
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String)
+    password = db.Column(db.String)
+    emp_number = db.Column(db.Integer, db.ForeignKey("employee.emp_number"))
+    employee = db.relationship("Employee", backref=db.backref("user", uselist=False))
+    is_admin = db.Column(db.Boolean)
+    reset_code = db.Column(db.Integer)
+    reset_password_page = db.Column(db.Boolean)
+
+    def get_id(self):
+        return str(self.id)
+
+    @property
+    def is_active(self):
+        return True
+
+    def is_authenticated(self):
+        return True
 
 
 class Employee(db.Model):
@@ -21,24 +49,13 @@ class Employee(db.Model):
     lapsed_sick_leave = db.Column(db.Integer)
     lapsed_earned_leave = db.Column(db.Integer)
 
-    def __repr__(self):
-        return f"<Employee {self.emp_number!r}: {self.name!r}>"
 
-
-# def __init__(self, emp_id, name, leave_as_on, count_casual_leave, count_earned_leave, count_sick_leave, count_restricted_holiday):
-#    self.emp_id = emp_id
-#    self.name = name
-#    self.leave_as_on = leave_as_on
-#    self.count_casual_leave = count_casual_leave
-#    self.count_earned_leave = count_earned_leave
-#    self.count_sick_leave = count_sick_leave
-#    self.count_restricted_history = count_restricted_holiday
-#
+# def __repr__(self):
+#    return f"<Employee {self.emp_number!r}: {self.name!r}>"
 
 
 class Leaves(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
-    #  emp_id = db.Column(db.Integer, db.ForeignKey("employee.id"))
     emp_number = db.Column(db.Integer, db.ForeignKey("employee.emp_number"))
     employee = db.relationship(
         "Employee", backref=db.backref("employee", uselist=False)
@@ -48,3 +65,5 @@ class Leaves(db.Model):
     type_leave = db.Column(db.String)
     leave_letter_status = db.Column(db.String)
     leave_reason = db.Column(db.String)
+    created_on = db.Column(db.String)
+    created_by = db.Column(db.String)

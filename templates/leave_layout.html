@@ -50,8 +50,9 @@
                     <a class="button is-link" href="{{ url_for('login_page') }}"> Login</a>
                     </span>
                 {% else %}
-                 <span class="navbar-item ">
-                   {{ current_user.username }}
+                        <span class="navbar-item ">
+                 <a href="{{ url_for ('view_user_page', user_key=current_user.id) }}">
+                   {{ current_user.username }}</a>
                    </span>
                     <span class="navbar-item ">
                    <a class="button is-link" href="{{ url_for('logout_page') }}"> Log out</a>

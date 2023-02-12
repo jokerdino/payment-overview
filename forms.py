@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import DateField, IntegerField, PasswordField, StringField
+from wtforms import BooleanField, DateField, IntegerField, PasswordField, StringField
 from wtforms.validators import DataRequired, NumberRange, Optional
 from wtforms_components import SelectField
 
@@ -157,3 +157,15 @@ class SignupForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
+
+
+class UpdateUserForm(FlaskForm):
+    is_admin = BooleanField("Make the user admin: ")
+    reset_password_page = BooleanField("Enable password reset page: ")
+
+
+class ResetPasswordForm(FlaskForm):
+    username = StringField("Enter username:", validators=[DataRequired()])
+    emp_number = IntegerField("Enter employee number: ", validators=[DataRequired()])
+    #  reset_code = IntegerField("Enter reset code received from admin: ", validators=[DataRequired()])
+    password = PasswordField("Enter new password: ", validators=[DataRequired()])

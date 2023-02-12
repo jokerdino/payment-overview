@@ -8,14 +8,11 @@
         <tr>
 
             <th> {{form.emp_number.label}}</th>
-        <td>
-            {{ form.emp_number (class='input') }}
-        </td></tr>
+        <td> {{ form.emp_number (class='input') }} </td></tr>
        <tr>
             <th>{{form.name.label}}</th>
             <td>{{ form.name( class='input') }}</td>
         </tr>
-
        <tr>
             <th>{{form.leave_as_on.label}}</th>
             <td>{{ form.leave_as_on( class='input') }}</td>
@@ -59,4 +56,3 @@
                   <a class="button is-link" href="{{ url_for ('leave_project') }}">
                     Go back to leave management home</a>
 {% endblock %}
-
