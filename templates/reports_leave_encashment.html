@@ -27,28 +27,13 @@
             <tr>
 
 
-                <td>
+                <td> {{ leave.emp_number }} </td>
 
-                        {{ leave.emp_number }}</a>
-                </td>
-
-                                <td>
-
-                        {{ leave.employee.name }}</a>
-                </td>
-                  <td>
-
-                   {{ leave.nature_of_leave}}</td>
-                         <td>
-
-                   {{ leave.type_leave}}</td>
-
-     <td>
-
-                        {{ leave.date_of_leave }}</a>
-                </td>
-                <td> {{leave.leave_letter_status}}
-                </td>
+                                <td> {{ leave.employee.name }} </td>
+                  <td> {{ leave.nature_of_leave}}</td>
+                         <td> {{ leave.type_leave}}</td>
+     <td> {{ leave.date_of_leave }} </td>
+                <td> {{leave.leave_letter_status}} </td>
 
                      </tr>
 
@@ -67,7 +52,7 @@
         {% endif %}
         {% endif %}
 
-  <a class="button is-link" href="{{url_for('reports')}}">Reports</a>
+  <a class="button is-danger is-light" href="{{url_for('reports')}}">Go back to Reports</a>
 
         {% block scripts %}
         <script>

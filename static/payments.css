@@ -6,18 +6,4 @@ footer {
     text-align: center;
 }
 
-table.leave_details td,
-table.leave_details th,
-table.leave_details tr
- {
 
-    text-align: center;
-    vertical-align: middle;
-   padding: 10px;
-border: 1.5px solid;
-
-}
-
-table.leaves_details tr:hover {background-color: coral;}
-
- ;

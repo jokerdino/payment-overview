@@ -19,7 +19,7 @@
 
     <body>
         <header>
-            <nav class="navbar is-transparent" aria-label="main navigation">
+            <nav class="navbar has-background-warning-light" aria-label="main navigation">
                 <div class="navbar-brand">
                     <span class="navbar-item">
                         <a class="button is-link" href="{{ url_for('home_page')}}">Underwriting portal</a>
@@ -28,11 +28,16 @@
                     <span class="navbar-item">
                <a class="button is-link" href="{{ url_for('leave_project') }}">Leave management</a>
                     </span>
+                    {% if current_user.is_admin %}
+                    <span class="navbar-item">
+                    <a class="button is-link" href="{{url_for('view_all_users')}}">Show all users</a>
+                    </span>
                     <span class="navbar-item">
                <a class="button is-link" href="{{ url_for('show_all_employees') }}">Show all employees</a>
                     </span>
+                     {% endif %}
                     <span class="navbar-item">
-               <a class="button is-link" href="{{ url_for('reports') }}">Reports</a>
+               <a class="button is-link" href="{{ url_for('reports') }}">Leave Reports</a>
                     </span>
                     <span class="navbar-item">
                <a class="button is-link" href="{{ url_for('public_holiday_list') }}">Public holidays list</a>
@@ -78,9 +83,12 @@
     {% block scripts %}
 
 {% endblock %}
-    <footer>
+
+    <footer class="footer">
+    <div class="content has-text-centered">
             <small>United India - LCB Chennai 500200</small></br>
 <small>Made by 44515</small>
+</div>
         </footer>
     </body>
 </html>

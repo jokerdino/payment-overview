@@ -6,7 +6,7 @@
 
         {% if leaves %}
         <form action="" method="post" name="leave_list">
-        <table class = "table is-striped" id='leave_table'>
+        <table class="table is-striped" id='leave_table'>
 
             <thead>
                 <tr>
@@ -26,31 +26,14 @@
          current_user.emp_number == leave.emp_number   %}
             <tr>
 
+ <td> {{ leave.emp_number }} </td>
+ <td> {{ leave.employee.name }} </td>
 
-                <td>
+<td> {{ leave.nature_of_leave}}</td>
+<td> {{ leave.type_leave}}</td>
 
-                        {{ leave.emp_number }}
-                </td>
-                                <td>
-
-                        {{ leave.employee.name }}
-                </td>
-
-                  <td>
-
-                   {{ leave.nature_of_leave}}</td>
-                         <td>
-
-                   {{ leave.type_leave}}</td>
-
-     <td>
-
-                        {{ leave.date_of_leave }}</a>
-                </td>
-                   <td>
-
-                        {{ leave.leave_reason }}</a>
-                </td>
+     <td> {{ leave.date_of_leave }} </td>
+                   <td> {{ leave.leave_reason }} </td>
                      </tr>
 
 {% endif %}
@@ -63,7 +46,7 @@
         {% endif %}
 
 
-  <a class="button is-link" href="{{url_for('reports_leave_on_specific_date')}}">Reports - Leave taken on a specific date</a>
+  <a class="button is-danger is-light" href="{{url_for('reports_leave_on_specific_date')}}">Reports - Leave taken on a specific date</a>
 
         {% block scripts %}
         <script>

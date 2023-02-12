@@ -4,7 +4,7 @@
 <h1 class="title">Edit payment</h1>
 <form action="" method="post" name="payment_edit">
     {{ form.csrf_token }}
-    <table class=table>
+    <table class="table">
         <tr>
 
             <th> {{form.title.label}}</th>
@@ -37,14 +37,14 @@
         <tr>
 
     <fieldset>
-        <th>{{form.mode.label}}</th><td>  {{form.mode}}
+        <th>{{form.mode.label}}</th><td>  {{form.mode(class="select")}}
     </fieldset>
 
         </td></tr>
         <tr>
 
         <fieldset>
-           <th> {{form.modeentry.label}}</th><td>{{form.modeentry}}
+           <th> {{form.modeentry.label}}</th><td>{{form.modeentry(class="select")}}
         </fieldset>
 
         </td></tr>
@@ -61,7 +61,7 @@
         </tr>
         <tr>
         <fieldset>
-          <th>  {{form.rel_manager.label}}</th><td> {{form.rel_manager}}
+          <th>  {{form.rel_manager.label}}</th><td> {{form.rel_manager(class="select")}}
         </fieldset>
 
         </td></tr>
@@ -73,14 +73,14 @@
         </td></tr>
         <tr>
         <fieldset>
-           <th> {{form.nature.label}} </th><td>{{form.nature}}
+           <th> {{form.nature.label}} </th><td>{{form.nature(class="select")}}
         </fieldset>
 
         </td></tr>
         <tr>
             <th>       {{form.remarks.label}}
     </th>
-         <td>                    {{form.remarks(class='input')}}
+         <td>                    {{form.remarks(class='textarea', placeholder="Write your remarks here.")}}
 
         </td></tr>
 
@@ -97,7 +97,7 @@
         </tr>
 
         <tr>        <fieldset>
-            <th>{{form.underwriter.label}}</th><td> {{form.underwriter}}
+            <th>{{form.underwriter.label}}</th><td> {{form.underwriter(class="select")}}
         </fieldset>
 
         </td></tr>
@@ -109,7 +109,7 @@
 
         </td></tr>
          <tr>        <fieldset>
-            <th>{{form.status.label}} </th><td>{{form.status}}
+            <th>{{form.status.label}} </th><td>{{form.status(class="select")}}
         </fieldset>
 
         </td></tr>

@@ -1,12 +1,6 @@
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 
-# db = SQLAlchemy()
-
-
-# from flask_sqlalchemy import SQLAlchemy
-
-
 db = SQLAlchemy()
 
 
@@ -17,7 +11,6 @@ class User(UserMixin, db.Model):
     emp_number = db.Column(db.Integer, db.ForeignKey("employee.emp_number"))
     employee = db.relationship("Employee", backref=db.backref("user", uselist=False))
     is_admin = db.Column(db.Boolean)
-    reset_code = db.Column(db.Integer)
     reset_password_page = db.Column(db.Boolean)
 
     def get_id(self):
@@ -48,10 +41,6 @@ class Employee(db.Model):
     history_restricted_holiday = db.Column(db.Text)
     lapsed_sick_leave = db.Column(db.Integer)
     lapsed_earned_leave = db.Column(db.Integer)
-
-
-# def __repr__(self):
-#    return f"<Employee {self.emp_number!r}: {self.name!r}>"
 
 
 class Leaves(db.Model):

@@ -45,9 +45,10 @@
         </tr>
 </table>
 
-       <div class="field is-grouped">
-        <button class="button is-primary is-big">Save</button>
-    </div>
+<div class="buttons is-centered">
+ <button class="button is-primary is-big">Save</button>
+         <a class="button is-danger is-light" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
+                    Go back to employee page</a></div>
      {% for field, errors in form.errors.items() %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ ', '.join(errors) }}
@@ -64,6 +65,5 @@
 </form>
 
 {% endif %}
-                  <a class="button is-link" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
-                    Go back to employee page</a>
+
 {% endblock %}

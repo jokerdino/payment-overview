@@ -7,7 +7,23 @@ from server import db
 
 
 def view_all_users():
-    return render_template("view_all_users.html", users=User.query.all())
+
+    if request.method == "POST":
+        # delete employee
+        from server import db
+
+        form_user_keys = request.form.getlist("user_keys")
+        for form_user_key in form_user_keys:
+
+            user = User.query.get_or_404(form_user_key)
+            user.query.filter(User.id == form_user_key).delete()
+            # Leaves.query.filter(Leaves.emp_number == employee.emp_number).delete()
+            db.session.commit()
+        return render_template("view_all_users.html", users=User.query.all())
+
+    else:
+        return render_template("view_all_users.html", users=User.query.all())
+    # return render_template("view_all_users.html", users=User.query.all())
 
 
 def view_user_page(user_key):

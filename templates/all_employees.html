@@ -55,7 +55,7 @@
     {% if current_user.is_admin %}
         <div class="field is-grouped">
             <div class="control">
-                <button class="button is-danger is-small">Delete</button>
+                <button class="button is-danger">Delete</button>
             </div>
         </div>
 
@@ -67,11 +67,11 @@
  <br>
 
  {% if current_user.is_admin %}
-<a class="button is-link" href="{{url_for('create_employee')}}">Create new employee</a>
+<a class="button is-success" href="{{url_for('create_employee')}}">Create new employee</a>
 {% endif %}
 
-                  <a class="button is-link" href="{{ url_for ('leave_project') }}">
-                    Go back to leave management home</a>
+                  <a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
+                    Go to leave management home</a>
 
         {% block scripts %}
         <script>

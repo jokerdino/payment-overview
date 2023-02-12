@@ -36,8 +36,11 @@
 
 
            </table>
-    <div class="field is-grouped">
+    <div class="buttons is-centered">
         <button class="button is-primary is-big">Save</button>
+
+         <a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
+                    Go back to leave management home</a>
     </div>
 
         {% for field, errors in form.errors.items() %}
@@ -53,6 +56,5 @@
 {% endif %}
 {% endwith %}
 </form>
-                  <a class="button is-link" href="{{ url_for ('leave_project') }}">
-                    Go back to leave management home</a>
+
 {% endblock %}

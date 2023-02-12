@@ -6,26 +6,20 @@
         <div class="container has-text-centered">
 
         <h1 class="title">
-LCB Chennai 500200 - Leave management</h1>
+Leave reports</h1>
         </div>
 
 </section>
 
-
-
-    <h3>Leave management
-    </h3>
-
+<div class="buttons is-centered">
   <a class="button is-link" href="{{url_for('reports_lop')}}">Reports - LOP</a>
-
   <a class="button is-link" href="{{url_for('reports_strike')}}">Reports - Strike</a>
-
   <a class="button is-link" href="{{url_for('reports_leave_sick_half_pay')}}">Reports - Sick leave half pay</a>
-
   <a class="button is-link" href="{{url_for('reports_leave_encashment')}}">Reports - Leave encashment</a>
-
   <a class="button is-link" href="{{url_for('reports_leave_on_specific_date')}}">Reports - Leave taken on a specific date</a>
-                  <a class="button is-link" href="{{ url_for ('leave_project') }}">
-                    Go back to leave management home</a>
+                  <a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
+                    Go back</a>
+
+                    </div>
 
         {% endblock %}

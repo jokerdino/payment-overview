@@ -5,13 +5,12 @@
 
         {% if leaves %}
         <form action="" method="post" name="leave_list">
-        <table class = "table is-striped" id='leave_table'>
+        <table class="table is-striped" id='leave_table'>
 
             <thead>
                 <tr>
 
                       <th>Employee number</th>
-
                       <th>Employee name</th>
                     <th>Nature of leave</th>
                     <th>Type of leave</th>
@@ -27,30 +26,14 @@
             <tr>
 
 
-                <td>
+                <td> {{ leave.emp_number }} </td>
 
-                        {{ leave.emp_number }}
-                </td>
+                                <td> {{ leave.employee.name }} </td>
+                  <td> {{ leave.nature_of_leave}}</td>
+                         <td> {{ leave.type_leave}}</td>
 
-                                <td>
-
-                        {{ leave.employee.name }}
-                </td>
-                  <td>
-
-                   {{ leave.nature_of_leave}}</td>
-                         <td>
-
-                   {{ leave.type_leave}}</td>
-
-     <td>
-
-                        {{ leave.date_of_leave }}</a>
-                </td>
-                          <td>
-
-                        {{ leave.leave_reason }}</a>
-                </td>
+     <td> {{ leave.date_of_leave }} </td>
+                          <td> {{ leave.leave_reason }} </td>
                      </tr>
 
 {% endif %}
@@ -68,7 +51,7 @@
         {% endif %}
         {% endif %}
 
-  <a class="button is-link" href="{{url_for('reports')}}">Reports</a>
+ <a class="button is-danger is-light" href="{{url_for('reports')}}">Go back to Reports</a>
 
         {% block scripts %}
         <script>

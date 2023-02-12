@@ -188,7 +188,7 @@ def create_app():
     app.add_url_rule(
         "/user",
         view_func=user_views.view_all_users,
-        methods=["GET"],
+        methods=["GET", "POST"],
     )
 
     app.add_url_rule(

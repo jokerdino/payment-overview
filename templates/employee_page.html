@@ -34,15 +34,15 @@
     </tr>
 </table>
 
-  <table class="leave_details" id="leave_details">
-      <tr>
+  <table class="table is-bordered is-striped is-hoverable is-fullwidth" id="leave_details">
+      <tr class="has-text-centered">
       <th>Leave type </th>
  <th>Casual leave </th>
  <th>Sick leave </th>
  <th>Earned leave </th>
  <th>Restricted Holiday </th>
  </tr>
- <tr>
+ <tr class="has-text-right">
  <th>Leave balance </th>
  <td>{{ employee.count_casual_leave }} </td>
  <td>{{ employee.count_sick_leave }} </td>
@@ -61,46 +61,34 @@
 
 
  </tr>
- </table >
-
+ </table>
 
 
 <br>
 
+<div class="buttons is-centered">
 
-  <a class="button is-link" href="{{url_for('reports_leaves', emp_key=employee.id )}}">Leaves taken</a>
-  <a class="button is-link" href="{{url_for('reports_leave_letter', emp_key=employee.id )}}">Leave letter status</a>
-
-
- <a class="button is-link" href="{{url_for('add_casual_leave', emp_key=employee.id )}}">Add casual leave</a>
- <a class="button is-link" href="{{url_for('add_rh_leave', emp_key=employee.id )}}">Add restricted holiday</a>
- <a class="button is-link" href="{{url_for('add_sick_leave', emp_key=employee.id )}}">Add sick leave</a>
+  <a class="button is-primary is-light " href="{{url_for('reports_leaves', emp_key=employee.id )}}">Leaves taken</a>
+  <a class="button is-primary is-light " href="{{url_for('reports_leave_letter', emp_key=employee.id )}}">Leave letter status</a>
+ <a class="button  is-link" href="{{url_for('add_casual_leave', emp_key=employee.id )}}">Add casual leave</a>
+<a class="button is-link " href="{{url_for('add_rh_leave', emp_key=employee.id )}}">Add restricted holiday</a>
  <a class="button is-link" href="{{url_for('add_earned_leave', emp_key=employee.id )}}">Add earned leave</a>
-
- <br>
-
- <a class="button is-link" href="{{url_for('add_lop_leave', emp_key=employee.id )}}">Add LOP / Strike</a>
- <a class="button is-link" href="{{url_for('add_special_leave', emp_key=employee.id )}}">Add Special leave</a>
-  <a class="button is-link" href="{{url_for('add_leave_encashment', emp_key=employee.id )}}">Add leave encashment</a>
-
-
+ <a class="button is-link" href="{{url_for('add_sick_leave', emp_key=employee.id )}}">Add sick leave</a>
+<a class="button is-link " href="{{url_for('add_lop_leave', emp_key=employee.id )}}">Add LOP / Strike</a>
+ <a class="button is-link " href="{{url_for('add_special_leave', emp_key=employee.id )}}">Add Special leave</a>
+  <a class="button is-link " href="{{url_for('add_leave_encashment', emp_key=employee.id )}}">Add leave encashment</a>
+ <a class= "button is-danger is-light" href="{{url_for('show_all_employees')}}"> Go back</a>
+</div>
 
   <br>
-
- 
-
-
-
  <br>
  {% if current_user.is_admin %}
- 
- <a class="button is-link" href="{{url_for('calc_earned_leave_page', emp_key=employee.id )}}">Calculate Earned leave</a>
-  <button class="button is-primary is-big">New Year reset</button>
 
-<a class="button is-link" href="{{url_for('create_employee')}}">Create new employee</a>
+ <a class="button is-warning is-light" href="{{url_for('calc_earned_leave_page', emp_key=employee.id )}}">Calculate Earned leave</a>
+  <button class="button is-danger is-big">New Year reset</button>
+<a class="button is-success" href="{{url_for('create_employee')}}">Create new employee</a>
 
 {% endif %}
     </form>
     {% endif %}
-             <a class= "button is-link" href="{{url_for('show_all_employees')}}"> Go back</a>
 {% endblock %}

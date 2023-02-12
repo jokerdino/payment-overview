@@ -9,28 +9,44 @@
 
             <thead>
                 <tr>
-
+              {% if current_user.is_admin %}
+<th>Select</th>
+{% endif %}
                       <th>Employee number</th>
                     <th>Username</th>
- 
+ <th>Reset password enabled</th>
+ <th>Admin status</th>
             </thead>
             <tbody>
 
             {% for user in users %}
             {% if current_user.is_admin %}
                         <tr>
- 
+    {% if current_user.is_admin %}
+<td>  
+                <label class="checkbox">
+                    <input type="checkbox" name="user_keys" value="{{ user.id }}"/>
+                </label></td>
+                {% endif %}
                 <td> {{ user.emp_number }} </td>
                   <td> <a href="{{ url_for ('view_user_page', user_key=user.id) }}"> {{user.username}}</a> </td>
 
-
+<td>{{user.reset_password_page}}</td>
+<td>{{user.is_admin}}</td>
                      </tr>
  {% endif %}
             {% endfor %}
             </tbody>
         </table>
 
-  
+    {% if current_user.is_admin %}
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-danger ">Delete</button>
+            </div>
+        </div>
+
+        {% endif %}
         </form>
  
         {% endif %}
@@ -39,13 +55,13 @@
 
 
 
-                  <a class="button is-link" href="{{ url_for ('leave_project') }}">
+                  <a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
                     Go back to leave management home</a>
 
         {% block scripts %}
         <script>
             $(document).ready(function () {
-                            $('#employee_table').DataTable({
+                            $('#user_table').DataTable({
                                 dom: 'lfBrtip',
                                 buttons: [
                                                 'copyHtml5',
