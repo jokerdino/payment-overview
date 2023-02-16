@@ -12,29 +12,17 @@ def export_database():
     # build connection to database
     from server import db
 
-    #    df_db_fetch = pd.read_sql(
-    #    db.session.query(Payment)
-    #    #.filter(Leaves.emp_number == employee.emp_number)
-    #    .statement,
-    #    db.get_engine(),
-    #    )
-    #  my_path = "payments.sqlite"
-    # my_conn = create_engine("sqlite:///" + my_path)
     # export from database to csv
     try:
         df_db_fetch = pd.read_sql(
-            db.session.query(Payment)
-            # .filter(Leaves.emp_number == employee.emp_number)
-            .statement,
+            db.session.query(Payment).statement,
             db.get_engine(),
         )
-        # query = "SELECT * FROM PAYMENT"
-        # df_db_fetch = pd.read_sql(query, my_conn, index_col="ID")
     except SQLAlchemyError as e:
         error = str(e.__dict__["orig"])
         print(error)
     else:
-        df_db_fetch.to_csv("file1.csv")
+        #      df_db_fetch.to_csv("file1.csv")
         print("File created successfully.")
 
     # add suffix to database csv file
@@ -50,14 +38,12 @@ def convert_input(upload_file):
 
     df_db_fetch = df_db_fetch[df_db_fetch["status"] == "To be receipted"]
     df_db = df_db_fetch.add_suffix("_db")
-    df_db.to_csv("db.csv")
-    # my_path = "employees.sqlite"
-    # my_conn = create_engine("sqlite:///" + my_path)
+    #    df_db.to_csv("db.csv")
 
     neft_incoming = pd.read_excel(upload_file, skiprows=4, usecols=range(1, 16))
     neft_incoming = neft_incoming[neft_incoming["File Splited"] != "Yes"]
     neft_incoming = neft_incoming[neft_incoming["Download Status"] != "Downloaded"]
-    df_db["amount_db"] = df_db["amount_db"]  # .astype(float)
+    #   df_db["amount_db"] = df_db["amount_db"]  # .astype(float)
     neft_incoming["Reference Date"] = pd.to_datetime(
         neft_incoming["Reference Date"], dayfirst=True
     )
@@ -104,31 +90,38 @@ def convert_input(upload_file):
             print(error)
         else:
             print(df_upload)
-            CHAT_ID = telegram_secrets.CHAT_ID
-            SEND_URL = telegram_secrets.SEND_URL
-            #            df_upload.to_excel("file.xlsx",index=False)
-            for i in range(len(df_upload)):
-                title = df_upload.iloc[i, 0]
-                received_date = df_upload.iloc[i, 1]
-                date_received_date = datetime.strptime(received_date, "%Y-%m-%d")
-                string_date = date_received_date.strftime("%d-%m-%Y")
-                mode = df_upload.iloc[i, 3]
-                amount = df_upload.iloc[i, 2]
-                instrumentno = df_upload.iloc[i, 19]
-                message = """Payee name: {}
+            [
+                send_message_to_telegram(row[0], row[1], row[2], row[3], row[4])
+                for row in zip(
+                    df_upload["customer"],
+                    df_upload["amount"],
+                    df_upload["date"],
+                    df_upload["mode"],
+                    df_upload["instrumentno"],
+                )
+            ]
+            print("Uploaded successfully.")
+    except ValueError as e:
+        print("All pending transactions have already been uploaded to database.")
+
+
+def send_message_to_telegram(customer, amount, received_date, mode, instrumentno):
+
+    CHAT_ID = telegram_secrets.CHAT_ID
+    SEND_URL = telegram_secrets.SEND_URL
+
+    date_received_date = datetime.strptime(received_date, "%Y-%m-%d")
+    string_date = date_received_date.strftime("%d-%m-%Y")
+    message = """Payee name: {}
 Amount received: {}
 Date of payment: {}
 Mode of payment: {}
 Instrument number: {}
                 """.format(
-                    title,
-                    amount,
-                    string_date,
-                    mode,
-                    instrumentno,
-                )
-
-                requests.post(SEND_URL, json={"chat_id": CHAT_ID, "text": message})
-            print("Uploaded successfully.")
-    except ValueError as e:
-        print("All pending transactions have already been uploaded to database.")
+        customer,
+        int(amount),
+        string_date,
+        mode,
+        instrumentno,
+    )
+    requests.post(SEND_URL, json={"chat_id": CHAT_ID, "text": message})

@@ -16,11 +16,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 import telegram_secrets
 import user_views
 from forms import LoginForm, PaymentEditForm, SignupForm
-
-# from user import User
 from model import Payment, User
-
-# from payment import Payment
 from sqlite_excel import convert_input, export_database
 
 
@@ -66,13 +62,13 @@ def pending_scroll_list():
 
     scroll_list["Payment Received Date"] = scroll_list[
         "Payment Received Date"
-    ].dt.strftime("%d-%m-%Y")
+    ].dt.strftime("%Y-%m-%d")
     scroll_list["Payment Entry Date"] = scroll_list["Payment Entry Date"].dt.strftime(
-        "%d-%m-%Y"
+        "%Y-%m-%d"
     )
-    scroll_list["Cheque Date"] = scroll_list["Cheque Date"].dt.strftime("%d-%m-%Y")
+    scroll_list["Cheque Date"] = scroll_list["Cheque Date"].dt.strftime("%Y-%m-%d")
     scroll_list["Date of Expiry"] = scroll_list["Date of Expiry"].dt.strftime(
-        "%d-%m-%Y"
+        "%Y-%m-%d"
     )
     scroll_list = scroll_list.rename({"Cheque Number": "Instrument number"}, axis=1)
     # cd_list_filter = cd_list[['SL Name','SL Code','CD number','Credit']]
@@ -123,14 +119,10 @@ def home_page():
     from server import db
 
     df = pd.read_sql(
-        db.session.query(Payment)
-        # .filter(Leaves.emp_number == employee.emp_number)
-        .statement,
+        db.session.query(Payment).statement,
         db.get_engine(),
     )
 
-    # conn = sqlite3.connect("payments.sqlite")
-    # data = pd.read_sql("SELECT * from payment", conn)
     copy_data = df[["id", "status", "rel_manager", "underwriter"]].copy()
     copy_data.replace("", "_Unassigned", inplace=True)
     copy_data.fillna("_Unassigned", inplace=True)
@@ -150,8 +142,6 @@ def home_page():
 
     pivot_data["Total"] = pivot_data.sum(numeric_only=True, axis=1)
     pivot_data.loc["TOTAL"] = pivot_data.sum(numeric_only=True, axis=0)
-
-    # conn.close()
 
     return render_template(
         "home.html",
@@ -189,9 +179,7 @@ def upload():
 def payments_all():
     from server import db
 
-    # db = current_app.config["db"]
     if request.method == "GET":
-        # payments = db.get_payments()
         return render_template("payments_all.html", payments=Payment.query.all())
 
     else:
@@ -201,54 +189,39 @@ def payments_all():
         for form_payment_key in form_payment_keys:
             Payment.query.filter(Payment.id == form_payment_key).delete()
             db.session.commit()
-        #    db.delete_payment(int(form_payment_key))
         return redirect(url_for("payments_all"))
 
 
 def payments_completed():
     from server import db
 
-    # db = current_app.config["db"]
     if request.method == "GET":
-        #    payments = db.get_payments()
         return render_template(
             "payments_completed.html",
             payments=Payment.query.filter(Payment.status == "Completed").all(),
-        )  # sorted(payments))
+        )
     else:
         if not current_user.is_admin:
             abort(401)
         form_payment_keys = request.form.getlist("payment_keys")
         for form_payment_key in form_payment_keys:
-            #   for form_payment_key in form_payment_keys:
             Payment.query.filter(Payment.id == form_payment_key).delete()
             db.session.commit()
-            # db.delete_payment(int(form_payment_key))
         return redirect(url_for("payments_completed"))
 
 
 def payments_pending_uw():
     from server import db
 
-    # db = current_app.config["db"]
     if request.method == "GET":
-        #  payments = db.get_payments()
 
-        # ))
-
-        #            {% if payment.status != "Completed"
-        # 		 and payment.status != "To be receipted"
-        #         and payment.status != "Waiting for payment"
-        #         and payment.status != "To be refunded" %}
         return render_template(
             "payments_pending_uw.html",
             payments=Payment.query.filter(
                 Payment.status != "Completed",
                 Payment.status != "To be receipted",
                 Payment.status != "Waiting for payment",
-                Payment.status != "To be refunded"
-                # .date_of_leave == start_date,
-                # Leaves.date_of_leave == end_date,
+                Payment.status != "To be refunded",
             ).all(),
         )
     else:
@@ -258,22 +231,14 @@ def payments_pending_uw():
         for form_payment_key in form_payment_keys:
             Payment.query.filter(Payment.id == form_payment_key).delete()
             db.session.commit()
-        # db.delete_payment(int(form_payment_key))
         return redirect(url_for("payments_pending_uw"))
 
 
 def payments_page():
     from server import db
 
-    # db = current_app.config["db"]
     if request.method == "GET":
-        # payments = Payment.query.filter(or_(Payment.status == "To be receipted", Payment.status == "Waiting for payment", Payment.status == "To be refunded")).all())
 
-        #                {% if payment.status == "To be receipted"
-        #            or payment.status == "Waiting for payment"
-        #            or payment.status == "To be refunded" %}
-
-        #    payments = db.get_payments()
         return render_template(
             "payments_table.html",
             payments=Payment.query.filter(
@@ -296,8 +261,6 @@ def payments_page():
 
 
 def payment_page(payment_key):
-    # employee = Employee.query.get_or_404(emp_key)
-    #    db = current_app.config["db"]
     payment = Payment.query.get_or_404(payment_key)
     return render_template("payment.html", payment=payment)
 
@@ -364,8 +327,6 @@ def payment_add_page():
             policyno=policyno,
             instrumentno=instrumentno,
         )
-        #        db = current_app.config["db"]
-        #       payment_key = db.add_payment(payment)
         db.session.add(payment)
         db.session.commit()
         CHAT_ID = telegram_secrets.CHAT_ID
@@ -394,20 +355,6 @@ Instrument number: {}
     return render_template("payment_edit.html", form=form)
 
 
-# def validate_payment_form():
-
-#    form.data = {}
-#    form.errors = {}
-
-#    form_title = form.get("customer", "").strip()
-#    if len(form_title) == 0:
-#        form.errors["customer"] = "Customer field can not be blank."
-#    else:
-#        form.data["customer"] = form_title
-
-#    return len(form.errors) == 0
-
-
 def compare_underwriter(dt_string, old_value, new_value):
 
     if old_value != new_value:
@@ -425,7 +372,6 @@ def payment_edit_page(payment_key):
 
     from server import db
 
-    # db = current_app.config["db"]
     payment = Payment.query.get_or_404(payment_key)
     form = PaymentEditForm()
 
@@ -504,10 +450,8 @@ def payment_edit_page(payment_key):
             policyno=policyno,
             instrumentno=instrumentno,
         )
-        # db.update_payment(payment_key, payment)
         db.session.add(payment)
         db.session.commit()
-        # flash("Payment data updated.")
         return redirect(url_for("payment_page", payment_key=payment.id))
 
     form.customer.data = payment.customer
@@ -580,7 +524,6 @@ def login_page():
     if form.validate_on_submit():
         username = form.data["username"]
         user = db.session.query(User).filter(User.username == username).first()
-        #  user = user_db.get_user(username)
         if user is not None:
             password = form.data["password"]
 
@@ -588,7 +531,6 @@ def login_page():
                 login_user(user)
 
                 next_page = request.args.get("next", url_for("home_page"))
-                #  print("login page")
                 return redirect(next_page)
             else:
                 flash("Invalid credentials.")
