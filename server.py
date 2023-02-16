@@ -1,4 +1,4 @@
-import platform
+# import platform
 
 from flask import Flask
 from flask_login import LoginManager
@@ -7,8 +7,9 @@ from waitress import serve
 import leave_views
 import user_views
 import views
-from database import Database
-from employees import User, db
+
+# from database import Database
+from model import User, db
 
 # from user_database import UserDatabase
 
@@ -206,13 +207,13 @@ def create_app():
     lm.init_app(app)
     lm.login_view = "login_page"
 
-    if platform.system() == "Windows":
-        db = Database(r"D:\payment-board\payments.sqlite")
+    #  if platform.system() == "Windows":
+    #        db = Database(r"D:\payment-board\payments.sqlite")
     #    user_db = UserDatabase("D:\\payment-board\\user.sqlite")
-    else:
-        db = Database("payments.sqlite")
+    # else:
+    #       db = Database("payments.sqlite")
     #   user_db = UserDatabase("user.sqlite")
-    app.config["db"] = db
+    #  app.config["db"] = db
     # app.config["user_db"] = user_db
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///employees.sqlite"
@@ -231,4 +232,5 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         # db.drop_all()
+    #        user_views.admin_check()
     serve(app, host="0.0.0.0", port=8080)

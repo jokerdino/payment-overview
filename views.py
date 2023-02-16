@@ -1,18 +1,9 @@
-import sqlite3
 from datetime import datetime
 
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
-from flask import (
-    current_app,
-    flash,
-    redirect,
-    render_template,
-    request,
-    send_file,
-    url_for,
-)
+from flask import flash, redirect, render_template, request, send_file, url_for
 from plotnine import aes, facet_wrap, geom_bar, ggplot, ggsave, ggtitle, labs
 from sqlalchemy import or_
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -23,11 +14,13 @@ plt.switch_backend("agg")
 from flask_login import current_user, login_required, login_user, logout_user
 
 import telegram_secrets
+import user_views
+from forms import LoginForm, PaymentEditForm, SignupForm
 
 # from user import User
-from employees import User
-from forms import LoginForm, PaymentEditForm, SignupForm
-from payment import Payment
+from model import Payment, User
+
+# from payment import Payment
 from sqlite_excel import convert_input, export_database
 
 
@@ -104,11 +97,11 @@ def draw_chart(data):
     try:
         p = (
             ggplot(data=data)
-            + aes(x="RM", fill="STATUS")
+            + aes(x="rel_manager", fill="status")
             + ggtitle("Underwriter/relationship manager breakup")
             + labs(x="Relationship manager", y="Count of tasks")
             + geom_bar()
-            + facet_wrap(["UW"], ncol=3)
+            + facet_wrap(["underwriter"], ncol=3)
         )
         ggsave(
             p,
@@ -127,16 +120,29 @@ def draw_chart(data):
 
 def home_page():
 
-    conn = sqlite3.connect("payments.sqlite")
-    data = pd.read_sql("SELECT * from payment", conn)
-    copy_data = data[["ID", "STATUS", "RM", "UW"]].copy()
+    from server import db
+
+    df = pd.read_sql(
+        db.session.query(Payment)
+        # .filter(Leaves.emp_number == employee.emp_number)
+        .statement,
+        db.get_engine(),
+    )
+
+    # conn = sqlite3.connect("payments.sqlite")
+    # data = pd.read_sql("SELECT * from payment", conn)
+    copy_data = df[["id", "status", "rel_manager", "underwriter"]].copy()
     copy_data.replace("", "_Unassigned", inplace=True)
     copy_data.fillna("_Unassigned", inplace=True)
 
     draw_chart(copy_data)
 
     pivot_data = pd.pivot_table(
-        copy_data, index=["UW", "STATUS"], columns=["RM"], values="ID", aggfunc="count"
+        copy_data,
+        index=["underwriter", "status"],
+        columns=["rel_manager"],
+        values="id",
+        aggfunc="count",
     )
     pivot_data.fillna(0, inplace=True)
 
@@ -145,7 +151,7 @@ def home_page():
     pivot_data["Total"] = pivot_data.sum(numeric_only=True, axis=1)
     pivot_data.loc["TOTAL"] = pivot_data.sum(numeric_only=True, axis=0)
 
-    conn.close()
+    # conn.close()
 
     return render_template(
         "home.html",
@@ -181,74 +187,129 @@ def upload():
 
 
 def payments_all():
-    db = current_app.config["db"]
+    from server import db
+
+    # db = current_app.config["db"]
     if request.method == "GET":
-        payments = db.get_payments()
-        return render_template("payments_all.html", payments=sorted(payments))
+        # payments = db.get_payments()
+        return render_template("payments_all.html", payments=Payment.query.all())
 
     else:
         if not current_user.is_admin:
             abort(401)
         form_payment_keys = request.form.getlist("payment_keys")
         for form_payment_key in form_payment_keys:
-            db.delete_payment(int(form_payment_key))
+            Payment.query.filter(Payment.id == form_payment_key).delete()
+            db.session.commit()
+        #    db.delete_payment(int(form_payment_key))
         return redirect(url_for("payments_all"))
 
 
 def payments_completed():
-    db = current_app.config["db"]
+    from server import db
+
+    # db = current_app.config["db"]
     if request.method == "GET":
-        payments = db.get_payments()
-        return render_template("payments_completed.html", payments=sorted(payments))
+        #    payments = db.get_payments()
+        return render_template(
+            "payments_completed.html",
+            payments=Payment.query.filter(Payment.status == "Completed").all(),
+        )  # sorted(payments))
     else:
         if not current_user.is_admin:
             abort(401)
         form_payment_keys = request.form.getlist("payment_keys")
         for form_payment_key in form_payment_keys:
-            db.delete_payment(int(form_payment_key))
+            #   for form_payment_key in form_payment_keys:
+            Payment.query.filter(Payment.id == form_payment_key).delete()
+            db.session.commit()
+            # db.delete_payment(int(form_payment_key))
         return redirect(url_for("payments_completed"))
 
 
 def payments_pending_uw():
-    db = current_app.config["db"]
+    from server import db
+
+    # db = current_app.config["db"]
     if request.method == "GET":
-        payments = db.get_payments()
-        return render_template("payments_pending_uw.html", payments=sorted(payments))
+        #  payments = db.get_payments()
+
+        # ))
+
+        #            {% if payment.status != "Completed"
+        # 		 and payment.status != "To be receipted"
+        #         and payment.status != "Waiting for payment"
+        #         and payment.status != "To be refunded" %}
+        return render_template(
+            "payments_pending_uw.html",
+            payments=Payment.query.filter(
+                Payment.status != "Completed",
+                Payment.status != "To be receipted",
+                Payment.status != "Waiting for payment",
+                Payment.status != "To be refunded"
+                # .date_of_leave == start_date,
+                # Leaves.date_of_leave == end_date,
+            ).all(),
+        )
     else:
         if not current_user.is_admin:
             abort(401)
         form_payment_keys = request.form.getlist("payment_keys")
         for form_payment_key in form_payment_keys:
-            db.delete_payment(int(form_payment_key))
+            Payment.query.filter(Payment.id == form_payment_key).delete()
+            db.session.commit()
+        # db.delete_payment(int(form_payment_key))
         return redirect(url_for("payments_pending_uw"))
 
 
 def payments_page():
-    db = current_app.config["db"]
+    from server import db
+
+    # db = current_app.config["db"]
     if request.method == "GET":
-        payments = db.get_payments()
-        return render_template("payments_table.html", payments=sorted(payments))
+        # payments = Payment.query.filter(or_(Payment.status == "To be receipted", Payment.status == "Waiting for payment", Payment.status == "To be refunded")).all())
+
+        #                {% if payment.status == "To be receipted"
+        #            or payment.status == "Waiting for payment"
+        #            or payment.status == "To be refunded" %}
+
+        #    payments = db.get_payments()
+        return render_template(
+            "payments_table.html",
+            payments=Payment.query.filter(
+                or_(
+                    Payment.status == "To be receipted",
+                    Payment.status == "Waiting for payment",
+                    Payment.status == "To be refunded",
+                )
+            ).all(),
+        )
+
     else:
         if not current_user.is_admin:
             abort(401)
         form_payment_keys = request.form.getlist("payment_keys")
         for form_payment_key in form_payment_keys:
-            db.delete_payment(int(form_payment_key))
+            Payment.query.filter(Payment.id == form_payment_key).delete()
+            db.session.commit()
         return redirect(url_for("payments_page"))
 
 
 def payment_page(payment_key):
-    db = current_app.config["db"]
-    payment = db.get_payment(payment_key)
+    # employee = Employee.query.get_or_404(emp_key)
+    #    db = current_app.config["db"]
+    payment = Payment.query.get_or_404(payment_key)
     return render_template("payment.html", payment=payment)
 
 
 @login_required
 def payment_add_page():
+    from server import db
+
     form = PaymentEditForm()
     if form.validate_on_submit():
 
-        title = form.data["title"]
+        customer = form.data["customer"]
         date = form.data["date"]
         amount = form.data["amount"]
         mode = form.data["mode"]
@@ -283,7 +344,7 @@ def payment_add_page():
         else:
             completed = None
         payment = Payment(
-            title,
+            customer=customer,
             date=date,
             amount=amount,
             mode=mode,
@@ -303,9 +364,10 @@ def payment_add_page():
             policyno=policyno,
             instrumentno=instrumentno,
         )
-        db = current_app.config["db"]
-        payment_key = db.add_payment(payment)
-
+        #        db = current_app.config["db"]
+        #       payment_key = db.add_payment(payment)
+        db.session.add(payment)
+        db.session.commit()
         CHAT_ID = telegram_secrets.CHAT_ID
         SEND_URL = telegram_secrets.SEND_URL
 
@@ -319,7 +381,7 @@ Date of payment: {}
 Mode of payment: {}
 Instrument number: {}
         """.format(
-            title,
+            customer,
             amount,
             string_date,
             mode,
@@ -328,22 +390,22 @@ Instrument number: {}
 
         requests.post(SEND_URL, json={"chat_id": CHAT_ID, "text": message})
 
-        return redirect(url_for("payment_page", payment_key=payment_key))
+        return redirect(url_for("payment_page", payment_key=payment.id))
     return render_template("payment_edit.html", form=form)
 
 
-def validate_payment_form():
+# def validate_payment_form():
 
-    form.data = {}
-    form.errors = {}
+#    form.data = {}
+#    form.errors = {}
 
-    form_title = form.get("title", "").strip()
-    if len(form_title) == 0:
-        form.errors["title"] = "Title can not be blank."
-    else:
-        form.data["title"] = form_title
+#    form_title = form.get("customer", "").strip()
+#    if len(form_title) == 0:
+#        form.errors["customer"] = "Customer field can not be blank."
+#    else:
+#        form.data["customer"] = form_title
 
-    return len(form.errors) == 0
+#    return len(form.errors) == 0
 
 
 def compare_underwriter(dt_string, old_value, new_value):
@@ -361,12 +423,14 @@ def compare_underwriter(dt_string, old_value, new_value):
 @login_required
 def payment_edit_page(payment_key):
 
-    db = current_app.config["db"]
-    payment = db.get_payment(payment_key)
+    from server import db
+
+    # db = current_app.config["db"]
+    payment = Payment.query.get_or_404(payment_key)
     form = PaymentEditForm()
 
     if form.validate_on_submit():
-        title = form.data["title"]
+        customer = form.data["customer"]
         date = form.data["date"]
         amount = form.data["amount"]
 
@@ -420,7 +484,7 @@ def payment_edit_page(payment_key):
             completed = None
 
         payment = Payment(
-            title,
+            customer=customer,
             date=date,
             amount=amount,
             mode=mode,
@@ -440,12 +504,13 @@ def payment_edit_page(payment_key):
             policyno=policyno,
             instrumentno=instrumentno,
         )
-        db.update_payment(payment_key, payment)
-
+        # db.update_payment(payment_key, payment)
+        db.session.add(payment)
+        db.session.commit()
         # flash("Payment data updated.")
-        return redirect(url_for("payment_page", payment_key=payment_key))
+        return redirect(url_for("payment_page", payment_key=payment.id))
 
-    form.title.data = payment.customer
+    form.customer.data = payment.customer
 
     form.date.data = datetime.strptime(payment.date, "%Y-%m-%d") if payment.date else ""
     form.amount.data = payment.amount
@@ -497,6 +562,7 @@ def signup():
                 username=username, password=password_hash, emp_number=emp_number
             )
             db.session.add(user)
+            user_views.admin_check()
             db.session.commit()
 
             return redirect(url_for("login_page"))

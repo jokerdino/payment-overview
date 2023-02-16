@@ -24,6 +24,38 @@ class User(UserMixin, db.Model):
         return True
 
 
+class Payment(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    customer = db.Column(db.String)
+    date = db.Column(db.String)
+    amount = db.Column(db.Integer)
+
+    mode = db.Column(db.String)
+    modeentry = db.Column(db.String)
+    customerid = db.Column(db.String)
+
+    rel_manager = db.Column(db.String)
+    broker = db.Column(db.String)
+    nature = db.Column(db.String)
+
+    remarks = db.Column(db.String)
+    underwriter = db.Column(db.String)
+    ticket = db.Column(db.String)
+
+    status = db.Column(db.String)
+    voucher = db.Column(db.String)
+    created = db.Column(db.String)
+
+    history = db.Column(db.String)
+    completed = db.Column(db.String)
+    proposal = db.Column(db.String)
+
+    policyno = db.Column(db.String)
+    instrumentno = db.Column(db.String)
+
+
 class Employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     emp_number = db.Column(db.Integer)

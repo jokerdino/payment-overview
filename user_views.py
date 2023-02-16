@@ -1,9 +1,10 @@
 from flask import flash, redirect, render_template, request, url_for
 from werkzeug.security import generate_password_hash
 
-from employees import User
 from forms import ResetPasswordForm, UpdateUserForm
-from server import db
+from model import User
+
+# from server import db
 
 
 def view_all_users():
@@ -29,6 +30,7 @@ def view_all_users():
 def view_user_page(user_key):
     user = User.query.get_or_404(user_key)
     form = UpdateUserForm()
+    from server import db
 
     if request.method == "POST":
 
@@ -39,6 +41,7 @@ def view_user_page(user_key):
         user.reset_password_page = reset_password_page
         db.session.add(user)
         db.session.commit()
+        admin_check()
         return redirect(url_for("view_all_users"))
 
     form.is_admin.data = user.is_admin
@@ -50,6 +53,7 @@ def view_user_page(user_key):
 def reset_password_page():
     #    pass
     form = ResetPasswordForm()
+    from server import db
 
     #  form = SignupForm()
     if request.method == "GET":
@@ -80,3 +84,15 @@ def reset_password_page():
         else:
             flash("Username or employee number does not exist.")
     return render_template("reset_password.html", form=form)
+
+
+def admin_check():
+    from server import db
+
+    admin = db.session.query(User).filter(User.is_admin == 1).first()
+    if not admin:
+        user = db.session.query(User).first()
+        if user:  # .query.first()
+            user.is_admin = 1
+            db.session.commit()
+            print("user has been made admin")

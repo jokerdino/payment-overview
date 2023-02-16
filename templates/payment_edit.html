@@ -7,10 +7,10 @@
     <table class="table">
         <tr>
 
-            <th> {{form.title.label}}</th>
+            <th> {{form.customer.label}}</th>
             <td>
-                {{ form.title(required=True, autofocus=True, class='input') }}
-                {% for error in form.title.errors %}
+                {{ form.customer(required=True, autofocus=True, class='input') }}
+                {% for error in form.customer.errors %}
                 <p class="help has-background-warning">
                 {{ error }}
                 </p>

@@ -5,7 +5,7 @@ from wtforms_components import SelectField
 
 
 class PaymentEditForm(FlaskForm):
-    title = StringField("Customer name:", validators=[DataRequired()])
+    customer = StringField("Customer name:", validators=[DataRequired()])
 
     date = DateField(
         "Date:",

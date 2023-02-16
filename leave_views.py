@@ -9,7 +9,6 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import func, or_
 
-from employees import Employee, Leaves
 from leave_forms import (
     CalculateEarnedLeaveForm,
     CasualLeaveForm,
@@ -22,6 +21,7 @@ from leave_forms import (
     SickLeaveForm,
     SpecialLeaveForm,
 )
+from model import Employee, Leaves
 
 
 def rh_list():
@@ -204,12 +204,13 @@ def employee_page(emp_key):
             cmap="Reds",
             vmin=0,
             vmax=2,
-            figsize=(16, 8),
+            # figsize=(16, 8),
             suptitle=title,
             how="sum",
         )
         file_name = employee.name + ".png"
         plt.savefig("static/" + file_name)
+        plt.close()
     except ValueError as e:
         file_name = None
         print("No leaves taken.")

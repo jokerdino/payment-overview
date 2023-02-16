@@ -28,7 +28,7 @@
             </thead>
             <tbody>
 
-            {% for payment_key, payment in payments %}
+            {% for payment in payments %}
             {% if payment.status == "To be receipted"
             or payment.status == "Waiting for payment"
             or payment.status == "To be refunded" %}
@@ -36,11 +36,11 @@
                 {% if current_user.is_admin %}
                 <td>
                 <label class="checkbox">
-                    <input type="checkbox" name="payment_keys" value="{{ payment_key }}"/>
+                    <input type="checkbox" name="payment_keys" value="{{ payment.id }}"/>
                 </label></td>
                 {% endif %}
                 <td>
-                    <a href="{{ url_for ('payment_page', payment_key=payment_key) }}">
+                    <a href="{{ url_for ('payment_page', payment_key=payment.id) }}">
 
                         {{ payment.customer }}</a>
                 </td>

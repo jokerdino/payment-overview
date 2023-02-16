@@ -42,7 +42,7 @@ current_user.emp_number == employee.emp_number   %}
             <th>Earned leave </th>
             <th>Restricted Holiday </th>
         </tr>
-        <tr class="has-text-right">
+        <tr class="has-text-centered">
             <th>Leave balance </th>
             <td>{{ employee.count_casual_leave }} </td>
             <td>{{ employee.count_sick_leave }} </td>
@@ -50,7 +50,7 @@ current_user.emp_number == employee.emp_number   %}
             <td>{{ employee.count_restricted_holiday }} </td>
 
         </tr>
-        <tr>
+        <tr class="has-text-centered">
             <th>Leave details </th>
             {% autoescape false %}
             <td> {{ employee.history_casual_leave }} </td>
@@ -92,7 +92,8 @@ current_user.emp_number == employee.emp_number   %}
 </form>
 {% endif %}
 
-<div class="is-centered">
+
+<div class="is-centered mt-4">
 
 {%if image %}
 <img src= "{{url_for('static', filename=image)}}" alt="Calender leave heatmap" />
