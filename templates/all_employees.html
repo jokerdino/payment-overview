@@ -5,7 +5,7 @@
 
 {% if employees %}
 <form action="" method="post" name="employee_list">
-    <table class = "table is-striped" id='employee_table'>
+    <table class="table is-striped is-fullwidth" id="employee_table">
 
         <thead>
             <tr>
@@ -26,7 +26,7 @@
         <tbody>
 
             {% for employee in employees %}
-            {% if current_user.is_admin or 
+            {% if current_user.is_admin or
         current_user.emp_number == employee.emp_number %}
             <tr>
                 {% if current_user.is_admin %}
@@ -36,14 +36,14 @@
                     </label></td>
                     {% endif %}
                     <td> {{ employee.emp_number }} </td>
-                    <td> <a href="{{ url_for ('employee_page', emp_key=employee.id) }}"> {{employee.name}}</a> </td>
+                    <td> <a href="{{ url_for('employee_page', emp_key=employee.id) }}">{{ employee.name }}</a> </td>
                     <td>{{ employee.count_casual_leave }} </td>
                     <td>{{ employee.count_sick_leave }} </td>
                     <td>{{ employee.count_earned_leave | dec_to_proper_frac }} </td>
-                    <td>{{ employee.count_restricted_holiday }}
+                    <td>{{ employee.count_restricted_holiday }}</td>
 
                         <td>{{ employee.leave_as_on }}</td>
-                        <td>{{ employee.lapsed_sick_leave}} </td>
+                        <td>{{ employee.lapsed_sick_leave }} </td>
 
                         <td> {{ employee.lapsed_earned_leave | dec_to_proper_frac }} </td>
             </tr>
@@ -64,10 +64,8 @@
 
 {% endif %}
 
-<br>
-
 {% if current_user.is_admin %}
-<a class="button is-success" href="{{url_for('create_employee')}}">Create new employee</a>
+<a class="mt-5 button is-success" href="{{ url_for('create_employee') }}">Create new employee</a>
 {% endif %}
 
 <a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
@@ -78,10 +76,10 @@
     $(document).ready(function () {
             $('#employee_table').DataTable({
                     dom: 'lfBrtip',
-                    buttons: [
-                            'copyHtml5',
-                            'csvHtml5',
-                            'excelHtml5'],
+                                buttons: [
+                                             {   extend: 'copyHtml5', className: 'is-danger is-rounded'},
+                                              { extend: 'csvHtml5', className: 'is-info is-rounded'},
+                                               { extend: 'excelHtml5', className: 'is-primary is-rounded'}],
                     order: [[0,'asc']],
                     pagingType: 'full_numbers',
                     lengthMenu: [
@@ -90,8 +88,6 @@
                 });
         });
 </script>
-{% endblock %}
+{% endblock scripts %}
 
-
-{% endblock %}
-
+{% endblock content %}

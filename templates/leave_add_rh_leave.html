@@ -2,12 +2,12 @@
 {% block content %}
 <h1 class="title">Add Restricted Holiday</h1>
 
-{% if current_user.is_admin or 
-current_user.emp_number == employee.emp_number   %}
+{% if current_user.is_admin or
+current_user.emp_number == employee.emp_number %}
 
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
-    <table class="table">
+    <table class="table is-fullwidth">
         <tr>
             <th>Employee name:</th>
             <td>{{ employee.name }}</td>
@@ -31,18 +31,17 @@ current_user.emp_number == employee.emp_number   %}
 
         </tr>
 
-
         <tr>
-            <th>{{form.start_date.label}}</th>
+            <th>{{ form.start_date.label }}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
         <tr>
-            <th>{{form.leave_reason.label}}</th>
+            <th>{{ form.leave_reason.label }}</th>
             <td>{{ form.leave_reason (class='input') }}</td>
         </tr>
 
         <tr>
-            <th>{{form.leave_letter.label}}</th>
+            <th>{{ form.leave_letter.label }}</th>
             <td>{{ form.leave_letter }}</td>
         </tr>
     </table>
@@ -52,7 +51,7 @@ current_user.emp_number == employee.emp_number   %}
             Go back to employee page</a></div>
 
     {% for field, errors in form.errors.items() %}
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div class="notification is-danger">
         {{ ', '.join(errors) }}
     </div>
     {% endfor %}
@@ -66,4 +65,4 @@ current_user.emp_number == employee.emp_number   %}
 
 </form>
 {% endif %}
-{% endblock %}
+{% endblock content %}

@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %} Login {% endblock %}
+{% block title %} Login {% endblock title %}
 
 {% block content %}
 <section class="hero">
@@ -9,7 +9,6 @@
             <div class="box">
                 <form action="" method="" name="login">
                     {{ form.csrf_token }}
-
                     <div class="field">
                         <div class="control">
                             {{ form.username(required=True, autofocus=True,
@@ -22,7 +21,6 @@
                         </p>
                         {% endfor %}
                     </div>
-
                     <div class="field">
                         <div class="control">
                             {{ form.password(required=True, class='input is-large',
@@ -35,7 +33,6 @@
                         </p>
                         {% endfor %}
                     </div>
-
                     <button class="button is-block is-info is-large is-fullwidth">
                         login
                     </button>
@@ -43,9 +40,5 @@
             </div>
         </div>
     </div>
-    </div>
 </section>
-{% endblock %}
-
-
-
+{% endblock content %}

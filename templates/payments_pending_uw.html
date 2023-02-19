@@ -1,14 +1,11 @@
 {% extends "layout.html" %}
-{% block title %}Home {% endblock %}
+{% block title %}Home{% endblock title %}
 {% block content %}
         <h1 class="title"> Payments pending for underwriting</h1>
 
-
-
         {% if payments %}
-        <form action="" method="post" name="payment_list">
-<div id="table"></div>
-        <table class = "table is-striped" data-filter-control="true"  id="payment_table">
+        <form name="payment_list">
+        <table class="table is-striped is-fullwidth" id="payment_table">
 
             <thead>
                 <tr>
@@ -25,7 +22,7 @@
                     <th>Relationship manager</th>
                     <th>Broker</th>
                     <th>Nature of proposal</th>
-                    <th data-filter-control="select" data-sortable="true">Assigned to</th>
+                    <th>Assigned to</th>
 
                     <th>Ticket</th> <th>Current status</th>
 
@@ -34,7 +31,7 @@
             <tbody>
 
             {% for payment in payments %}
-       
+
             <tr>
                 {% if current_user.is_admin %}
                 <td>
@@ -48,34 +45,34 @@
 
                         {{ payment.customer }}</a>
                 </td>
-                    <td>{{payment.date}}</td>
-                    <td style="text-align:right">{{ "{:,}".format(payment.amount|int)}}</td>
-                     <td>{{payment.mode}}</td>
-                     <td>{{payment.modeentry}}</td>
+                    <td>{{ payment.date }}</td>
+                    <td class="has-text-right">{{ "{:,}".format(payment.amount|int)}}</td>
+                     <td>{{ payment.mode }}</td>
+                     <td>{{ payment.modeentry }}</td>
 
-                     <td>{{payment.customerid}}</td>
-                     <td>{{payment.rel_manager}}</td>
-                     <td>{{payment.broker}}</td>
-                      <td>{{payment.nature}}</td>
+                     <td>{{ payment.customerid }}</td>
+                     <td>{{ payment.rel_manager }}</td>
+                     <td>{{ payment.broker }}</td>
+                     <td>{{ payment.nature }}</td>
 
-                    <td>{{payment.underwriter}}</td>
+                     <td>{{ payment.underwriter }}</td>
 
-                    <td>{{payment.ticket}}</td>
-            {% if payment.status == "Approval pending"  %}
-                <td class="under-limit" style ="background-color: red">{{ payment.status }}</td>
-   	 {% elif payment.status == "GC Core issue - ticket raised"  %}
-                <td class="under-limit" style ="background-color: grey">{{ payment.status }}</td>
- 	{% elif payment.status == "Awaiting further details from brokers/insured"  %}
-                <td class="under-limit" style ="background-color: yellow">{{ payment.status }}</td>
-                {% elif payment.status == "Work in progress"  %}
-                <td class="under-limit" style ="color: blue"><b>{{ payment.status }}</b></td>
+                     <td>{{ payment.ticket }}</td>
+            {% if payment.status == "Approval pending" %}
+                <td class="has-background-danger">{{ payment.status }}</td>
+   	 {% elif payment.status == "GC Core issue - ticket raised" %}
+                <td class="has-background-primary">{{ payment.status }}</td>
+ 	{% elif payment.status == "Awaiting further details from brokers/insured" %}
+                <td class="has-background-warning">{{ payment.status }}</td>
+                {% elif payment.status == "Work in progress" %}
+                <td class="has-text-info"><b>{{ payment.status }}</b></td>
 
             {% else %}
 
-<td>{{payment.status}}</td>
+<td>{{ payment.status }}</td>
    {% endif %}
             </tr>
-           
+
             {% endfor %}
             </tbody>
         </table>
@@ -95,9 +92,9 @@
                             $('#payment_table').DataTable({
                                 dom: 'lfBrtip',
                                 buttons: [
-                                                'copyHtml5',
-                                                'csvHtml5',
-                                                'excelHtml5'],
+                                             {   extend: 'copyHtml5', className: 'is-danger is-rounded'},
+                                              { extend: 'csvHtml5', className: 'is-info is-rounded'},
+                                               { extend: 'excelHtml5', className: 'is-primary is-rounded'}],
                                 order: [[1,'desc']],
                                             pagingType: 'full_numbers',
                                 lengthMenu: [
@@ -106,6 +103,5 @@
                                         });
                         });
         </script>
-        {% endblock %}
-{% endblock %}
-
+        {% endblock scripts %}
+{% endblock content %}

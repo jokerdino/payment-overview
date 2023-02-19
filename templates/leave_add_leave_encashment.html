@@ -1,12 +1,12 @@
 {% extends "leave_layout.html" %}
 {% block content %}
 <h1 class="title">Add leave encashment</h1>
-{% if current_user.is_admin or 
-current_user.emp_number == employee.emp_number   %}
+{% if current_user.is_admin or
+current_user.emp_number == employee.emp_number %}
 
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
-    <table class="table">
+    <table class="table is-fullwidth">
         <tr>
             <th>Employee name:</th>
             <td>{{ employee.name }}</td>
@@ -42,11 +42,11 @@ current_user.emp_number == employee.emp_number   %}
 
         </tr>
         <tr>
-            <th>{{form.block_year.label}}</th>
+            <th>{{ form.block_year.label }}</th>
             <td>{{ form.block_year(class="select") }}</td>
         </tr>
         <tr>
-            <th>{{form.start_date.label}}</th>
+            <th>{{ form.start_date.label }}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
 
@@ -56,18 +56,16 @@ current_user.emp_number == employee.emp_number   %}
                 <output for="encashed_days" id="selected-days">{{ form.encashed_days.data }}</output></td>
         </tr>
 
-
     </table>
     <div class="buttons is-centered">
         <button class="button is-primary is-big">Save</button>
         <a class="button is-danger is-light" href="{{ url_for ('employee_page', emp_key=employee.id) }}">
             Go back to employee page</a></div>
     {% for field, errors in form.errors.items() %}
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ ', '.join(errors) }}
-    </div>
+    <div class="notification is-danger">
+         {{ ', '.join(errors) }}
     {% endfor %}
-
+    </div>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <div class="notification is-danger">
@@ -83,7 +81,7 @@ current_user.emp_number == employee.emp_number   %}
         }
 
 </script>
-{% endblock %}
+{% endblock scripts %}
 {% endif %}
 
-{% endblock %}
+{% endblock content %}

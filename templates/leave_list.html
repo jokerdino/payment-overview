@@ -7,24 +7,22 @@
 
             <h1 class="title">Leave List</h1>
 
-        </div>
-
+    </div>
+</section>
         {% for table in tables %}
 
-        {{table|safe}}
+        {{ table|safe }}
         {% endfor %}
-
-
 
         {% block scripts %}
         <script>
             $(document).ready(function () {
                             $('#table').DataTable({
                                             dom: 'lfBrtip',
-                                            buttons: [
-                                                            'copyHtml5',
-                                                            'csvHtml5',
-                                                            'excelHtml5'],
+                                buttons: [
+                                             {   extend: 'copyHtml5', className: 'is-danger is-rounded'},
+                                              { extend: 'csvHtml5', className: 'is-info is-rounded'},
+                                               { extend: 'excelHtml5', className: 'is-primary is-rounded'}],
                                             order: [[0,'asc']],
                                             pagingType: 'full_numbers',
                                             lengthMenu: [
@@ -33,5 +31,5 @@
                                         });
                         });
         </script>
-        {% endblock %}
-        {% endblock %}
+        {% endblock scripts %}
+        {% endblock content %}

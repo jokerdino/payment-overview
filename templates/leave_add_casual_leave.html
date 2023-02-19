@@ -2,11 +2,11 @@
 {% block content %}
 <h1 class="title">Add casual leave</h1>
 
-{% if current_user.is_admin or 
+{% if current_user.is_admin or
 current_user.emp_number == employee.emp_number %}
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
-    <table class="table">
+    <table class="table is-fullwidth">
         <tr>
             <th>Employee name:</th>
             <td>{{ employee.name }}</td>
@@ -25,31 +25,30 @@ current_user.emp_number == employee.emp_number %}
             <th>Casual leave details:</th>
             {% autoescape false %}
 
-
             <td> {{ employee.history_casual_leave }} </td>
             {% endautoescape %}
 
         </tr>
 
         <tr>
-            <th>{{form.type_leave.label}}</th>
+            <th>{{ form.type_leave.label }}</th>
             <td>{{ form.type_leave }}</td>
         </tr>
         <tr>
-            <th>{{form.start_date.label}}</th>
+            <th>{{ form.start_date.label }}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
         <tr>
-            <th>{{form.end_date.label}}</th>
+            <th>{{ form.end_date.label }}</th>
             <td>{{ form.end_date( class='input') }}</td>
         </tr>
 
         <tr>
-            <th>{{form.leave_reason.label}}</th>
+            <th>{{ form.leave_reason.label }}</th>
             <td>{{ form.leave_reason (class='input') }}</td>
         </tr>
         <tr>
-            <th>{{form.leave_letter.label}}</th>
+            <th>{{ form.leave_letter.label }}</th>
             <td>{{ form.leave_letter }}</td>
         </tr>
     </table>
@@ -69,11 +68,9 @@ current_user.emp_number == employee.emp_number %}
     {% endwith %}
 </form>
 {% for field, errors in form.errors.items() %}
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<div class="notification is-danger">
     {{ ', '.join(errors) }}
 </div>
 {% endfor %}
 
-
-
-{% endblock %}
+{% endblock content %}

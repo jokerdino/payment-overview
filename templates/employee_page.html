@@ -1,11 +1,11 @@
 {% extends "leave_layout.html" %}
 {% block content %}
 <h1 class="title">Employee leave details</h1>
-{% if current_user.is_admin or 
-current_user.emp_number == employee.emp_number   %}
+{% if current_user.is_admin or
+current_user.emp_number == employee.emp_number %}
 <form action="" method="post" name="employee_page">
 
-    <table class="table">
+    <table class="table is-fullwidth">
 
         <tr>
             <th>Employee name:</th>
@@ -59,44 +59,42 @@ current_user.emp_number == employee.emp_number   %}
             <td> {{ employee.history_restricted_holiday }} </td>
             {% endautoescape %}
 
-
         </tr>
     </table>
 
+    <div class="mt-5 buttons is-centered">
 
-    <br>
-
-    <div class="buttons is-centered">
-
-        <a class="button is-primary is-light " href="{{url_for('reports_leaves', emp_key=employee.id )}}">Leaves taken</a>
-        <a class="button is-primary is-light " href="{{url_for('reports_leave_letter', emp_key=employee.id )}}">Leave letter status</a>
-        <a class="button  is-link" href="{{url_for('add_casual_leave', emp_key=employee.id )}}">Add casual leave</a>
-        <a class="button is-link " href="{{url_for('add_rh_leave', emp_key=employee.id )}}">Add restricted holiday</a>
-        <a class="button is-link" href="{{url_for('add_earned_leave', emp_key=employee.id )}}">Add earned leave</a>
-        <a class="button is-link" href="{{url_for('add_sick_leave', emp_key=employee.id )}}">Add sick leave</a>
-        <a class="button is-link " href="{{url_for('add_lop_leave', emp_key=employee.id )}}">Add LOP / Strike</a>
-        <a class="button is-link " href="{{url_for('add_special_leave', emp_key=employee.id )}}">Add Special leave</a>
-        <a class="button is-link " href="{{url_for('add_leave_encashment', emp_key=employee.id )}}">Add leave encashment</a>
-        <a class= "button is-danger is-light" href="{{url_for('show_all_employees')}}"> Go back</a>
+        <a class="button is-primary is-light " href="{{ url_for('reports_leaves', emp_key=employee.id )}}">Leaves taken</a>
+        <a class="button is-primary is-light " href="{{ url_for('reports_leave_letter', emp_key=employee.id )}}">Leave letter status</a>
+        <a class="button  is-link" href="{{ url_for('add_casual_leave', emp_key=employee.id )}}">Add casual leave</a>
+        <a class="button is-link " href="{{ url_for('add_rh_leave', emp_key=employee.id )}}">Add restricted holiday</a>
+        <a class="button is-link" href="{{ url_for('add_earned_leave', emp_key=employee.id )}}">Add earned leave</a>
+        <a class="button is-link" href="{{ url_for('add_sick_leave', emp_key=employee.id )}}">Add sick leave</a>
+        <a class="button is-link " href="{{ url_for('add_lop_leave', emp_key=employee.id )}}">Add LOP / Strike</a>
+        <a class="button is-link " href="{{ url_for('add_special_leave', emp_key=employee.id )}}">Add Special leave</a>
+        <a class="button is-link " href="{{ url_for('add_leave_encashment', emp_key=employee.id )}}">Add leave encashment</a>
+        <a class="button is-danger is-light" href="{{ url_for('show_all_employees') }}"> Go back</a>
     </div>
 
-    <br>
-    <br>
     {% if current_user.is_admin %}
-
-    <a class="button is-warning is-light" href="{{url_for('calc_earned_leave_page', emp_key=employee.id )}}">Calculate Earned leave</a>
+    <div class="buttons mt-5">
+    <a class="button is-warning is-light" href="{{ url_for('calc_earned_leave_page', emp_key=employee.id )}}">Calculate Earned leave</a>
     <button class="button is-danger is-big">New Year reset</button>
-    <a class="button is-success" href="{{url_for('create_employee')}}">Create new employee</a>
-
+    <a class="button is-success" href="{{ url_for('create_employee') }}">Create new employee</a>
+    </div>
     {% endif %}
 </form>
 {% endif %}
 
-
+{% if current_user.is_admin or
+current_user.emp_number == employee.emp_number %}
 <div class="is-centered mt-4">
 
-{%if image %}
-<img src= "{{url_for('static', filename=image)}}" alt="Calender leave heatmap" />
+{% if image %}
+<!-- djlint:off -->
+<img src="{{ url_for('static', filename=image) }}" alt="Calender leave heatmap" />
+<!-- djlint:on -->
+{% endif %}
 {% endif %}
 </div>
-{% endblock %}
+{% endblock content %}

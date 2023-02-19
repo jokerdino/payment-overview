@@ -3,20 +3,18 @@
 
 <h1 class="title">Employees who were on leave on a specific date </h1>
 <form action="" method="post" name="employee_edit">
-    {{ form.csrf_token }}
-    <table class=table>
-
+ {{ form.csrf_token }}
+    <table class="table is-fullwidth">
 
         <tr>
-            <th>{{form.start_date.label}}</th>
+            <th>{{ form.start_date.label }}</th>
             <td>{{ form.start_date( class='input') }}</td>
         </tr>
-
 
     </table>
     <div class="buttons is-centered">
         <button class="button is-primary is-big">Submit</button>
-        <a class="button is-danger is-light" href="{{url_for('reports')}}">Go back to Reports</a>
+        <a class="button is-danger is-light" href="{{ url_for('reports') }}">Go back to Reports</a>
     </div>
 
     {% with messages = get_flashed_messages() %}
@@ -28,5 +26,4 @@
     {% endwith %}
 </form>
 
-{% endblock %}
-
+{% endblock content %}

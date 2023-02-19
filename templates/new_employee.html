@@ -4,36 +4,35 @@
 <h1 class="title">Create new employee record</h1>
 <form action="" method="post" name="employee_edit">
     {{ form.csrf_token }}
-    <table class=table>
+    <table class="table is-fullwidth">
         <tr>
 
-            <th> {{form.emp_number.label}}</th>
+            <th> {{ form.emp_number.label }}</th>
             <td> {{ form.emp_number (class='input') }} </td></tr>
         <tr>
-            <th>{{form.name.label}}</th>
+            <th>{{ form.name.label }}</th>
             <td>{{ form.name (class='input') }}</td>
         </tr>
         <tr>
-            <th>{{form.leave_as_on.label}}</th>
+            <th>{{ form.leave_as_on.label }}</th>
             <td>{{ form.leave_as_on (class='input') }}</td>
         </tr>
         <tr>
-            <th>{{form.casual_leave.label}}</th>
+            <th>{{ form.casual_leave.label }}</th>
             <td>{{ form.casual_leave (class='input') }}</td>
         </tr>
         <tr>
-            <th>{{form.earned_leave.label}}</th>
+            <th>{{ form.earned_leave.label }}</th>
             <td>{{ form.earned_leave (class='input') }}</td>
         </tr>
         <tr>
-            <th>{{form.sick_leave.label}}</th>
+            <th>{{ form.sick_leave.label }}</th>
             <td>{{ form.sick_leave (class='input') }}</td>
         </tr>
         <tr>
-            <th>{{form.restricted_holiday.label}}</th>
+            <th>{{ form.restricted_holiday.label }}</th>
             <td>{{ form.restricted_holiday (class='input') }}</td>
         </tr>
-
 
     </table>
     <div class="buttons is-centered">
@@ -44,7 +43,7 @@
     </div>
 
     {% for field, errors in form.errors.items() %}
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div class="notification is-danger">
         {{ ', '.join(errors) }}
     </div>
     {% endfor %}
@@ -57,4 +56,4 @@
     {% endwith %}
 </form>
 
-{% endblock %}
+{% endblock content %}

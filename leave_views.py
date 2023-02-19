@@ -4,6 +4,7 @@ from fractions import Fraction
 
 import calplot
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
@@ -30,7 +31,7 @@ def rh_list():
         "leave_list.html",
         tables=[
             rh_list.to_html(
-                classes="table",
+                classes="table is-fullwidth",
                 border=1,
                 table_id="table",
                 justify="center",
@@ -48,7 +49,7 @@ def public_holiday_list():
         "leave_list.html",
         tables=[
             rh_list.to_html(
-                classes="table",
+                classes="table is-fullwidth",
                 border=1,
                 table_id="table",
                 justify="center",
@@ -193,22 +194,47 @@ def employee_page(emp_key):
         db.get_engine(),
     )
 
-    df["value"] = 1
+    conditions = [
+        df["nature_of_leave"].eq("Casual leave") & df["type_leave"].eq("half"),
+        df["nature_of_leave"].eq("Casual leave") & df["type_leave"].eq("full"),
+        df["nature_of_leave"].eq("Sick leave") & df["type_leave"].eq("half"),
+        df["nature_of_leave"].eq("Sick leave") & df["type_leave"].eq("full"),
+    ]
+    choices = [1, 2, 3, 4]
+    df["value"] = np.select(conditions, choices, default=0)
+
+    df.loc[df["nature_of_leave"] == "Earned leave", "value"] = 6
+    df.loc[df["nature_of_leave"] == "Restricted holiday", "value"] = 5
+
+    df.loc[df["nature_of_leave"] == "Strike", "value"] = 7
+    df.loc[df["nature_of_leave"] == "LOP", "value"] = 8
+    df.loc[df["nature_of_leave"] == "Maternity", "value"] = 9
+    df.loc[df["nature_of_leave"] == "Paternity", "value"] = 10
+
+    df.loc[df["nature_of_leave"] == "Joining", "value"] = 11
+    df.loc[df["nature_of_leave"] == "Quarantine", "value"] = 12
+
+    df.loc[df["nature_of_leave"] == "Others", "value"] = 13
 
     df["date_of_leave"] = pd.to_datetime(df.date_of_leave, yearfirst=True)
+    #   legend = ['Casual leave - half','Casual leave - full']
+
     df.set_index("date_of_leave", inplace=True)
     title = "Leaves taken by " + employee.name
     try:
         calplot.calplot(
             df["value"],
-            cmap="Reds",
+            cmap="tab20",
             vmin=0,
-            vmax=2,
-            # figsize=(16, 8),
+            vmax=20,
+            #            figsize=(16, 20),
             suptitle=title,
             how="sum",
+            colorbar=False,
+            # ax=legend
         )
         file_name = employee.name + ".png"
+        #   plt.legend(legend)
         plt.savefig("static/" + file_name)
         plt.close()
     except ValueError as e:

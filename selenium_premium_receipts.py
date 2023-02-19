@@ -7,7 +7,8 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.ui import Select
 
 options = Options()
-options.headless = True
+# options.headless = True
+options.add_argument("--headless")
 
 if len(sys.argv) > 1:
     end_date = sys.argv[1]

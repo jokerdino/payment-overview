@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %} Login {% endblock %}
+{% block title %} Login {% endblock title %}
 
 {% block content %}
 <section class="hero">
@@ -56,6 +56,5 @@
             <a class="button is-link" href="{{ url_for('reset_password_page') }}"> Reset password</a></div>
     </div>
 
-
 </section>
-{% endblock %}
+{% endblock content %}

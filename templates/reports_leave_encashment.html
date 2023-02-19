@@ -4,8 +4,7 @@
 <h1 class="title"> Leave list</h1>
 
 {% if leaves %}
-<form action="" method="post" name="leave_list">
-    <table class = "table is-striped" id='leave_table'>
+    <table class="table is-fullwidth is-striped" id="leave_table">
 
         <thead>
             <tr>
@@ -22,18 +21,16 @@
         <tbody>
 
             {% for leave in leaves %}
-            {% if current_user.is_admin or 
-            current_user.emp_number == leave.emp_number   %}
+            {% if current_user.is_admin or
+            current_user.emp_number == leave.emp_number %}
             <tr>
 
-
                 <td> {{ leave.emp_number }} </td>
-
                 <td> {{ leave.employee.name }} </td>
-                <td> {{ leave.nature_of_leave}}</td>
-                <td> {{ leave.type_leave}}</td>
+                <td> {{ leave.nature_of_leave }}</td>
+                <td> {{ leave.type_leave }}</td>
                 <td> {{ leave.date_of_leave }} </td>
-                <td> {{leave.leave_letter_status}} </td>
+                <td> {{ leave.leave_letter_status }} </td>
 
             </tr>
 
@@ -42,27 +39,19 @@
         </tbody>
     </table>
 
-    {% if current_user.is_admin %}
-    <div class="field is-grouped">
-        <div class="control">
-            <button class="button is-danger is-small">Delete</button>
-        </div>
-    </div>
-</form>
-{% endif %}
 {% endif %}
 
-<a class="button is-danger is-light" href="{{url_for('reports')}}">Go back to Reports</a>
+<a class="button is-danger is-light" href="{{ url_for('reports') }}">Go back to Reports</a>
 
 {% block scripts %}
 <script>
     $(document).ready(function () {
             $('#leave_table').DataTable({
                     dom: 'lfBrtip',
-                    buttons: [
-                            'copyHtml5',
-                            'csvHtml5',
-                            'excelHtml5'],
+                                buttons: [
+                                             {   extend: 'copyHtml5', className: 'is-danger is-rounded'},
+                                              { extend: 'csvHtml5', className: 'is-info is-rounded'},
+                                               { extend: 'excelHtml5', className: 'is-primary is-rounded'}],
                     order: [[0,'asc']],
                     pagingType: 'full_numbers',
                     lengthMenu: [
@@ -71,7 +60,6 @@
                 });
         });
 </script>
-{% endblock %}
+{% endblock scripts %}
 
-{% endblock %}
-
+{% endblock content %}

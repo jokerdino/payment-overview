@@ -11,27 +11,21 @@
 
 </section>
 
-
-<a class="button is-link" href="{{url_for('upload')}}">Upload NEFT file</a>
+<a class="button is-link" href="{{ url_for('upload') }}">Upload NEFT file</a>
 <a class="button is-link" href="{{ url_for('.payments_all') }}">Show all transactions</a>
 
-<br>
-<br>
-<br>
-
-<div class="has-text-centered">
+<div class="mt-10 has-text-centered">
     <h3>Status summary - underwriter and relationship manager breakup
     </h3>
 </div>
 {% for table in tables %}
 
-{{table|safe}}
+{{ table | safe }}
 {% endfor %}
-
-<br>
-<img src="{{url_for('static',filename='file.png')}}" alt="User Image" />
-    </div>
-    <hr>
+<!-- djlint:off -->
+<img src="{{ url_for('static',filename='file.png') }}" alt="User Image" />
+<!-- djlint:on -->    </div>
+    <hr/>
     {% block scripts %}
 
     <script>
@@ -47,6 +41,5 @@
                             });
                 });
     </script>
-    {% endblock %}
-    {% endblock %}
-
+    {% endblock scripts %}
+    {% endblock content %}

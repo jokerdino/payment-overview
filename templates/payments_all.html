@@ -4,7 +4,7 @@
 
 {% if payments %}
 <form action="" method="post" name="payment_list">
-    <table class = "table is-striped" id='payment_table'>
+    <table class="table is-striped" id="payment_table">
 
         <thead>
             <tr>
@@ -41,18 +41,18 @@
 
                             {{ payment.customer }}</a>
                     </td>
-                    <td>{{payment.date}}</td>
-                    <td style="text-align:right">{{ "{:,}".format(payment.amount|int)}}</td>
+                    <td>{{ payment.date }}</td>
+                    <td class="has-text-right">{{ "{:,}".format(payment.amount|int)}}</td>
 
-                    <td>{{payment.mode}}</td>
-                    <td>{{payment.modeentry}}</td>
-                    <td>{{payment.customerid}}</td>
-                    <td>{{payment.rel_manager}}</td>
-                    <td>{{payment.broker}}</td>
-                    <td>{{payment.nature}}</td>
-                    <td>{{payment.underwriter}}</td>
-                    <td>{{payment.ticket}}</td>
-                    <td>{{payment.status}}</td>
+                    <td>{{ payment.mode }}</td>
+                    <td>{{ payment.modeentry }}</td>
+                    <td>{{ payment.customerid }}</td>
+                    <td>{{ payment.rel_manager }}</td>
+                    <td>{{ payment.broker }}</td>
+                    <td>{{ payment.nature }}</td>
+                    <td>{{ payment.underwriter }}</td>
+                    <td>{{ payment.ticket }}</td>
+                    <td>{{ payment.status }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -68,16 +68,15 @@
 {% endif %}
 {% endif %}
 
-
 {% block scripts %}
 <script>
     $(document).ready(function () {
             $('#payment_table').DataTable({
                     dom: 'lfBrtip',
-                    buttons: [
-                            'copyHtml5',
-                            'csvHtml5',
-                            'excelHtml5'],
+                                buttons: [
+                                             {   extend: 'copyHtml5', className: 'is-danger is-rounded'},
+                                              { extend: 'csvHtml5', className: 'is-info is-rounded'},
+                                               { extend: 'excelHtml5', className: 'is-primary is-rounded'}],
                     order: [[1,'desc']],
                     pagingType: 'full_numbers',
                     lengthMenu: [
@@ -86,5 +85,5 @@
                 });
         });
 </script>
-{% endblock %}
-{% endblock %}
+{% endblock scripts %}
+{% endblock content %}

@@ -1,17 +1,18 @@
-# import platform
-
 from flask import Flask
+#from flask_admin import Admin
 from flask_login import LoginManager
+from flask_migrate import Migrate
 from waitress import serve
+
+#from flask_admin.contrib.sqla import ModelView
+
 
 import leave_views
 import user_views
 import views
+from model import User, db #, Payment, Leaves, Employee
 
-# from database import Database
-from model import User, db
-
-# from user_database import UserDatabase
+migrate = Migrate()
 
 lm = LoginManager()
 
@@ -207,30 +208,23 @@ def create_app():
     lm.init_app(app)
     lm.login_view = "login_page"
 
-    #  if platform.system() == "Windows":
-    #        db = Database(r"D:\payment-board\payments.sqlite")
-    #    user_db = UserDatabase("D:\\payment-board\\user.sqlite")
-    # else:
-    #       db = Database("payments.sqlite")
-    #   user_db = UserDatabase("user.sqlite")
-    #  app.config["db"] = db
-    # app.config["user_db"] = user_db
-
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///employees.sqlite"
 
-    #    db.init_app(app)
-    # import employees
-
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
+    migrate.init_app(app, db)
+    user_views.admin_check()
+   # app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+   # admin = Admin(app)
+   # admin.add_view(ModelView(User, db.session))
+   # admin.add_view(ModelView(Payment, db.session))
+   # admin.add_view(ModelView(Employee, db.session))
+   # admin.add_view(ModelView(Leaves, db.session))
     return app
 
 
 if __name__ == "__main__":
     app = create_app()
-    db.init_app(app)
-    # migrate = Migrate(app, db)
 
-    with app.app_context():
-        db.create_all()
-        # db.drop_all()
-    #        user_views.admin_check()
     serve(app, host="0.0.0.0", port=8080)

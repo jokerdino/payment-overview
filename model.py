@@ -1,7 +1,19 @@
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import MetaData
 
-db = SQLAlchemy()
+convention = {
+    "ix": "ix_%(column_0_label)s",
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s",
+}
+
+metadata = MetaData(naming_convention=convention)
+
+
+db = SQLAlchemy(metadata=metadata)
 
 
 class User(UserMixin, db.Model):
@@ -12,6 +24,7 @@ class User(UserMixin, db.Model):
     employee = db.relationship("Employee", backref=db.backref("user", uselist=False))
     is_admin = db.Column(db.Boolean)
     reset_password_page = db.Column(db.Boolean)
+    office_code = db.Column(db.Integer)
 
     def get_id(self):
         return str(self.id)
@@ -27,6 +40,7 @@ class User(UserMixin, db.Model):
 class Payment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
+    office_code = db.Column(db.Integer)
 
     customer = db.Column(db.String)
     date = db.Column(db.String)
@@ -58,6 +72,7 @@ class Payment(db.Model):
 
 class Employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    office_code = db.Column(db.Integer)
     emp_number = db.Column(db.Integer)
     name = db.Column(db.String(80), nullable=False)
     leave_as_on = db.Column(db.String(80))
@@ -88,3 +103,4 @@ class Leaves(db.Model):
     leave_reason = db.Column(db.String)
     created_on = db.Column(db.String)
     created_by = db.Column(db.String)
+    approved_by = db.Column(db.String)

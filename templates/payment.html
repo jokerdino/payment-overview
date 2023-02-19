@@ -2,7 +2,7 @@
 {% block content %}
 <h1 class="title">Payment</h1>
 
-<table class="table">
+<table class="table is-fullwidth">
     <tr>
         <th>Customer name:</th>
         <td>{{ payment.customer }}</td>
@@ -31,11 +31,11 @@
     </tr>
     <tr>
         <th>Customer ID:</th>
-        <td>{{ payment.customerid}}</td>
+        <td>{{ payment.customerid }}</td>
     </tr>
     <tr>
         <th>Voucher number:</th>
-        <td>{{ payment.voucher}}</td>
+        <td>{{ payment.voucher }}</td>
     </tr>
     <tr>
         <th>Relationship manager:</th>
@@ -59,7 +59,7 @@
     </tr>
     <tr>
         <th>Policy no: </th>
-        <td>{{ payment.policyno}} </td>
+        <td>{{ payment.policyno }} </td>
     </tr>
     <tr>
         <th>Underwriter:</th>
@@ -75,22 +75,22 @@
 
     </tr>
     <tr><th>Created:</th>
-        <td>{{payment.created}}</td>
+        <td>{{ payment.created }}</td>
     </tr>
     <tr><th>Updates:</th>
         {% autoescape false %}
-        <td>{{payment.history}}</td>
+        <td>{{ payment.history }}</td>
         {% endautoescape %}
 
     </tr>
     {% if payment.status == "Completed" %}
     <tr><th>Completed on: </th>
-        <td>{{payment.completed}}</td>
+        <td>{{ payment.completed }}</td>
     </tr>
     {% endif %}
 </table>
 
-{% if payment.status != "Completed"%}
+{% if payment.status != "Completed" %}
 <div class="field is-grouped">
     <div class="control">
         <a class="button is-primary is-outlined is-big"
@@ -98,4 +98,4 @@
     </div>
 </div>
 {% endif %}
-{% endblock %}
+{% endblock content %}

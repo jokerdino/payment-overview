@@ -33,7 +33,7 @@ def cd_list():
         "cd.html",
         tables=[
             cd_list_filter.to_html(
-                classes="table",
+                classes="table is-fullwidth",
                 border=1,
                 table_id="table",
                 justify="center",
@@ -77,7 +77,7 @@ def pending_scroll_list():
         "scroll.html",
         tables=[
             scroll_list.to_html(
-                classes="table",
+                classes="table is-fullwidth",
                 border=1,
                 table_id="table",
                 justify="center",
@@ -147,7 +147,7 @@ def home_page():
         "home.html",
         tables=[
             pivot_data.to_html(
-                classes="table",
+                classes="table is-fullwidth",
                 border=1,
                 table_id="table",
                 na_rep="Total",
@@ -485,9 +485,10 @@ def signup():
     from server import db
 
     form = SignupForm()
-    if request.method == "GET":
-        return render_template("signup.html", form=form)
-    else:
+
+#    if request.method == "GET":
+#        return render_template("signup.html", form=form)
+    if request.method == "POST":
         username = form.data["username"]
         password = form.data["password"]
         password_hash = generate_password_hash(password, method="sha256")
