@@ -1,45 +1,111 @@
-{% extends "layout.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="keywords" content="Underwriting"/>
+        <meta name="description" content="Underwriting" />
+        <title>Home</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"/>
+        <link rel="stylesheet"
+              href="{{ url_for('static', filename='payments.css') }}"/>
 
-<section class="hero">
-    <div class="hero-body">
-        <div class="container has-text-centered">
+    </head>
 
-            <h1 class="title">
-                LCB Chennai 500200 - payments, receipts, underwriting proposal tracker</h1>
+        <header>
+            <nav class="navbar has-background-primary-light" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <div class="navbar-start">
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a class="button is-link" href="{{ url_for('home')}}">Home</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            {% if not current_user.is_authenticated %}
+                            <a class="button is-success" href="{{ url_for('signup') }}"> Signup</a>
+                                <a class="button is-link" href="{{ url_for('login_page') }}"> Login</a>
+                                {% else %}
+                                <a class="button is-warning" href="{{ url_for ('view_user_page', user_key=current_user.id) }}">
+                                    {{ current_user.username }}</a>
+                                <a class="button is-link" href="{{ url_for('logout_page') }}"> Log out</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        </div>
+            </nav>
+        </header>
+        <body>
+<div class="container">
+<div class="tile is-ancestor">
+
+    <div class="tile is-parent">
+     <a href="{{ url_for('home_page') }}">
+    <article class="tile is-child notification is-primary">
+      <div class="content">
+        <p class="title">Underwriting portal</p>
+        <p class="subtitle">Payment to policy tracker</p>
+        <div class="content">
+
         </div>
+      </div>
+    </article>
+    </a>
+  </div>
+    <div class="tile is-parent">
+    <a href="{{ url_for('leave_project')}}">
+    <article class="tile is-child notification is-warning">
+      <div class="content">
+        <p class="title">Leave management</p>
+        <p class="subtitle">Get live balance of each type of leaves taken</p>
+        <div class="content">
 
-</section>
+        </div>
+      </div>
+    </article>
+    </a>
+  </div>
+  <!--
+  <div class="tile is-parent">
+    <article class="tile is-child notification is-info">
+      <div class="content">
+        <p class="title">Stationery management</p>
+        <p class="subtitle">Coming soon...</p>
+        <div class="content">
 
-<a class="button is-link" href="{{ url_for('upload') }}">Upload NEFT file</a>
-<a class="button is-link" href="{{ url_for('.payments_all') }}">Show all transactions</a>
+        </div>
+      </div>
+    </article>
+  </div>
 
-<div class="mt-10 has-text-centered">
-    <h3>Status summary - underwriter and relationship manager breakup
-    </h3>
+  <div class="tile is-parent">
+    <article class="tile is-child notification is-danger">
+      <div class="content">
+        <p class="title">Admin</p>
+        <p class="subtitle">With even more content</p>
+        <div class="content">
+
+        </div>
+      </div>
+    </article>
+  </div>
+  tag before the code and a -->
 </div>
-{% for table in tables %}
+</div>
 
-{{ table | safe }}
-{% endfor %}
-<!-- djlint:off -->
-<img src="{{ url_for('static',filename='file.png') }}" alt="User Image" />
-<!-- djlint:on -->    </div>
-    <hr/>
-    {% block scripts %}
-
-    <script>
-        $(document).ready(function () {
-                    $('#table').DataTable({
-                                "bPaginate": false,
-                                "columnDefs": [
-                                            {
-                                                        "targets": [0],
-                                                        "visible": false,
-                                                    }],
-                                "info": false
-                            });
-                });
-    </script>
-    {% endblock scripts %}
-    {% endblock content %}
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <small>United India - LCB Chennai 500200</small><br />
+                <small>Made by 44515</small>
+            </div>
+        </footer>
+    </body>
+</html>

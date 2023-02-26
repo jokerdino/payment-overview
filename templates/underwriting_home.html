@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+
+            <h1 class="title">
+                LCB Chennai 500200 - payments, receipts, underwriting proposal tracker</h1>
+        </div>
+
+</section>
+
+<a class="button is-link" href="{{ url_for('upload') }}">Upload NEFT file</a>
+<a class="button is-link" href="{{ url_for('.payments_all') }}">Show all transactions</a>
+
+<div class="mt-10 has-text-centered">
+    <h3>Status summary - underwriter and relationship manager breakup
+    </h3>
+</div>
+{% for table in tables %}
+
+{{ table | safe }}
+{% endfor %}
+<!-- djlint:off -->
+<img src="{{ url_for('static',filename='file.png') }}" alt="User Image" />
+<!-- djlint:on -->    </div>
+    <hr/>
+    {% block scripts %}
+
+    <script>
+        $(document).ready(function () {
+                    $('#table').DataTable({
+                                "bPaginate": false,
+                                "columnDefs": [
+                                            {
+                                                        "targets": [0],
+                                                        "visible": false,
+                                                    }],
+                                "info": false
+                            });
+                });
+    </script>
+    {% endblock scripts %}
+    {% endblock content %}

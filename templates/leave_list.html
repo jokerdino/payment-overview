@@ -14,6 +14,8 @@
         {{ table|safe }}
         {% endfor %}
 
+    <a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
+        Go back</a>
         {% block scripts %}
         <script>
             $(document).ready(function () {

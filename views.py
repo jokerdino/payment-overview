@@ -24,6 +24,10 @@ def favicon():
     return url_for("static", filename="favicon.ico")
 
 
+def home():
+    return render_template("home.html")
+
+
 def downloaded_items():
     receipted_items = pd.read_csv("receipted.csv")
     receipted_items = receipted_items[
@@ -163,7 +167,7 @@ def home_page():
     pivot_data.loc["TOTAL"] = pivot_data.sum(numeric_only=True, axis=0)
 
     return render_template(
-        "home.html",
+        "underwriting_home.html",
         tables=[
             pivot_data.to_html(
                 classes="table is-fullwidth",
@@ -544,7 +548,7 @@ def login_page():
             if check_password_hash(user.password, password):
                 login_user(user)
 
-                next_page = request.args.get("next", url_for("home_page"))
+                next_page = request.args.get("next", url_for("home"))
                 return redirect(next_page)
             else:
                 flash("Invalid credentials.")
@@ -556,4 +560,4 @@ def login_page():
 def logout_page():
     logout_user()
     # flash("You have logged out.")
-    return redirect(url_for("home_page"))
+    return redirect(url_for("home"))

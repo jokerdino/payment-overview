@@ -29,7 +29,9 @@ def create_app():
 
     app.jinja_env.filters["dec_to_proper_frac"] = leave_views.dec_to_proper_frac
 
-    app.add_url_rule("/payments/home", view_func=views.home_page)
+    app.add_url_rule("/", view_func=views.home)
+    app.add_url_rule("/payments/", view_func=views.home_page)
+
     app.add_url_rule("/favicon.ico", view_func=views.favicon)
     app.add_url_rule("/user/signup", view_func=views.signup, methods=["GET", "POST"])
     app.add_url_rule("/user/login", view_func=views.login_page, methods=["GET", "POST"])
@@ -75,7 +77,7 @@ def create_app():
         methods=["GET", "POST"],
     )
     app.add_url_rule(
-        "/leave_management/home",
+        "/leave_management/",
         view_func=leave_views.leave_project,
         methods=["GET", "POST"],
     )
