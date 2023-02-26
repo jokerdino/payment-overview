@@ -15,7 +15,7 @@
                 <th>Employee number</th>
                 <th>Employee name</th>
                 <th>Casual leave balance </th>
-                <th>Sick leave balance </th>
+                <th>Sick leave balance (half pay) </th>
                 <th>Earned leave balance </th>
                 <th>Restricted holiday balance </th>
                 <th>Earned Leave updated as on: </th>
@@ -65,12 +65,14 @@
 {% endif %}
 
 {% if current_user.is_admin %}
-<a class="mt-5 button is-success" href="{{ url_for('create_employee') }}">Create new employee</a>
+<div class="buttons mt-5">
+<a class="button is-success" href="{{ url_for('create_employee') }}">Create new employee</a>
 {% endif %}
 
 <a class="button is-danger is-light" href="{{ url_for ('leave_project') }}">
     Go to leave management home</a>
 
+</div>
 {% block scripts %}
 <script>
     $(document).ready(function () {

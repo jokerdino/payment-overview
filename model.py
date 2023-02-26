@@ -25,6 +25,7 @@ class User(UserMixin, db.Model):
     is_admin = db.Column(db.Boolean)
     reset_password_page = db.Column(db.Boolean)
     office_code = db.Column(db.Integer)
+    is_approver = db.Column(db.Boolean)
 
     def get_id(self):
         return str(self.id)

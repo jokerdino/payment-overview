@@ -29,25 +29,25 @@ def create_app():
 
     app.jinja_env.filters["dec_to_proper_frac"] = leave_views.dec_to_proper_frac
 
-    app.add_url_rule("/", view_func=views.home_page)
+    app.add_url_rule("/payments/home", view_func=views.home_page)
     app.add_url_rule("/favicon.ico", view_func=views.favicon)
-    app.add_url_rule("/signup", view_func=views.signup, methods=["GET", "POST"])
-    app.add_url_rule("/login", view_func=views.login_page, methods=["GET", "POST"])
-    app.add_url_rule("/logout", view_func=views.logout_page)
-    app.add_url_rule("/download", view_func=views.download, methods=["GET", "POST"])
-    app.add_url_rule("/upload", view_func=views.upload, methods=["GET", "POST"])
-    app.add_url_rule("/all", view_func=views.payments_all, methods=["GET", "POST"])
-    app.add_url_rule("/cd_list", view_func=views.cd_list, methods=["GET"])
+    app.add_url_rule("/user/signup", view_func=views.signup, methods=["GET", "POST"])
+    app.add_url_rule("/user/login", view_func=views.login_page, methods=["GET", "POST"])
+    app.add_url_rule("/user/logout", view_func=views.logout_page)
+    app.add_url_rule("/payments/download", view_func=views.download, methods=["GET", "POST"])
+    app.add_url_rule("/payments/upload", view_func=views.upload, methods=["GET", "POST"])
+    app.add_url_rule("/payments/all", view_func=views.payments_all, methods=["GET", "POST"])
+    app.add_url_rule("/payments/cd_list", view_func=views.cd_list, methods=["GET"])
     app.add_url_rule(
-        "/pending_scroll", view_func=views.pending_scroll_list, methods=["GET"]
+        "/payments/pending_scroll", view_func=views.pending_scroll_list, methods=["GET"]
     )
     app.add_url_rule(
-        "/payments_pending_uw",
+        "/payments/pending_uw",
         view_func=views.payments_pending_uw,
         methods=["GET", "POST"],
     )
     app.add_url_rule(
-        "/payments_completed",
+        "/payments/completed",
         view_func=views.payments_completed,
         methods=["GET", "POST"],
     )
@@ -61,10 +61,10 @@ def create_app():
         methods=["GET", "POST"],
     )
     app.add_url_rule(
-        "/payments", view_func=views.payments_page, methods=["GET", "POST"]
+        "/payments/pending_receipts", view_func=views.payments_page, methods=["GET", "POST"]
     )
     app.add_url_rule(
-        "/leave_management",
+        "/leave_management/home",
         view_func=leave_views.leave_project,
         methods=["GET", "POST"],
     )
@@ -76,6 +76,12 @@ def create_app():
     app.add_url_rule(
         "/leave_management/show_all",
         view_func=leave_views.show_all_employees,
+        methods=["GET", "POST"],
+    )
+
+    app.add_url_rule(
+        "/leave_management/employee/<int:emp_key>/edit",
+        view_func=leave_views.edit_employee,
         methods=["GET", "POST"],
     )
 
@@ -211,10 +217,10 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///employees.sqlite"
 
     db.init_app(app)
-    with app.app_context():
-        db.create_all()
     migrate.init_app(app, db)
-    user_views.admin_check()
+#    with app.app_context():
+ #       db.create_all()
+  #      user_views.admin_check()
    # app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
    # admin = Admin(app)
    # admin.add_view(ModelView(User, db.session))
@@ -226,5 +232,7 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-
+    with app.app_context():
+ #       db.create_all()
+        user_views.admin_check()
     serve(app, host="0.0.0.0", port=8080)

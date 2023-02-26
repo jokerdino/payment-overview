@@ -2,7 +2,7 @@ import datetime
 
 import pandas as pd
 from flask_wtf import FlaskForm
-from wtforms import (  # DateRange,
+from wtforms import (
     BooleanField,
     DateField,
     DecimalField,
@@ -12,7 +12,7 @@ from wtforms import (  # DateRange,
     SelectField,
     StringField,
 )
-from wtforms.validators import (  # DateRange,
+from wtforms.validators import (
     DataRequired,
     InputRequired,
     NumberRange,
@@ -63,7 +63,7 @@ class EmployeeForm(FlaskForm):
     )
 
     sick_leave = IntegerField(
-        "Enter sick leave balance: ",
+        "Enter sick leave balance (half pay): ",
         validators=[InputRequired(), NumberRange(min=0, max=240)],
     )
     restricted_holiday = IntegerField(

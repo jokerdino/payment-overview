@@ -1,5 +1,5 @@
 import datetime
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from fractions import Fraction
 
 import calplot
@@ -124,6 +124,75 @@ def show_all_employees():
     else:
         return render_template("all_employees.html", employees=Employee.query.all())
 
+def edit_employee(emp_key):
+    from server import db
+    employee = Employee.query.get_or_404(emp_key)
+
+    form = EmployeeForm()
+
+    if form.validate_on_submit():
+
+        emp_number = form.data["emp_number"]
+        name = form.data["name"]
+        leave_as_on = form.data["leave_as_on"]
+
+        exists = (
+            db.session.query(Employee.id)
+            .filter(
+                Employee.emp_number == emp_number,
+            )
+            .first()
+        )
+
+        if exists and employee.emp_number != emp_number:
+            flash("Employee number %s already exists." % emp_number)
+
+        else:
+
+            casual_leave = max(0, min(float(form.data["casual_leave"]), 12))
+
+            earned_leave = form.data["earned_leave"]
+
+            try:
+                earned_leave = mixed_to_float(earned_leave)
+                earned_leave = max(0, (min(float(earned_leave), 270)))
+                restricted_holiday = max(
+                    0, min(int(form.data["restricted_holiday"]), 2)
+                )
+
+                sick_leave = max(0, min(int(form.data["sick_leave"]), 240))
+
+        #        employee = Employee(
+                employee.emp_number=emp_number
+                employee.name=name
+                employee.leave_as_on=leave_as_on
+                employee.count_casual_leave=casual_leave
+                employee.count_earned_leave=earned_leave
+                employee.count_restricted_holiday=restricted_holiday
+                employee.count_sick_leave=sick_leave
+                    #lapsed_sick_leave=0,
+                    #lapsed_earned_leave=0,
+         #       )
+
+          #      db.session.add(employee)
+                db.session.commit()
+                return redirect(url_for("employee_page", emp_key=employee.id))
+            except ValueError as e:
+                earned_leave = 0
+                flash("Enter earned leave in proper format")
+
+        #db.session.commit()
+        #return redirect(url_for("employee_page", emp_key=employee.id))
+
+    form.emp_number.data = employee.emp_number
+    form.name.data = employee.name
+    form.leave_as_on.data = datetime.strptime(employee.leave_as_on, "%Y-%m-%d") if employee.leave_as_on else ""
+    form.earned_leave.data = employee.count_earned_leave
+    form.casual_leave.data = employee.count_casual_leave
+    form.restricted_holiday.data = employee.count_restricted_holiday
+    form.sick_leave.data = employee.count_sick_leave
+
+    return render_template("new_employee.html", form=form)#emp_key = employee.id) #= , form = form)
 
 def create_employee():
     from server import db
@@ -397,8 +466,14 @@ def add_lop_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        if end_date < start_date:
-            flash("End date should be higher than start date.")
+        leave_updated_date = datetime.datetime.strptime(
+            employee.leave_as_on, "%Y-%m-%d"
+        ).date()
+
+        if start_date < leave_updated_date:
+            flash("Earned leave already updated upto: %s" % employee.leave_as_on)
+        #if end_date < start_date:
+         #   flash("End date should be higher than start date.")
 
         else:
             # ensure leave is not already entered before - done for start date
@@ -468,8 +543,14 @@ def add_special_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        if end_date < start_date:
-            flash("End date should be higher than start date.")
+        leave_updated_date = datetime.datetime.strptime(
+            employee.leave_as_on, "%Y-%m-%d"
+        ).date()
+
+        if start_date < leave_updated_date:
+            flash("Earned leave already updated upto: %s" % employee.leave_as_on)
+       # if end_date < start_date:
+        #    flash("End date should be higher than start date.")
 
         else:
             # ensure leave is not already entered before - done for start date
@@ -847,8 +928,14 @@ def add_sick_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        if end_date < start_date:
-            flash("End date should be higher than start date.")
+        leave_updated_date = datetime.datetime.strptime(
+            employee.leave_as_on, "%Y-%m-%d"
+        ).date()
+
+        if start_date < leave_updated_date:
+            flash("Earned leave already updated upto: %s" % employee.leave_as_on)
+        #if end_date < start_date:
+         #   flash("End date should be higher than start date.")
 
         else:
 
@@ -940,8 +1027,14 @@ def add_rh_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        if end_date < start_date:
-            flash("End date should be higher than start date.")
+        leave_updated_date = datetime.datetime.strptime(
+            employee.leave_as_on, "%Y-%m-%d"
+        ).date()
+
+        if start_date < leave_updated_date:
+            flash("Earned leave already updated upto: %s" % employee.leave_as_on)
+       # if end_date < start_date:
+        #    flash("End date should be higher than start date.")
 
         else:
             # ensure leave is not already entered before - done for start date
@@ -1052,8 +1145,14 @@ def add_casual_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        if end_date < start_date:
-            flash("End date should be higher than start date.")
+        leave_updated_date = datetime.datetime.strptime(
+            employee.leave_as_on, "%Y-%m-%d"
+        ).date()
+
+        if start_date < leave_updated_date:
+            flash("Earned leave already updated upto: %s" % employee.leave_as_on)
+       # if end_date < start_date:
+        #    flash("End date should be higher than start date.")
 
         else:
 

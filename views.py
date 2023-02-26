@@ -429,28 +429,28 @@ def payment_edit_page(payment_key):
         else:
             completed = None
 
-        payment = Payment(
-            customer=customer,
-            date=date,
-            amount=amount,
-            mode=mode,
-            modeentry=modeentry,
-            customerid=customerid,
-            rel_manager=rel_manager,
-            broker=broker,
-            nature=nature,
-            remarks=remarks,
-            underwriter=underwriter,
-            ticket=ticket,
-            status=status,
-            voucher=voucher,
-            history=history,
-            completed=completed,
-            proposal=proposal,
-            policyno=policyno,
-            instrumentno=instrumentno,
-        )
-        db.session.add(payment)
+       # payment = Payment(
+        payment.customer=customer
+        payment.date=date
+        payment.amount=amount
+        payment.mode=mode
+        payment.modeentry=modeentry
+        payment.customerid=customerid
+        payment.rel_manager=rel_manager
+        payment.broker=broker
+        payment.nature=nature
+        payment.remarks=remarks
+        payment.underwriter=underwriter
+        payment.ticket=ticket
+        payment.status=status
+        payment.voucher=voucher
+        payment.history=history
+        payment.completed=completed
+        payment.proposal=proposal
+        payment.policyno=policyno
+        payment.instrumentno=instrumentno
+
+       # db.session.add(payment)
         db.session.commit()
         return redirect(url_for("payment_page", payment_key=payment.id))
 

@@ -45,7 +45,7 @@ current_user.emp_number == employee.emp_number %}
         <tr class="has-text-centered">
             <th>Leave balance </th>
             <td>{{ employee.count_casual_leave }} </td>
-            <td>{{ employee.count_sick_leave }} </td>
+            <td>{{ employee.count_sick_leave }} (half pay) </td>
             <td>{{ employee.count_earned_leave | dec_to_proper_frac }} (As on {{ employee.leave_as_on }}) </td>
             <td>{{ employee.count_restricted_holiday }} </td>
 
@@ -64,20 +64,21 @@ current_user.emp_number == employee.emp_number %}
 
     <div class="mt-5 buttons is-centered">
 
-        <a class="button is-primary is-light " href="{{ url_for('reports_leaves', emp_key=employee.id )}}">Leaves taken</a>
-        <a class="button is-primary is-light " href="{{ url_for('reports_leave_letter', emp_key=employee.id )}}">Leave letter status</a>
-        <a class="button  is-link" href="{{ url_for('add_casual_leave', emp_key=employee.id )}}">Add casual leave</a>
-        <a class="button is-link " href="{{ url_for('add_rh_leave', emp_key=employee.id )}}">Add restricted holiday</a>
+        <a class="button is-primary is-light" href="{{ url_for('reports_leaves', emp_key=employee.id )}}">Leaves taken</a>
+        <a class="button is-primary is-light" href="{{ url_for('reports_leave_letter', emp_key=employee.id )}}">Leave letter status</a>
+        <a class="button is-link" href="{{ url_for('add_casual_leave', emp_key=employee.id )}}">Add casual leave</a>
+        <a class="button is-link" href="{{ url_for('add_rh_leave', emp_key=employee.id )}}">Add restricted holiday</a>
         <a class="button is-link" href="{{ url_for('add_earned_leave', emp_key=employee.id )}}">Add earned leave</a>
         <a class="button is-link" href="{{ url_for('add_sick_leave', emp_key=employee.id )}}">Add sick leave</a>
-        <a class="button is-link " href="{{ url_for('add_lop_leave', emp_key=employee.id )}}">Add LOP / Strike</a>
-        <a class="button is-link " href="{{ url_for('add_special_leave', emp_key=employee.id )}}">Add Special leave</a>
-        <a class="button is-link " href="{{ url_for('add_leave_encashment', emp_key=employee.id )}}">Add leave encashment</a>
+        <a class="button is-link" href="{{ url_for('add_lop_leave', emp_key=employee.id )}}">Add LOP / Strike</a>
+        <a class="button is-link" href="{{ url_for('add_special_leave', emp_key=employee.id )}}">Add Special leave</a>
+        <a class="button is-link" href="{{ url_for('add_leave_encashment', emp_key=employee.id )}}">Add leave encashment</a>
         <a class="button is-danger is-light" href="{{ url_for('show_all_employees') }}"> Go back</a>
     </div>
 
     {% if current_user.is_admin %}
     <div class="buttons mt-5">
+    <a class="button is-warning is-light" href="{{ url_for('edit_employee', emp_key=employee.id )}}">Edit employee details</a>
     <a class="button is-warning is-light" href="{{ url_for('calc_earned_leave_page', emp_key=employee.id )}}">Calculate Earned leave</a>
     <button class="button is-danger is-big">New Year reset</button>
     <a class="button is-success" href="{{ url_for('create_employee') }}">Create new employee</a>
