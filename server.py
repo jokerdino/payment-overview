@@ -1,16 +1,17 @@
 from flask import Flask
-#from flask_admin import Admin
+
+# from flask_admin import Admin
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from waitress import serve
 
-#from flask_admin.contrib.sqla import ModelView
-
-
 import leave_views
 import user_views
 import views
-from model import User, db #, Payment, Leaves, Employee
+from model import User, db  # , Payment, Leaves, Employee
+
+# from flask_admin.contrib.sqla import ModelView
+
 
 migrate = Migrate()
 
@@ -23,7 +24,6 @@ def load_user(user_id):
 
 
 def create_app():
-
     app = Flask(__name__)
     app.config.from_object("settings")
 
@@ -34,9 +34,18 @@ def create_app():
     app.add_url_rule("/user/signup", view_func=views.signup, methods=["GET", "POST"])
     app.add_url_rule("/user/login", view_func=views.login_page, methods=["GET", "POST"])
     app.add_url_rule("/user/logout", view_func=views.logout_page)
-    app.add_url_rule("/payments/download", view_func=views.download, methods=["GET", "POST"])
-    app.add_url_rule("/payments/upload", view_func=views.upload, methods=["GET", "POST"])
-    app.add_url_rule("/payments/all", view_func=views.payments_all, methods=["GET", "POST"])
+    app.add_url_rule(
+        "/payments/download", view_func=views.download, methods=["GET", "POST"]
+    )
+    app.add_url_rule(
+        "/payments/upload", view_func=views.upload, methods=["GET", "POST"]
+    )
+    app.add_url_rule(
+        "/payments/all", view_func=views.payments_all, methods=["GET", "POST"]
+    )
+    app.add_url_rule(
+        "/payments/receipted", view_func=views.downloaded_items, methods=["GET"]
+    )
     app.add_url_rule("/payments/cd_list", view_func=views.cd_list, methods=["GET"])
     app.add_url_rule(
         "/payments/pending_scroll", view_func=views.pending_scroll_list, methods=["GET"]
@@ -61,7 +70,9 @@ def create_app():
         methods=["GET", "POST"],
     )
     app.add_url_rule(
-        "/payments/pending_receipts", view_func=views.payments_page, methods=["GET", "POST"]
+        "/payments/pending_receipts",
+        view_func=views.payments_page,
+        methods=["GET", "POST"],
     )
     app.add_url_rule(
         "/leave_management/home",
@@ -218,21 +229,21 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db)
-#    with app.app_context():
- #       db.create_all()
-  #      user_views.admin_check()
-   # app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-   # admin = Admin(app)
-   # admin.add_view(ModelView(User, db.session))
-   # admin.add_view(ModelView(Payment, db.session))
-   # admin.add_view(ModelView(Employee, db.session))
-   # admin.add_view(ModelView(Leaves, db.session))
+    #    with app.app_context():
+    #       db.create_all()
+    #      user_views.admin_check()
+    # app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+    # admin = Admin(app)
+    # admin.add_view(ModelView(User, db.session))
+    # admin.add_view(ModelView(Payment, db.session))
+    # admin.add_view(ModelView(Employee, db.session))
+    # admin.add_view(ModelView(Leaves, db.session))
     return app
 
 
 if __name__ == "__main__":
     app = create_app()
     with app.app_context():
- #       db.create_all()
+        db.create_all()
         user_views.admin_check()
     serve(app, host="0.0.0.0", port=8080)

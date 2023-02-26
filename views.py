@@ -24,8 +24,28 @@ def favicon():
     return url_for("static", filename="favicon.ico")
 
 
-def cd_list():
+def downloaded_items():
+    receipted_items = pd.read_csv("receipted.csv")
+    receipted_items = receipted_items[
+        ["id", "customer", "date", "amount", "instrumentno", "status"]
+    ]
+    return render_template(
+        "cd.html",
+        tables=[
+            receipted_items.to_html(
+                classes="table is-fullwidth",
+                border=1,
+                table_id="table",
+                justify="center",
+                float_format="{:.0f}".format,
+                header=True,
+                index=False,
+            )
+        ],
+    )
 
+
+def cd_list():
     cd_list = pd.read_excel("CD_list.xlsx")
     cd_list_filter = cd_list[["SL Name", "SL Code", "CD number", "Credit"]]
     cd_list_filter.sort_values(by="SL Name", ascending=False)
@@ -115,7 +135,6 @@ def draw_chart(data):
 
 
 def home_page():
-
     from server import db
 
     df = pd.read_sql(
@@ -214,7 +233,6 @@ def payments_pending_uw():
     from server import db
 
     if request.method == "GET":
-
         return render_template(
             "payments_pending_uw.html",
             payments=Payment.query.filter(
@@ -238,7 +256,6 @@ def payments_page():
     from server import db
 
     if request.method == "GET":
-
         return render_template(
             "payments_table.html",
             payments=Payment.query.filter(
@@ -271,7 +288,6 @@ def payment_add_page():
 
     form = PaymentEditForm()
     if form.validate_on_submit():
-
         customer = form.data["customer"]
         date = form.data["date"]
         amount = form.data["amount"]
@@ -356,7 +372,6 @@ Instrument number: {}
 
 
 def compare_underwriter(dt_string, old_value, new_value):
-
     if old_value != new_value:
         if new_value != "":
             underwriter_update = "<br>" + dt_string + ": Assigned to " + new_value
@@ -369,7 +384,6 @@ def compare_underwriter(dt_string, old_value, new_value):
 
 @login_required
 def payment_edit_page(payment_key):
-
     from server import db
 
     payment = Payment.query.get_or_404(payment_key)
@@ -429,28 +443,28 @@ def payment_edit_page(payment_key):
         else:
             completed = None
 
-       # payment = Payment(
-        payment.customer=customer
-        payment.date=date
-        payment.amount=amount
-        payment.mode=mode
-        payment.modeentry=modeentry
-        payment.customerid=customerid
-        payment.rel_manager=rel_manager
-        payment.broker=broker
-        payment.nature=nature
-        payment.remarks=remarks
-        payment.underwriter=underwriter
-        payment.ticket=ticket
-        payment.status=status
-        payment.voucher=voucher
-        payment.history=history
-        payment.completed=completed
-        payment.proposal=proposal
-        payment.policyno=policyno
-        payment.instrumentno=instrumentno
+        # payment = Payment(
+        payment.customer = customer
+        payment.date = date
+        payment.amount = amount
+        payment.mode = mode
+        payment.modeentry = modeentry
+        payment.customerid = customerid
+        payment.rel_manager = rel_manager
+        payment.broker = broker
+        payment.nature = nature
+        payment.remarks = remarks
+        payment.underwriter = underwriter
+        payment.ticket = ticket
+        payment.status = status
+        payment.voucher = voucher
+        payment.history = history
+        payment.completed = completed
+        payment.proposal = proposal
+        payment.policyno = policyno
+        payment.instrumentno = instrumentno
 
-       # db.session.add(payment)
+        # db.session.add(payment)
         db.session.commit()
         return redirect(url_for("payment_page", payment_key=payment.id))
 
@@ -486,8 +500,8 @@ def signup():
 
     form = SignupForm()
 
-#    if request.method == "GET":
-#        return render_template("signup.html", form=form)
+    #    if request.method == "GET":
+    #        return render_template("signup.html", form=form)
     if request.method == "POST":
         username = form.data["username"]
         password = form.data["password"]
@@ -515,7 +529,6 @@ def signup():
 
 
 def login_page():
-
     if current_user.is_authenticated:
         return redirect(url_for("home_page"))
     form = LoginForm()

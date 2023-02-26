@@ -30,6 +30,15 @@ def export_database():
     return df_db_fetch
 
 
+def update_database(df_db, neft_incoming):
+    neft_downloaded = neft_incoming[neft_incoming["File Splited"] == "Yes"]
+    df_db = df_db.merge(
+        neft_downloaded, left_on="instrumentno_db", right_on="Reference No", how="inner"
+    )
+    df_db.columns = df_db.columns.str.removesuffix("_db")
+    df_db.to_csv("receipted.csv", index=False)
+
+
 def convert_input(upload_file):
     from server import db
 
@@ -41,6 +50,9 @@ def convert_input(upload_file):
     #    df_db.to_csv("db.csv")
 
     neft_incoming = pd.read_excel(upload_file, skiprows=4, usecols=range(1, 16))
+
+    update_database(df_db, neft_incoming)
+
     neft_incoming = neft_incoming[neft_incoming["File Splited"] != "Yes"]
     neft_incoming = neft_incoming[neft_incoming["Download Status"] != "Downloaded"]
     #   df_db["amount_db"] = df_db["amount_db"]  # .astype(float)
@@ -106,7 +118,6 @@ def convert_input(upload_file):
 
 
 def send_message_to_telegram(customer, amount, received_date, mode, instrumentno):
-
     CHAT_ID = telegram_secrets.CHAT_ID
     SEND_URL = telegram_secrets.SEND_URL
 

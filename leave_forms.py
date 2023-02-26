@@ -84,7 +84,6 @@ class EarnedLeaveForm(FlaskForm):
         if field.data.weekday() > 4:
             raise ValidationError("End date cannot be a weekend.")
         if field.data < self.start_date.data:
-
             raise ValidationError("End date should not be earlier than start date.")
         if (numOfDays(self.start_date.data, field.data) + 1) > 120:
             raise ValidationError("Maximum earned leave allowed is 120 days.")
@@ -93,14 +92,12 @@ class EarnedLeaveForm(FlaskForm):
 
     def validate_start_date(self, field):
         if field.data.weekday() > 4:
-
             raise ValidationError("Start date cannot be a weekend.")
         if (public_holiday_list["DATE"] == field.data).any():
             raise ValidationError("Start date cannot be a public holiday.")
 
 
 class CalculateEarnedLeaveForm(FlaskForm):
-
     start_date = DateField(
         "Enter date upto which Earned leave is to be calculated: ",
         validators=[DataRequired(), DateRange(max=datetime.date.today())],
@@ -112,7 +109,6 @@ class CalculateEarnedLeaveForm(FlaskForm):
 
 
 class LeaveEncashmentForm(FlaskForm):
-
     block_year_list = [
         ("2022-2023", "2022-2023"),
         ("2024-2025", "2024-2025"),
@@ -145,7 +141,6 @@ class CasualLeaveForm(FlaskForm):
         if field.data.weekday() > 4:
             raise ValidationError("End date cannot be a weekend.")
         if field.data < self.start_date.data:
-
             raise ValidationError("End date should not be earlier than start date.")
         if (numOfDays(self.start_date.data, field.data) + 1) > 5:
             raise ValidationError("maximum CL allowed is 5 days.")
@@ -159,7 +154,6 @@ class CasualLeaveForm(FlaskForm):
 
     def validate_start_date(self, field):
         if field.data.weekday() > 4:
-
             raise ValidationError("Start date cannot be a weekend.")
         if (public_holiday_list["DATE"] == field.data).any():
             raise ValidationError("Start date cannot be public holiday.")
@@ -181,7 +175,6 @@ class SickLeaveForm(FlaskForm):
         if field.data.weekday() > 4:
             raise ValidationError("End date cannot be a weekend.")
         if field.data < self.start_date.data:
-
             raise ValidationError("End date should not be earlier than start date.")
         if (numOfDays(self.start_date.data, field.data) + 1) > 120:
             raise ValidationError("Maximum sick leave allowed is 120 days.")
@@ -190,7 +183,6 @@ class SickLeaveForm(FlaskForm):
 
     def validate_start_date(self, field):
         if field.data.weekday() > 4:
-
             raise ValidationError("Start date cannot be a weekend.")
         if (public_holiday_list["DATE"] == field.data).any():
             raise ValidationError("Start date cannot be a public holiday.")
@@ -218,7 +210,6 @@ class SpecialLeaveForm(FlaskForm):
         if field.data.weekday() > 4:
             raise ValidationError("End date cannot be a weekend.")
         if field.data < self.start_date.data:
-
             raise ValidationError("End date should not be earlier than start date.")
         if (public_holiday_list["DATE"] == field.data).any():
             raise ValidationError("End date cannot be a public holiday.")
@@ -235,7 +226,6 @@ class SpecialLeaveForm(FlaskForm):
 
     def validate_start_date(self, field):
         if field.data.weekday() > 4:
-
             raise ValidationError("Start date cannot be a weekend.")
         if (public_holiday_list["DATE"] == field.data).any():
             raise ValidationError("Start date cannot be a public holiday.")
@@ -256,7 +246,6 @@ class LOPLeaveForm(FlaskForm):
         if field.data.weekday() > 4:
             raise ValidationError("End date cannot be a weekend.")
         if field.data < self.start_date.data:
-
             raise ValidationError("End date should not be earlier than start date.")
 
         if (public_holiday_list["DATE"] == field.data).any():
@@ -264,7 +253,6 @@ class LOPLeaveForm(FlaskForm):
 
     def validate_start_date(self, field):
         if field.data.weekday() > 4:
-
             raise ValidationError("Start date cannot be a weekend.")
         if (public_holiday_list["DATE"] == field.data).any():
             raise ValidationError("Start date cannot be a public holiday.")
@@ -281,7 +269,6 @@ class RestrictedLeaveform(FlaskForm):
 
     def validate_start_date(self, field):
         if field.data.weekday() > 4:
-
             raise ValidationError("Entered date cannot be a weekend.")
         if not (rh_list["DATE"] == field.data).any():
             raise ValidationError("Entered date should be restricted holiday.")

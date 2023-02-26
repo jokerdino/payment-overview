@@ -8,14 +8,12 @@ from model import User
 
 
 def view_all_users():
-
     if request.method == "POST":
         # delete employee
         from server import db
 
         form_user_keys = request.form.getlist("user_keys")
         for form_user_key in form_user_keys:
-
             user = User.query.get_or_404(form_user_key)
             user.query.filter(User.id == form_user_key).delete()
             # Leaves.query.filter(Leaves.emp_number == employee.emp_number).delete()
@@ -33,7 +31,6 @@ def view_user_page(user_key):
     from server import db
 
     if request.method == "POST":
-
         is_admin = form.data["is_admin"]
         reset_password_page = form.data["reset_password_page"]
 
@@ -59,7 +56,6 @@ def reset_password_page():
     if request.method == "GET":
         return render_template("reset_password.html", form=form)
     else:
-
         username = form.data["username"]
         emp_number = form.data["emp_number"]
 

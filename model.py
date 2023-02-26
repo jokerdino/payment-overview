@@ -39,7 +39,6 @@ class User(UserMixin, db.Model):
 
 
 class Payment(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
     office_code = db.Column(db.Integer)
 

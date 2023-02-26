@@ -1,12 +1,12 @@
 import os
 
-from server import create_app, db
+from server import create_app
 from sqlite_excel import convert_input, export_database
 
 app = create_app()
-#db.init_app(app)
+# db.init_app(app)
 app.app_context().push()
-#db.create_all()
+# db.create_all()
 
 export_database()
 
