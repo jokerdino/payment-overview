@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="keywords" content="Underwriting"/>
         <meta name="description" content="Underwriting" />
-        <title>Payments, receipts and underwriting proposal tracker{% block title %}{% endblock title %}</title>
+        <title>Payments, receipts and underwriting proposal tracker</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"/>
@@ -14,6 +14,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/dataTables.bulma.min.css" />
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.4/css/buttons.bulma.min.css" />
         <link rel="stylesheet" type="type/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" type="type/css" href="https://cdn.datatables.net/fixedheader/3.3.2/css/fixedHeader.dataTables.min.css" />
     </head>
 
     <body>
@@ -62,7 +63,6 @@
         </header>
 
         <div class="container">
-            <h1>{{ title }}</h1>
             <hr />
             {% block content %}{% endblock content %}
         </div>
@@ -75,6 +75,7 @@
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.3.2/js/dataTables.fixedHeader.min.js"></script>
         {% block scripts %}
 
         {% endblock scripts %}

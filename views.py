@@ -203,7 +203,9 @@ def payments_all():
     from server import db
 
     if request.method == "GET":
-        return render_template("payments_all.html", payments=Payment.query.all())
+        return render_template(
+            "payments_all.html", payments=Payment.query.all(), title="All the payments"
+        )
 
     else:
         if not current_user.is_admin:
@@ -220,8 +222,9 @@ def payments_completed():
 
     if request.method == "GET":
         return render_template(
-            "payments_completed.html",
+            "payments_all.html",
             payments=Payment.query.filter(Payment.status == "Completed").all(),
+            title="Completed proposals",
         )
     else:
         if not current_user.is_admin:
@@ -238,13 +241,14 @@ def payments_pending_uw():
 
     if request.method == "GET":
         return render_template(
-            "payments_pending_uw.html",
+            "payments_all.html",
             payments=Payment.query.filter(
                 Payment.status != "Completed",
                 Payment.status != "To be receipted",
                 Payment.status != "Waiting for payment",
                 Payment.status != "To be refunded",
             ).all(),
+            title="Payments pending for underwriting",
         )
     else:
         if not current_user.is_admin:
@@ -261,7 +265,7 @@ def payments_page():
 
     if request.method == "GET":
         return render_template(
-            "payments_table.html",
+            "payments_all.html",
             payments=Payment.query.filter(
                 or_(
                     Payment.status == "To be receipted",
@@ -269,6 +273,7 @@ def payments_page():
                     Payment.status == "To be refunded",
                 )
             ).all(),
+            title="Payments to be receipted",
         )
 
     else:
