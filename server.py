@@ -231,15 +231,6 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db)
-    #    with app.app_context():
-    #       db.create_all()
-    #      user_views.admin_check()
-    # app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-    # admin = Admin(app)
-    # admin.add_view(ModelView(User, db.session))
-    # admin.add_view(ModelView(Payment, db.session))
-    # admin.add_view(ModelView(Employee, db.session))
-    # admin.add_view(ModelView(Leaves, db.session))
     return app
 
 

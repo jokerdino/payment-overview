@@ -44,6 +44,7 @@ class PaymentEditForm(FlaskForm):
         ("Kannan", "Kannan"),
         ("Ravikumar", "Ravikumar"),
         ("Varinder", "Varinder"),
+        ("Anand Kumar", "Anand Kumar"),
     ]
     nature_list = [
         ("", ""),
@@ -60,7 +61,7 @@ class PaymentEditForm(FlaskForm):
         ("", ""),
         ("Anand Kumar", "Anand Kumar"),
         ("Kesavi", "Kesavi"),
-        ("Anupriya", "Anupriya"),
+        ("Pradeep", "Pradeep"),
         ("Swatee Barik", "Swatee Barik"),
         ("Vijaya", "Vijaya"),
         ("Naval Jacob", "Naval Jacob"),

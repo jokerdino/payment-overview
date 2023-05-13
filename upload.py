@@ -10,8 +10,8 @@ app.app_context().push()
 
 export_database()
 
-neft_incoming = r"D:\Downloads\MobileNeftPaymentDetailsReport.xls"
+neft_incoming = "/home/united/Downloads/MobileNeftPaymentDetailsReport.xls"
 
 convert_input(neft_incoming)
 
-os.remove(r"D:\Downloads\MobileNeftPaymentDetailsReport.xls")
+os.remove("/home/united/Downloads/MobileNeftPaymentDetailsReport.xls")

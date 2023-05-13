@@ -14,16 +14,16 @@
                     <th>Customer name</th>
                     <th>Date of payment</th>
                     <th>Amount</th>
+                    <th>Instrument number</th>
                     <th>Mode of payment</th>
                     <th>Mode of entry</th>
                     <th>Customer ID</th>
                     <th>Relationship manager</th>
-                    <th>Broker</th>
-                    <th>Nature of proposal</th>
                     <th>Assigned to</th>
 
                     <th>Ticket</th>
 			 <th>Current status</th>
+             <th>button</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
                 </td>
                     <td>{{ payment.date }}</td>
                       <td class="has-text-right">{{ "{:,}".format(payment.amount|int)}}</td>
-
+                    <td>{{ payment.instrumentno }} </td>
                      <td>{{ payment.mode }}</td>
                      <td>{{ payment.modeentry }}</td>
 
@@ -58,8 +58,6 @@
 <td >{{ payment.customerid }}</td>
 {% endif %}
                     <td>{{ payment.rel_manager }}</td>
-                    <td>{{ payment.broker }}</td>
-                    <td>{{ payment.nature }}</td>
 
                     <td>{{ payment.underwriter }}</td>
 
@@ -69,11 +67,115 @@
                     {% else %}
                     <td>{{ payment.status }}</td>
                     {% endif %}
+                    <td><a class="button is-info js-modal-trigger" data-target="modal{{ payment.id }}">View</a></td>
             </tr>
             {% endif %}
             {% endfor %}
             </tbody>
         </table>
+
+        {% for payment in payments %}
+        <!---modal -->
+        <div class="modal" id="modal{{ payment.id }}">
+         <div class="modal-background"></div>
+
+  <div class="modal-content">
+    <div class="box">
+ <table class="table is-fullwidth">
+    <tr>
+        <th>Customer name:</th>
+        <td>{{ payment.customer }}</td>
+    </tr>
+    <tr>
+        <th>Date:</th>
+        <td> {{ payment.date }} </td>
+    </tr>
+    <tr>
+        <th>Amount:</th>
+        <td >{{ "{:,}".format(payment.amount|int)}}</td>
+
+    </tr>
+    <tr>
+        <th>Instrument Number: </th>
+        <td>{{ payment.instrumentno }}</td>
+    </tr>
+    <tr>
+        <th>Mode of payment:</th>
+        <td> {{ payment.mode }}</td>
+    </tr>
+
+    <tr>
+        <th>Mode of entry: </th>
+        <td> {{ payment.modeentry }}</td>
+    </tr>
+    <tr>
+        <th>Customer ID:</th>
+        <td>{{ payment.customerid }}</td>
+    </tr>
+    <tr>
+        <th>Voucher number:</th>
+        <td>{{ payment.voucher }}</td>
+    </tr>
+    <tr>
+        <th>Relationship manager:</th>
+        <td> {{ payment.rel_manager }}</td>
+    </tr>
+    <tr>
+        <th>Broker: </th>
+        <td> {{ payment.broker }}</td>
+    </tr>
+    <tr>
+        <th>Nature of proposal:</th>
+        <td> {{ payment.nature }}</td>
+    </tr>
+    <tr>
+        <th>Remarks:</th>
+        <td> {{ payment.remarks }}</td>
+    </tr>
+    <tr>
+        <th>Proposal:</th>
+        <td> {{ payment.proposal }}</td>
+    </tr>
+    <tr>
+        <th>Policy no: </th>
+        <td>{{ payment.policyno }} </td>
+    </tr>
+    <tr>
+        <th>Underwriter:</th>
+        <td> {{ payment.underwriter }}</td>
+    </tr>
+    <tr>
+        <th>Ticket number:</th>
+        <td> {{ payment.ticket }}</td>
+    </tr>
+    <tr>
+        <th>Status:</th>
+        <td> {{ payment.status }}</td>
+
+    </tr>
+    <tr><th>Created:</th>
+        <td>{{ payment.created }}</td>
+    </tr>
+    <tr><th>Updates:</th>
+        {% autoescape false %}
+        <td>{{ payment.history }}</td>
+        {% endautoescape %}
+
+    </tr>
+    {% if payment.status == "Completed" %}
+    <tr><th>Completed on: </th>
+        <td>{{ payment.completed }}</td>
+    </tr>
+    {% endif %}
+</table>
+            </div>
+
+            </div>
+             <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+        {% endfor %}
+
         {% if current_user.is_admin %}
         <div class="field is-grouped">
             <div class="control">
@@ -100,6 +202,52 @@
                                             [10,25,50,100,'All'],]
                                         });
                         });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+  // Functions to open and close a modal
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+      closeModal($modal);
+    });
+  }
+
+  // Add a click event on buttons to open a specific modal
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+    const $target = document.getElementById(modal);
+
+    $trigger.addEventListener('click', () => {
+      openModal($target);
+    });
+  });
+
+  // Add a click event on various child elements to close the parent modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
+
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
+
+  // Add a keyboard event to close all modals
+  document.addEventListener('keydown', (event) => {
+    const e = event || window.event;
+
+    if (e.keyCode === 27) { // Escape key
+      closeAllModals();
+    }
+  });
+});
         </script>
         {% endblock scripts %}
         {% endblock content %}

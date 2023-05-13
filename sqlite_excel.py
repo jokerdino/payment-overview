@@ -36,7 +36,7 @@ def update_database(df_db, neft_incoming):
         neft_downloaded, left_on="instrumentno_db", right_on="Reference No", how="inner"
     )
     df_db.columns = df_db.columns.str.removesuffix("_db")
-    df_db.to_csv("receipted.csv", index=False)
+    df_db.to_csv("/home/united/Projects/payment-overview/receipted.csv", index=False)
 
 
 def convert_input(upload_file):
@@ -55,7 +55,7 @@ def convert_input(upload_file):
 
     neft_incoming = neft_incoming[neft_incoming["File Splited"] != "Yes"]
     neft_incoming = neft_incoming[neft_incoming["Download Status"] != "Downloaded"]
-    #   df_db["amount_db"] = df_db["amount_db"]  # .astype(float)
+    df_db["amount_db"] = df_db["amount_db"].astype(float)
     neft_incoming["Reference Date"] = pd.to_datetime(
         neft_incoming["Reference Date"], dayfirst=True
     )
@@ -64,8 +64,8 @@ def convert_input(upload_file):
 
     neft_incoming_merge = neft_incoming.merge(
         df_db,
-        right_on=("customer_db", "amount_db"),
-        left_on=("Payee Name", "Amount"),
+        right_on=("customer_db", "amount_db", "instrumentno_db"),
+        left_on=("Payee Name", "Amount", "Reference No"),
         how="outer",
     )
     neft_incoming_to_be_uploaded = neft_incoming_merge[

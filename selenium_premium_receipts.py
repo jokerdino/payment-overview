@@ -45,7 +45,7 @@ for(var e = 0; e < elts.length; e++) {
 )
 
 select_date = driver.find_element("name", "fromdate")
-select_date.send_keys("01/04/2022")
+select_date.send_keys("01/04/2023")
 
 
 select_to_date = driver.find_element("name", "todate")
@@ -56,7 +56,7 @@ driver.find_element("xpath", "(//input[@name='fetchReport'])[2]").click()
 
 # print("waiting starts. count to 25")
 
-# driver.implicitly_wait(25)
+driver.implicitly_wait(25)
 
 # print("waiting over. time to close")
 

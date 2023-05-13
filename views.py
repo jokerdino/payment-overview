@@ -150,7 +150,7 @@ def home_page():
     copy_data.replace("", "_Unassigned", inplace=True)
     copy_data.fillna("_Unassigned", inplace=True)
 
-    draw_chart(copy_data)
+    # draw_chart(copy_data)
 
     pivot_data = pd.pivot_table(
         copy_data,

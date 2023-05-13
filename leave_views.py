@@ -1,4 +1,4 @@
-import datetime
+# import datetime
 from datetime import date, datetime, timedelta
 from fractions import Fraction
 
@@ -355,7 +355,7 @@ def leave_to_database(
             type_leave=type_leave,
             leave_letter_status=leave_letter_status,
             leave_reason=leave_reason,
-            created_on=datetime.datetime.now(),
+            created_on=datetime.now(),
             created_by=current_user.username,
         )
         db.session.add(leave)
@@ -460,9 +460,7 @@ def add_lop_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        leave_updated_date = datetime.datetime.strptime(
-            employee.leave_as_on, "%Y-%m-%d"
-        ).date()
+        leave_updated_date = datetime.strptime(employee.leave_as_on, "%Y-%m-%d").date()
 
         if start_date < leave_updated_date:
             flash("Earned leave already updated upto: %s" % employee.leave_as_on)
@@ -536,9 +534,7 @@ def add_special_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        leave_updated_date = datetime.datetime.strptime(
-            employee.leave_as_on, "%Y-%m-%d"
-        ).date()
+        leave_updated_date = datetime.strptime(employee.leave_as_on, "%Y-%m-%d").date()
 
         if start_date < leave_updated_date:
             flash("Earned leave already updated upto: %s" % employee.leave_as_on)
@@ -617,9 +613,7 @@ def add_earned_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        leave_updated_date = datetime.datetime.strptime(
-            employee.leave_as_on, "%Y-%m-%d"
-        ).date()
+        leave_updated_date = datetime.strptime(employee.leave_as_on, "%Y-%m-%d").date()
 
         if start_date < leave_updated_date:
             flash("Earned leave already updated upto: %s" % employee.leave_as_on)
@@ -733,9 +727,7 @@ def calculate_el_emp(emp_number, start_date):
     str_leave_updated_date = [x[0] for x in tuple_leave_updated_date]
     # print(str_leave_updated_date[0])
 
-    leave_updated_date = datetime.datetime.strptime(
-        str_leave_updated_date[0], "%Y-%m-%d"
-    ).date()
+    leave_updated_date = datetime.strptime(str_leave_updated_date[0], "%Y-%m-%d").date()
 
     # an employee will accrue earned leave when he/she is "on duty"
     # all leaves other than casual leave, quarantine leave, examination leave and trade union leave
@@ -798,9 +790,7 @@ def calc_earned_leave_page(emp_key):
     form = CalculateEarnedLeaveForm()
     if form.validate_on_submit():
         start_date = form.data["start_date"]
-        leave_updated_date = datetime.datetime.strptime(
-            employee.leave_as_on, "%Y-%m-%d"
-        ).date()
+        leave_updated_date = datetime.strptime(employee.leave_as_on, "%Y-%m-%d").date()
 
         if start_date < leave_updated_date:
             flash("Earned leave already updated upto: %s" % employee.leave_as_on)
@@ -821,9 +811,7 @@ def add_leave_encashment(emp_key):
         start_date = form.data["start_date"]
         encashed_days = form.data["encashed_days"]
 
-        leave_updated_date = datetime.datetime.strptime(
-            employee.leave_as_on, "%Y-%m-%d"
-        ).date()
+        leave_updated_date = datetime.strptime(employee.leave_as_on, "%Y-%m-%d").date()
 
         if start_date < leave_updated_date:
             flash("Earned leave already updated upto: %s" % employee.leave_as_on)
@@ -911,9 +899,7 @@ def add_sick_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        leave_updated_date = datetime.datetime.strptime(
-            employee.leave_as_on, "%Y-%m-%d"
-        ).date()
+        leave_updated_date = datetime.strptime(employee.leave_as_on, "%Y-%m-%d").date()
 
         if start_date < leave_updated_date:
             flash("Earned leave already updated upto: %s" % employee.leave_as_on)
@@ -1005,9 +991,7 @@ def add_rh_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        leave_updated_date = datetime.datetime.strptime(
-            employee.leave_as_on, "%Y-%m-%d"
-        ).date()
+        leave_updated_date = datetime.strptime(employee.leave_as_on, "%Y-%m-%d").date()
 
         if start_date < leave_updated_date:
             flash("Earned leave already updated upto: %s" % employee.leave_as_on)
@@ -1119,9 +1103,7 @@ def add_casual_leave(emp_key):
         leave_letter_status = form.data["leave_letter"]
         leave_reason = form.data["leave_reason"]
 
-        leave_updated_date = datetime.datetime.strptime(
-            employee.leave_as_on, "%Y-%m-%d"
-        ).date()
+        leave_updated_date = datetime.strptime(employee.leave_as_on, "%Y-%m-%d").date()
 
         if start_date < leave_updated_date:
             flash("Earned leave already updated upto: %s" % employee.leave_as_on)

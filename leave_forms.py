@@ -21,9 +21,17 @@ from wtforms.validators import (
 )
 from wtforms_components import DateRange
 
-rh_list = pd.read_excel("RH list.xlsx")
+try:
+    rh_list = pd.read_excel("/home/united/Projects/payment-overview/RH list.xlsx")
+except FileNotFoundError as e:
+    rh_list = pd.read_excel("RH list.xlsx")
 rh_list.DATE = pd.to_datetime(rh_list.DATE).dt.date
-public_holiday_list = pd.read_excel("public_holiday_list.xlsx")
+try:
+    public_holiday_list = pd.read_excel(
+        "/home/united/Projects/payment-overview/public_holiday_list.xlsx"
+    )
+except FileNotFoundError as e:
+    public_holiday_list = pd.read_excel("public_holiday_list.xlsx")
 public_holiday_list.DATE = pd.to_datetime(public_holiday_list.DATE).dt.date
 
 
