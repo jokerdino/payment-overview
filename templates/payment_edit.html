@@ -32,7 +32,7 @@
        <tr><th>{{ form.rel_manager.label }}</th>
            <td>{{ form.rel_manager(class="select") }}</td></tr>
        <tr><th>{{ form.broker.label }}</th>
-           <td>{{ form.broker(class='input', id="brokers") }}</td></tr>
+           <td>{{ form.broker(class='input') }}</td></tr>
        <tr><th>{{ form.nature.label }} </th>
            <td>{{ form.nature(class="select") }}</td></tr>
        <tr><th>{{ form.remarks.label }}</th>
@@ -61,7 +61,7 @@
             "{{broker}}",
         {% endfor %}
     ];
-    $( "#brokers" ).autocomplete({
+    $( "#broker" ).autocomplete({
       source: availableBrokers
     });
 } );

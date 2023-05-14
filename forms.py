@@ -1,7 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, DateField, IntegerField, PasswordField, StringField
+from wtforms import (
+    BooleanField,
+    DateField,
+    IntegerField,
+    PasswordField,
+    SelectField,
+    StringField,
+    TextAreaField,
+)
 from wtforms.validators import DataRequired, NumberRange, Optional
-from wtforms_components import SelectField
 
 
 class PaymentEditForm(FlaskForm):
@@ -19,81 +26,52 @@ class PaymentEditForm(FlaskForm):
             Optional(),
         ],
     )
-    mode = SelectField(
-        "Mode of payment:",
-        coerce=str,
-        choices=[
-            ("", ""),
-            ("NEFT", "NEFT"),
-            ("Cheque", "Cheque"),
-            ("Cash", "Cash"),
-            ("Others", "Others"),
-        ],
-    )
-
-    modeentry_list = [
-        ("", ""),
-        ("CD", "CD"),
-        ("Regular", "Regular"),
-        ("Scroll", "Scroll"),
-        ("BG", "BG"),
-        ("Others", "Others"),
-    ]
-    rel_manager_list = [
-        ("", ""),
-        ("Kannan", "Kannan"),
-        ("Ravikumar", "Ravikumar"),
-        ("Varinder", "Varinder"),
-        ("Anand Kumar", "Anand Kumar"),
-    ]
+    mode_list = ["", "NEFT", "Cheque", "Cash", "Others"]
+    mode = SelectField("Mode of payment:", choices=mode_list)
+    modeentry_list = ["", "CD", "Regular", "Scroll", "BG", "Others"]
+    rel_manager_list = ["", "Kannan", "Ravikumar", "Varinder", "Anand Kumar"]
     nature_list = [
-        ("", ""),
-        ("Fresh", "Fresh"),
-        ("Renewal", "Renewal"),
-        ("Endorsement", "Endorsement"),
-        ("Installment", "Installment"),
-        ("Extension", "Extension"),
-        ("Incoming coinsurance", "Incoming coinsurance"),
-        ("Others", "Others"),
+        "",
+        "Fresh",
+        "Renewal",
+        "Endorsement",
+        "Installment",
+        "Extension",
+        "Incoming coinsurance",
+        "Others",
     ]
-
     underwriter_list = [
-        ("", ""),
-        ("Anand Kumar", "Anand Kumar"),
-        ("Kesavi", "Kesavi"),
-        ("Pradeep", "Pradeep"),
-        ("Swatee Barik", "Swatee Barik"),
-        ("Vijaya", "Vijaya"),
-        ("Naval Jacob", "Naval Jacob"),
-        ("Others", "Others"),
+        "",
+        "Anand Kumar",
+        "Kesavi",
+        "Pradeep",
+        "Swatee Barik",
+        "Vijaya",
+        "Naval Jacob",
+        "Others",
     ]
     status_list = [
-        ("To be receipted", "To be receipted"),
-        ("To be underwritten", "To be underwritten"),
-        ("Work in progress", "Work in progress"),
-        (
-            "Awaiting further details from brokers/insured",
-            "Awaiting further details from brokers/insured",
-        ),
-        ("Approval pending", "Approval pending"),
-        ("GC Core issue - ticket raised", "GC Core issue - ticket raised"),
-        ("Completed", "Completed"),
-        ("To be refunded", "To be refunded"),
-        ("Waiting for payment", "Waiting for payment"),
-        ("Others1", "Others1"),
-        ("Others2", "Others2"),
+        "To be receipted",
+        "To be underwritten",
+        "Work in progress",
+        "Awaiting further details from brokers/insured",
+        "Approval pending",
+        "GC Core issue - Ticket raised",
+        "Completed",
+        "To be refunded",
+        "Waiting for payment",
+        "Others1",
+        "Others2",
     ]
 
-    modeentry = SelectField("Mode of entry:", coerce=str, choices=modeentry_list)
+    modeentry = SelectField("Mode of entry:", choices=modeentry_list)
     customerid = StringField(
         "Customer ID:",
         validators=[
             Optional(),
         ],
     )
-    rel_manager = SelectField(
-        "Relationship manager:", coerce=str, choices=rel_manager_list
-    )
+    rel_manager = SelectField("Relationship manager:", choices=rel_manager_list)
 
     broker = StringField(
         "Broker:",
@@ -103,7 +81,6 @@ class PaymentEditForm(FlaskForm):
     )
     nature = SelectField(
         "Nature of proposal:",
-        coerce=str,
         choices=nature_list,
         validators=[
             Optional(),
@@ -111,7 +88,6 @@ class PaymentEditForm(FlaskForm):
     )
     underwriter = SelectField(
         "Underwriter:",
-        coerce=str,
         choices=underwriter_list,
         validators=[
             Optional(),
@@ -119,7 +95,6 @@ class PaymentEditForm(FlaskForm):
     )
     status = SelectField(
         "Status:",
-        coerce=str,
         choices=status_list,
         validators=[
             Optional(),
@@ -131,7 +106,7 @@ class PaymentEditForm(FlaskForm):
             Optional(),
         ],
     )
-    remarks = StringField(
+    remarks = TextAreaField(
         "Remarks:",
         validators=[
             Optional(),
