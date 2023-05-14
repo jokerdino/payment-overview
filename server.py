@@ -76,6 +76,7 @@ def create_app():
         view_func=views.payments_page,
         methods=["GET", "POST"],
     )
+    app.add_url_rule("/payments/plot.png", view_func=views.draw_chart)
     app.add_url_rule(
         "/leave_management/",
         view_func=leave_views.leave_project,

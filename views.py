@@ -113,7 +113,8 @@ def pending_scroll_list():
     )
 
 
-def draw_chart(data):
+def draw_chart():
+    data = prepare_data()
     try:
         p = (
             ggplot(data=data)
@@ -132,13 +133,12 @@ def draw_chart(data):
             limitsize=False,
             verbose=False,
         )
+        return send_file("static/file.png", mimetype="image/png")
     except:
         print("Error")
 
-    return True
 
-
-def home_page():
+def prepare_data():
     from server import db
 
     df = pd.read_sql(
@@ -149,8 +149,11 @@ def home_page():
     copy_data = df[["id", "status", "rel_manager", "underwriter"]].copy()
     copy_data.replace("", "_Unassigned", inplace=True)
     copy_data.fillna("_Unassigned", inplace=True)
+    return copy_data
 
-    # draw_chart(copy_data)
+
+def home_page():
+    copy_data = prepare_data()
 
     pivot_data = pd.pivot_table(
         copy_data,
