@@ -504,7 +504,49 @@ def payment_edit_page(payment_key):
     form.policyno.data = payment.policyno
     form.instrumentno.data = payment.instrumentno
 
-    return render_template("payment_edit.html", form=form)
+    brokers_list = [
+        "Marsh",
+        "Stenhouse",
+        "BharatRe",
+        "Willis Tower Watson",
+        "Zeal",
+        "JB Boda",
+        "WAI",
+        "Aum",
+        "Prudent",
+        "Ace",
+        "Howden",
+        "Pioneer",
+        "Paavana",
+        "Vision",
+        "KM Dastur",
+        "Aon",
+        "TT Insurance",
+        "Global",
+        "First",
+        "Unilight",
+        "Optimum",
+        "Welltech",
+        "Premium",
+        "Aditya Birla",
+        "Equirus",
+        "Securisk",
+        "Heritage",
+        "Ntrust",
+        "Tata Motors",
+        "Way2wealth",
+        "Alliance",
+        "Aims",
+        "RMS ARC",
+        "ANIB ESSEL",
+        "Link-K",
+        "Futurisk",
+        "Profins",
+        "India Insure",
+        "Fouress",
+    ]
+
+    return render_template("payment_edit.html", form=form, brokers=brokers_list)
 
 
 def signup():

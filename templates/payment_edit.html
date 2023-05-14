@@ -6,7 +6,6 @@
     {{ form.csrf_token }}
     <table class="table is-fullwidth">
         <tr>
-
             <th> {{ form.customer.label }}</th>
             <td>
                 {{ form.customer(required=True, autofocus=True, class='input') }}
@@ -15,94 +14,58 @@
                 {{ error }}
                 </p>
                 {% endfor %}
-
             </td></tr>
-            <tr>
-                <th>{{ form.date.label }}</th>
-                <td>{{ form.date( class='input') }}</td>
-            </tr>
-
-            <tr>
-                <th> {{ form.amount.label }}</th>
-                <td>         {{ form.amount( class='input') }} </td></tr>
-
-                <tr>
-                    <th>{{ form.instrumentno.label }}</th>
-                    <td>{{ form.instrumentno(class='input') }}</td>
-                </tr>
-
-                <tr>
-
-                    <th>{{ form.mode.label }}</th>
-                    <td>  {{ form.mode(class="select") }} </td>
-                </tr>
-                <tr>
-
-                    <th> {{ form.modeentry.label }}</th>
-                    <td>{{ form.modeentry(class="select") }} </td>
-                </tr>
-                <tr>
-                    <th>{{ form.customerid.label }}
-
-                    </th>
-                    <td>  {{ form.customerid( class='input') }} </td>
-
-                    </tr>
-
-                    <tr>
-
-                    <th>{{ form.voucher.label }} </th>
-                        <td>{{ form.voucher (class='input') }}</td>
-                    </tr>
-                    <tr>
-
-                        <th>  {{ form.rel_manager.label }}</th>
-                        <td> {{ form.rel_manager(class="select") }} </td>
-                        </tr>
-                        <tr>
-                            <th>{{ form.broker.label }} </th>
-                            <td> {{ form.broker(class='input') }} </td>
-                            </tr>
-                            <tr>
-
-                                <th> {{ form.nature.label }} </th>
-
-                                <td>{{ form.nature(class="select") }} </td>
-                                </tr>
-                                <tr>
-                                    <th> {{ form.remarks.label }} </th>
-                                    <td>{{ form.remarks(class='textarea', placeholder="Write your remarks here.") }} </td>
-                                    </tr>
-
-                                    <tr>
-                                        <th>{{ form.proposal.label }}</th>
-                                        <td> {{ form.proposal(class='input') }}</td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <th>{{ form.policyno.label }}</th>
-                                        <td>{{ form.policyno(class='input') }}</td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <th>{{ form.underwriter.label }}</th>
-                                        <td> {{ form.underwriter(class="select") }} </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th>{{ form.ticket.label }} </th>
-                                            <td> {{ form.ticket(class='input') }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th>{{ form.status.label }} </th>
-
-                                                <td>{{ form.status(class="select") }} </td></tr>
+       <tr><th>{{ form.date.label }}</th>
+           <td>{{ form.date( class='input') }}</td></tr>
+       <tr><th>{{ form.amount.label }}</th>
+           <td>{{ form.amount( class='input') }}</td></tr>
+       <tr><th>{{ form.instrumentno.label }}</th>
+           <td>{{ form.instrumentno(class='input') }}</td></tr>
+       <tr><th>{{ form.mode.label }}</th>
+           <td>{{ form.mode(class="select") }}</td></tr>
+       <tr><th>{{ form.modeentry.label }}</th>
+           <td>{{ form.modeentry(class="select") }}</td></tr>
+       <tr><th>{{ form.customerid.label }} </th>
+           <td>{{ form.customerid( class='input') }}</td></tr>
+       <tr><th>{{ form.voucher.label }}</th>
+           <td>{{ form.voucher (class='input') }}</td></tr>
+       <tr><th>{{ form.rel_manager.label }}</th>
+           <td>{{ form.rel_manager(class="select") }}</td></tr>
+       <tr><th>{{ form.broker.label }}</th>
+           <td>{{ form.broker(class='input', id="brokers") }}</td></tr>
+       <tr><th>{{ form.nature.label }} </th>
+           <td>{{ form.nature(class="select") }}</td></tr>
+       <tr><th>{{ form.remarks.label }}</th>
+           <td>{{ form.remarks(class='textarea', placeholder="Write your remarks here.") }}</td></tr>
+       <tr><th>{{ form.proposal.label }}</th>
+           <td>{{ form.proposal(class='input') }}</td></tr>
+       <tr><th>{{ form.policyno.label }}</th>
+           <td>{{ form.policyno(class='input') }}</td></tr>
+       <tr><th>{{ form.underwriter.label }}</th>
+           <td>{{ form.underwriter(class="select") }}</td></tr>
+       <tr><th>{{ form.ticket.label }}</th>
+           <td>{{ form.ticket(class='input') }}</td></tr>
+       <tr><th>{{ form.status.label }}</th>
+           <td>{{ form.status(class="select") }}</td></tr>
     </table>
     <div class="field is-grouped">
         <button class="button is-primary is-big">Save</button>
     </div>
 
 </form>
+{% block scripts %}
+<script>
+  $( function() {
+    var availableBrokers = [
+        {% for broker in brokers %}
+            "{{broker}}",
+        {% endfor %}
+    ];
+    $( "#brokers" ).autocomplete({
+      source: availableBrokers
+    });
+} );
+</script>
+
+{% endblock scripts %}
 {% endblock content %}
