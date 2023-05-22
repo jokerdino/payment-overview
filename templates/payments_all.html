@@ -14,6 +14,7 @@
                 <th>Customer name</th>
                 <th>Date of payment</th>
                 <th>Amount</th>
+                <th>Instrument Number</th>
                 <th>Mode of payment</th>
                 <th>Mode of entry</th>
                 <th>Customer ID</th>
@@ -39,6 +40,7 @@
                     </td>
                     <td>{{ payment.date }}</td>
                     <td class="has-text-right">{{ "{:,}".format(payment.amount|int)}}</td>
+                    <td>{{ payment.instrumentno }}</td>
                     <td>{{ payment.mode }}</td>
                     <td>{{ payment.modeentry }}</td>
                     {% if title == "Payments to be receipted" and
@@ -67,8 +69,12 @@
                                     <td>{{ payment.status }}</td>
                                 {% endif %}
                                 <td><a class="button is-info js-modal-trigger" data-target="modal{{ payment.id }}">View</a></td>
-                                <td><a class="button is-link" href="{{ url_for ('payment_edit_page', payment_key=payment.id)}}">Edit</a> </td>
+				{% if payment.status == "Completed" %}
 
+				<td><a class="button is-link" disabled >Edit</a> </td>
+				{% else %}
+				<td><a class="button is-link is-outlined" href="{{ url_for ('payment_edit_page', payment_key=payment.id)}}">Edit</a> </td>
+				{% endif %}
                                 </tr>
             {% endfor %}
         </tbody>
@@ -201,9 +207,9 @@
                                 fixedHeader: true,
                                 stateSave: true,
                                 buttons: [
-                                             {   extend: 'copyHtml5', className: 'is-danger is-rounded'},
-                                              { extend: 'csvHtml5', className: 'is-info is-rounded'},
-                                               { extend: 'excelHtml5', className: 'is-primary is-rounded'}],
+                                             { extend: 'copyHtml5', className: 'is-danger is-rounded', title:''},
+                                             { extend: 'csvHtml5', className: 'is-info is-rounded', title:''},
+                                             { extend: 'excelHtml5', className: 'is-primary is-rounded', title:''}],
                                 order: [[1,'desc']],
                                             pagingType: 'full_numbers',
                                                    footerCallback: function (row, data, start, end, display) {

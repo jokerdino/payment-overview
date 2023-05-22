@@ -23,7 +23,7 @@ class PaymentEditForm(FlaskForm):
     amount = StringField(
         "Amount:",
         validators=[
-            Optional(),
+            DataRequired(),
         ],
     )
     mode_list = ["", "NEFT", "Cheque", "Cash", "Others"]

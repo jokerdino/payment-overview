@@ -42,8 +42,8 @@ class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     office_code = db.Column(db.Integer)
 
-    customer = db.Column(db.String)
-    date = db.Column(db.String)
+    customer = db.Column(db.String, nullable=False)
+    date = db.Column(db.Date)
     amount = db.Column(db.Integer)
 
     mode = db.Column(db.String)
@@ -60,10 +60,10 @@ class Payment(db.Model):
 
     status = db.Column(db.String)
     voucher = db.Column(db.String)
-    created = db.Column(db.String)
+    created = db.Column(db.DateTime)
 
-    history = db.Column(db.String)
-    completed = db.Column(db.String)
+    history = db.Column(db.Text)
+    completed = db.Column(db.DateTime)
     proposal = db.Column(db.String)
 
     policyno = db.Column(db.String)
@@ -73,9 +73,9 @@ class Payment(db.Model):
 class Employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     office_code = db.Column(db.Integer)
-    emp_number = db.Column(db.Integer)
+    emp_number = db.Column(db.Integer, unique=True)  # , primary_key=True)
     name = db.Column(db.String(80), nullable=False)
-    leave_as_on = db.Column(db.String(80))
+    leave_as_on = db.Column(db.Date)
     count_casual_leave = db.Column(db.Integer)
     count_earned_leave = db.Column(db.Integer)
     count_sick_leave = db.Column(db.Integer)
@@ -94,13 +94,13 @@ class Leaves(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
     emp_number = db.Column(db.Integer, db.ForeignKey("employee.emp_number"))
     employee = db.relationship(
-        "Employee", backref=db.backref("employee", uselist=False)
+        "Employee", backref=db.backref("employee")  # , uselist=False)
     )
-    date_of_leave = db.Column(db.String)
+    date_of_leave = db.Column(db.Date)
     nature_of_leave = db.Column(db.String)
     type_leave = db.Column(db.String)
-    leave_letter_status = db.Column(db.String)
+    leave_letter_status = db.Column(db.Boolean)
     leave_reason = db.Column(db.String)
-    created_on = db.Column(db.String)
+    created_on = db.Column(db.DateTime)
     created_by = db.Column(db.String)
     approved_by = db.Column(db.String)

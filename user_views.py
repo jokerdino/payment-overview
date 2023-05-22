@@ -85,10 +85,10 @@ def reset_password_page():
 def admin_check():
     from server import db
 
-    admin = db.session.query(User).filter(User.is_admin == 1).first()
+    admin = db.session.query(User).filter(User.is_admin == True).first()
     if not admin:
         user = db.session.query(User).first()
         if user:  # .query.first()
-            user.is_admin = 1
+            user.is_admin = True
             db.session.commit()
             print("user has been made admin")

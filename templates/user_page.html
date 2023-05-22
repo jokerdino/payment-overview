@@ -40,11 +40,11 @@ current_user.emp_number == user.emp_number %}
 
     {% endif %}
 </form>
-{% endif %}
 {% if user.employee.id %}
 <a class="button is-link" href="{{ url_for ('employee_page', emp_key=user.employee.id) }}">
     See leave record</a>
 {% endif %}
 
-<a class="button is-link" href="{{ url_for('view_all_users') }}"> Go back</a>
+{% endif %}
+<a class="button is-link" href="{{ url_for('view_all_users') }}">Go back</a>
 {% endblock content %}

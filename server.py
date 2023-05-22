@@ -228,8 +228,10 @@ def create_app():
     lm.init_app(app)
     lm.login_view = "login_page"
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///employees.sqlite"
-
+    #    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///employees.sqlite"
+    app.config[
+        "SQLALCHEMY_DATABASE_URI"
+    ] = "postgresql://barneedhar:barneedhar@localhost:5432/payments"
     db.init_app(app)
     migrate.init_app(app, db)
     return app

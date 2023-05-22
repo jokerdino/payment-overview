@@ -2,10 +2,13 @@ from datetime import datetime
 
 import pandas as pd
 import requests
+from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 
 import telegram_secrets
 from model import Payment
+
+engine = create_engine("postgresql://barneedhar:barneedhar@localhost:5432/payments")
 
 
 def export_database():
@@ -40,8 +43,6 @@ def update_database(df_db, neft_incoming):
 
 
 def convert_input(upload_file):
-    from server import db
-
     # convert file downloaded from NEFT portal to required format
     df_db_fetch = export_database()
 
@@ -74,7 +75,10 @@ def convert_input(upload_file):
 
     # create new dataframe with required column name and copy values from neft file to this format
     columns_list = df_db_fetch.columns.values
-    empty_csv = pd.DataFrame(columns=[columns_list])
+    list_columns_list = list(columns_list)
+
+    list_columns_list.remove("id")
+    empty_csv = pd.DataFrame(columns=[list_columns_list])
     empty_csv["customer"] = neft_incoming_to_be_uploaded["Payee Name"]
     empty_csv["amount"] = neft_incoming_to_be_uploaded["Amount"]
     empty_csv["date"] = neft_incoming_to_be_uploaded["Reference Date"]
@@ -92,9 +96,7 @@ def convert_input(upload_file):
         # upload prepared csv file to database
         try:
             df_upload = pd.read_csv(file_name)
-            df_upload.to_sql(
-                con=db.get_engine(), name="payment", if_exists="append", index=False
-            )
+            df_upload.to_sql("payment", engine, if_exists="append", index=False)
 
         except SQLAlchemyError as e:
             error = str(e.__dict__["orig"])

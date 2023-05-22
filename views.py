@@ -16,7 +16,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 import telegram_secrets
 import user_views
 from forms import LoginForm, PaymentEditForm, SignupForm
-from model import Payment, User
+from model import Employee, Payment, User
 from sqlite_excel import convert_input, export_database
 
 
@@ -482,7 +482,8 @@ def payment_edit_page(payment_key):
 
     form.customer.data = payment.customer
 
-    form.date.data = datetime.strptime(payment.date, "%Y-%m-%d") if payment.date else ""
+    # form.date.data = datetime.strptime(payment.date, "%Y-%m-%d") if payment.date else ""
+    form.date.data = payment.date if payment.date else ""
     form.amount.data = payment.amount
     form.mode.data = payment.mode
     form.modeentry.data = payment.modeentry
@@ -571,6 +572,12 @@ def signup():
             # return redirect(url_for("signup"))
 
         else:
+            # add employee number to employee database if employee number does not exist
+            employee = Employee.query.filter(Employee.emp_number == emp_number).first()
+            if not employee:
+                print("employee number does not exist")
+                new_employee = Employee(name=username, emp_number=emp_number)
+                db.session.add(new_employee)
             user = User(
                 username=username, password=password_hash, emp_number=emp_number
             )

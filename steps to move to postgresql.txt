@@ -1,0 +1,19 @@
+sqlite3 -header -csv employees.sqlite "select * from payment;" > backup_payments.csv
+sqlite3 -header -csv employees.sqlite "select * from user;" > backup_user.csv
+sqlite3 -header -csv employees.sqlite "select * from leaves;" > backup_leaves.csv
+sqlite3 -header -csv employees.sqlite "select * from employee;" > backup_employee.csv
+
+
+sudo -iu postgres psql
+drop database payments;
+create database payments;
+grant all privileges on database payments to barneedhar;
+
+python server.py
+
+flask --app=server.py db stamp header
+flask --app=server.py db migrate
+flask --app=server.py db upgrade
+
+
+python upload_tables.py
