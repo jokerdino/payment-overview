@@ -29,24 +29,29 @@ def home():
 
 
 def downloaded_items():
-    receipted_items = pd.read_csv("receipted.csv")
+    receipted_items = pd.read_sql(
+        "receipted", "postgresql://barneedhar:barneedhar@localhost:5432/payments"
+    )
     receipted_items = receipted_items[
         ["id", "customer", "date", "amount", "instrumentno", "status"]
     ]
     return render_template(
-        "cd.html",
-        tables=[
-            receipted_items.to_html(
-                classes="table is-fullwidth",
-                border=1,
-                table_id="table",
-                justify="center",
-                float_format="{:.0f}".format,
-                header=True,
-                index=False,
-            )
-        ],
+        "payments_receipted.html",
+        receipted_tables=receipted_items.to_dict(orient="records"),
     )
+
+    #    [
+    #        receipted_items.to_html(
+    #            classes="table is-fullwidth",
+    #            border=1,
+    #            table_id="table",
+    #            justify="center",
+    #            float_format="{:.0f}".format,
+    #            header=True,
+    #            index=False,
+    #        )
+    #    ],
+    # )
 
 
 def cd_list():
@@ -428,7 +433,7 @@ def payment_edit_page(payment_key):
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         update = dt_string + ": " + status
 
-        if payment.history != None:
+        if payment.history is not None:
             if payment.status != form.data["status"]:
                 underwriter_update = compare_underwriter(
                     dt_string, payment.underwriter, underwriter
@@ -483,7 +488,7 @@ def payment_edit_page(payment_key):
     form.customer.data = payment.customer
 
     # form.date.data = datetime.strptime(payment.date, "%Y-%m-%d") if payment.date else ""
-    form.date.data = payment.date if payment.date else ""
+    form.date.data = payment.date or ""
     form.amount.data = payment.amount
     form.mode.data = payment.mode
     form.modeentry.data = payment.modeentry

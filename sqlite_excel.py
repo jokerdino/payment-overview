@@ -21,6 +21,7 @@ def export_database():
             db.session.query(Payment).statement,
             db.get_engine(),
         )
+        return df_db_fetch
     except SQLAlchemyError as e:
         error = str(e.__dict__["orig"])
         print(error)
@@ -30,16 +31,21 @@ def export_database():
 
     # add suffix to database csv file
 
-    return df_db_fetch
-
 
 def update_database(df_db, neft_incoming):
     neft_downloaded = neft_incoming[neft_incoming["File Splited"] == "Yes"]
     df_db = df_db.merge(
         neft_downloaded, left_on="instrumentno_db", right_on="Reference No", how="inner"
     )
+
     df_db.columns = df_db.columns.str.removesuffix("_db")
-    df_db.to_csv("/home/united/Projects/payment-overview/receipted.csv", index=False)
+    df_db.to_sql("receipted", engine, if_exists="replace", index=False)
+
+
+#    try:
+#        df_db.to_csv("/home/united/Projects/payment-overview/receipted.csv", index=False)
+#    except OSError as e:
+#        print("file path not found")
 
 
 def convert_input(upload_file):
@@ -50,8 +56,9 @@ def convert_input(upload_file):
     df_db = df_db_fetch.add_suffix("_db")
     #    df_db.to_csv("db.csv")
 
-    neft_incoming = pd.read_excel(upload_file, skiprows=4, usecols=range(1, 16))
-
+    neft_incoming = pd.read_excel(
+        upload_file, dtype={"Reference No": object}, skiprows=4, usecols=range(1, 16)
+    )
     update_database(df_db, neft_incoming)
 
     neft_incoming = neft_incoming[neft_incoming["File Splited"] != "Yes"]
@@ -60,9 +67,7 @@ def convert_input(upload_file):
     neft_incoming["Reference Date"] = pd.to_datetime(
         neft_incoming["Reference Date"], dayfirst=True
     )
-
     # merge NEFT file with database csv file
-
     neft_incoming_merge = neft_incoming.merge(
         df_db,
         right_on=("customer_db", "amount_db", "instrumentno_db"),
@@ -72,7 +77,6 @@ def convert_input(upload_file):
     neft_incoming_to_be_uploaded = neft_incoming_merge[
         neft_incoming_merge["customer_db"].isna()
     ]
-
     # create new dataframe with required column name and copy values from neft file to this format
     columns_list = df_db_fetch.columns.values
     list_columns_list = list(columns_list)
@@ -82,7 +86,7 @@ def convert_input(upload_file):
     empty_csv["customer"] = neft_incoming_to_be_uploaded["Payee Name"]
     empty_csv["amount"] = neft_incoming_to_be_uploaded["Amount"]
     empty_csv["date"] = neft_incoming_to_be_uploaded["Reference Date"]
-    empty_csv["instrumentno"] = neft_incoming_to_be_uploaded["Reference No"]
+    empty_csv["instrumentno"] = neft_incoming_to_be_uploaded["Reference No"].astype(str)
     empty_csv["mode"] = "NEFT"
     empty_csv["status"] = "To be receipted"
     empty_csv["created"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -95,7 +99,7 @@ def convert_input(upload_file):
 
         # upload prepared csv file to database
         try:
-            df_upload = pd.read_csv(file_name)
+            df_upload = pd.read_csv(file_name, converters={"instrumentno": str})
             df_upload.to_sql("payment", engine, if_exists="append", index=False)
 
         except SQLAlchemyError as e:

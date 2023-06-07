@@ -38,21 +38,25 @@
                         <a href="{{ url_for ('payment_page', payment_key=payment.id ) }}">
                             {{ payment.customer }}</a>
                     </td>
-                    <td>{{ payment.date }}</td>
-                    <td class="has-text-right">{{ "{:,}".format(payment.amount|int)}}</td>
-                    <td>{{ payment.instrumentno }}</td>
-                    <td>{{ payment.mode }}</td>
-                    <td>{{ payment.modeentry }}</td>
+                    <td data-sort={{ payment.date or '' }}>
+                        {% if payment.date %}
+                        {{ payment.date.strftime('%d-%m-%Y') }}
+                        {% endif %}
+                    </td>
+                    <td class="has-text-right">{{ "{:,}".format(payment.amount|int) }}</td>
+                    <td>{{ payment.instrumentno or '' }}</td>
+                    <td>{{ payment.mode or '' }}</td>
+                    <td>{{ payment.modeentry or '' }}</td>
                     {% if title == "Payments to be receipted" and
                         payment.customerid != None and
                         payment.customerid|length %}
                         <td class="has-background-primary">{{ payment.customerid }}</td>
                     {% else %}
-                        <td >{{ payment.customerid }}</td>
+                        <td >{{ payment.customerid or '' }}</td>
                     {% endif %}
 
-                    <td>{{ payment.rel_manager }}</td>
-                    <td>{{ payment.underwriter }}</td>
+                    <td>{{ payment.rel_manager or '' }}</td>
+                    <td>{{ payment.underwriter or '' }}</td>
                                 {% if payment.status == "Approval pending" %}
                                     <td class="has-background-danger">{{ payment.status }}</td>
                        	         {% elif payment.status == "GC Core issue - ticket raised" %}
@@ -71,7 +75,7 @@
                                 <td><a class="button is-info js-modal-trigger" data-target="modal{{ payment.id }}">View</a></td>
 				{% if payment.status == "Completed" %}
 
-				<td><a class="button is-link" disabled >Edit</a> </td>
+				<td><a class="button is-link" disabled>Edit</a> </td>
 				{% else %}
 				<td><a class="button is-link is-outlined" href="{{ url_for ('payment_edit_page', payment_key=payment.id)}}">Edit</a> </td>
 				{% endif %}
@@ -101,11 +105,15 @@
     </tr>
     <tr>
         <th>Date:</th>
-        <td> {{ payment.date }} </td>
+        <td>
+            {% if payment.date %}
+            {{ payment.date.strftime('%d-%m-%Y') }}
+            {% endif %}
+        </td>
     </tr>
     <tr>
         <th>Amount:</th>
-        <td >{{ "{:,}".format(payment.amount|int)}}</td>
+        <td >{{ "{:,}".format(payment.amount|int) }}</td>
 
     </tr>
     <tr>
@@ -151,7 +159,7 @@
     </tr>
     <tr>
         <th>Policy no: </th>
-        <td>{{ payment.policyno }} </td>
+        <td>{{ payment.policyno }}</td>
     </tr>
     <tr>
         <th>Underwriter:</th>

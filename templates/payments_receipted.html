@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-body">
+        <div class"container has-text-centered">
+
+            <h1 class="title">List of payments already downloaded but not marked in portal</h1>
+
+        </div>
+
+        {% if receipted_tables %}
+
+    <table class="table is-striped is-fullwidth" id="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Instrument number</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                {% for value in receipted_tables %}
+                <td>      <a href="{{ url_for ('payment_edit_page', payment_key=value['id']) }}">
+                            {{ value['id'] }}</a>
+                </td>
+                <td>{{ value['customer'] }}</td>
+                <td>{{ value['date'].strftime('%d-%m-%Y') }}</td>
+                <td>{{ value['amount'] }}</td>
+                <td>{{ value['instrumentno'] }}</td>
+                <td>{{ value['status'] }}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+
+        {% endif %}
+
+</section>
+        {% block scripts %}
+        <script>
+            $(document).ready(function () {
+                            $('#table').DataTable({
+                                            dom: 'lfBrtip',
+                                buttons: [
+                                             { extend: 'copyHtml5', className: 'is-danger is-rounded'},
+                                             { extend: 'csvHtml5', className: 'is-info is-rounded'},
+                                             { extend: 'excelHtml5', className: 'is-primary is-rounded'}],
+                                            order: [[0,'asc']],
+                                            pagingType: 'full_numbers',
+                                            lengthMenu: [
+                                                            [10,25,50,100,-1],
+                                                            [10,25,50,100,'All'],]
+                                        });
+                        });
+        </script>
+        {% endblock scripts %}
+        {% endblock content %}
