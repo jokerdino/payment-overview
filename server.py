@@ -50,7 +50,17 @@ def create_app():
     )
     app.add_url_rule("/payments/cd_list", view_func=views.cd_list, methods=["GET"])
     app.add_url_rule(
+        "/payments/cd_list/upload",
+        view_func=views.upload_cd_list,
+        methods=["POST", "GET"],
+    )
+    app.add_url_rule(
         "/payments/pending_scroll", view_func=views.pending_scroll_list, methods=["GET"]
+    )
+    app.add_url_rule(
+        "/payments/pending_scroll/upload",
+        view_func=views.upload_scroll_list,
+        methods=["POST", "GET"],
     )
     app.add_url_rule(
         "/payments/pending_uw",
@@ -64,7 +74,9 @@ def create_app():
     )
     app.add_url_rule("/payments/<int:payment_key>", view_func=views.payment_page)
     app.add_url_rule(
-        "/new-payment", view_func=views.payment_add_page, methods=["GET", "POST"]
+        "/payments/new-payment",
+        view_func=views.payment_add_page,
+        methods=["GET", "POST"],
     )
     app.add_url_rule(
         "/payments/<int:payment_key>/edit",

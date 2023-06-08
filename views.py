@@ -40,81 +40,65 @@ def downloaded_items():
         receipted_tables=receipted_items.to_dict(orient="records"),
     )
 
-    #    [
-    #        receipted_items.to_html(
-    #            classes="table is-fullwidth",
-    #            border=1,
-    #            table_id="table",
-    #            justify="center",
-    #            float_format="{:.0f}".format,
-    #            header=True,
-    #            index=False,
-    #        )
-    #    ],
-    # )
+
+def upload_cd_list():
+    if request.method == "POST":
+        cd_file = request.files.get("file")
+        cd_list = pd.read_excel(cd_file)
+        cd_list_filter = cd_list[["SL Name", "SL Code", "CD number", "Credit"]]
+        engine = "postgresql://barneedhar:barneedhar@localhost:5432/payments"
+        cd_list_filter.to_sql("cd_list", engine, if_exists="replace", index=False)
+        flash("CD list has been uploaded.")
+    return render_template("upload.html")
 
 
 def cd_list():
-    cd_list = pd.read_excel("CD_list.xlsx")
-    cd_list_filter = cd_list[["SL Name", "SL Code", "CD number", "Credit"]]
-    cd_list_filter.sort_values(by="SL Name", ascending=False)
-    return render_template(
-        "cd.html",
-        tables=[
-            cd_list_filter.to_html(
-                classes="table is-fullwidth",
-                border=1,
-                table_id="table",
-                justify="center",
-                float_format="{:.0f}".format,
-                header=True,
-                index=False,
-            )
-        ],
+    cd_list_filter = pd.read_sql(
+        "cd_list", "postgresql://barneedhar:barneedhar@localhost:5432/payments"
     )
+    cd_header_list = list(cd_list_filter.columns.values)
+    return render_template(
+        "cd_new.html",
+        receipted_tables=cd_list_filter.to_dict(orient="records"),
+        header=cd_header_list,
+    )
+
+
+def upload_scroll_list():
+    if request.method == "POST":
+        scroll_file = request.files.get("file")
+        scroll_list = pd.read_csv(scroll_file)
+        scroll_list["Payment Received Date"] = pd.to_datetime(
+            scroll_list["Payment Received Date"], format="%b %d, %Y %I:%M %p"
+        )
+        scroll_list["Payment Entry Date"] = pd.to_datetime(
+            scroll_list["Payment Entry Date"], format="%b %d, %Y %I:%M %p"
+        )
+        scroll_list["Cheque Date"] = pd.to_datetime(
+            scroll_list["Cheque Date"], format="%b %d, %Y %I:%M %p"
+        )
+        scroll_list["Date of Expiry"] = pd.to_datetime(
+            scroll_list["Date of Expiry"], format="%b %d, %Y %I:%M %p"
+        )
+        scroll_list.loc[scroll_list["Cheque Date"].isna(), "Cheque Date"] = scroll_list[
+            "Payment Entry Date"
+        ]
+        scroll_list = scroll_list.rename({"Cheque Number": "Instrument number"}, axis=1)
+        engine = "postgresql://barneedhar:barneedhar@localhost:5432/payments"
+        scroll_list.to_sql("scroll_list", engine, if_exists="replace", index=False)
+        flash("Pending scroll list has been uploaded.")
+    return render_template("upload.html")
 
 
 def pending_scroll_list():
-    scroll_list = pd.read_csv("dw_461_pending_scroll_reg.csv")
-    scroll_list["Payment Received Date"] = pd.to_datetime(
-        scroll_list["Payment Received Date"], format="%b %d, %Y %I:%M %p"
+    scroll_list = pd.read_sql(
+        "scroll_list", "postgresql://barneedhar:barneedhar@localhost:5432/payments"
     )
-    scroll_list["Payment Entry Date"] = pd.to_datetime(
-        scroll_list["Payment Entry Date"], format="%b %d, %Y %I:%M %p"
-    )
-    scroll_list["Cheque Date"] = pd.to_datetime(
-        scroll_list["Cheque Date"], format="%b %d, %Y %I:%M %p"
-    )
-    scroll_list["Date of Expiry"] = pd.to_datetime(
-        scroll_list["Date of Expiry"], format="%b %d, %Y %I:%M %p"
-    )
-
-    scroll_list["Payment Received Date"] = scroll_list[
-        "Payment Received Date"
-    ].dt.strftime("%Y-%m-%d")
-    scroll_list["Payment Entry Date"] = scroll_list["Payment Entry Date"].dt.strftime(
-        "%Y-%m-%d"
-    )
-    scroll_list["Cheque Date"] = scroll_list["Cheque Date"].dt.strftime("%Y-%m-%d")
-    scroll_list["Date of Expiry"] = scroll_list["Date of Expiry"].dt.strftime(
-        "%Y-%m-%d"
-    )
-    scroll_list = scroll_list.rename({"Cheque Number": "Instrument number"}, axis=1)
-    # cd_list_filter = cd_list[['SL Name','SL Code','CD number','Credit']]
-    # cd_list_filter.sort_values(by='SL Name',ascending=False)
+    scroll_header_list = list(scroll_list.columns.values)
     return render_template(
-        "scroll.html",
-        tables=[
-            scroll_list.to_html(
-                classes="table is-fullwidth",
-                border=1,
-                table_id="table",
-                justify="center",
-                float_format="{:.0f}".format,
-                header=True,
-                index=False,
-            )
-        ],
+        "scroll_list.html",
+        tables=scroll_list.to_dict(orient="records"),
+        header=scroll_header_list,
     )
 
 

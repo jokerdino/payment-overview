@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-body">
+        <div class"container has-text-centered">
+
+            <h1 class="title">Pending scroll list</h1>
+
+        </div>
+
+        {% if tables %}
+
+    <table class="table is-striped is-fullwidth" id="table">
+            <thead>
+                <tr>
+                    {% for heading in header %}
+                    <th> {{ heading }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                {% for value in tables %}
+                <td>{{ value['Customer ID'] }}</td>
+                <td>{{ value['Customer Name'] }}</td>
+                <td>{{ value['Payment ID'] }}</td>
+                <td data-sort={{ value['Payment Received Date'] }}>
+                    {{ value['Payment Received Date'].strftime('%d-%m-%Y')}}</td>
+                <td data-sort={{ value['Payment Entry Date'] }}>
+                {{ value['Payment Entry Date'].strftime('%d-%m-%Y') }}</td>
+                <td>{{ value['Mode of Payment'] }}</td>
+                <td>{{ value['Instrument number'] }}</td>
+                <td data-sort={{ value['Cheque Date'] }}>
+                {{ value['Cheque Date'].strftime('%d-%m-%Y') }}</td>
+                <td class="has-text-right">{{ "{:,}".format(value['Payment Amount']|int) }}</td>
+                <td class="has-text-right">{{ "{:,}".format(value['Balance Amount']|int) }}</td>
+                <td data-sort={{ value['Date of Expiry'] }}>
+                    {{ value['Date of Expiry'].strftime('%d-%m-%Y')}}</td>
+                <td> {{ value['User ID'] }}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="9" class="has-text-left">Total:</th>
+                <th colspan="3"></th>
+            </tr>
+        </tfoot>
+        </table>
+
+        {% endif %}
+
+</section>
+        {% block scripts %}
+        <script>
+            $(document).ready(function () {
+                            $('#table').DataTable({
+                                            dom: 'lfBrtip',
+                                buttons: [
+                                             { extend: 'copyHtml5', className: 'is-danger is-rounded'},
+                                             { extend: 'csvHtml5', className: 'is-info is-rounded'},
+                                             { extend: 'excelHtml5', className: 'is-primary is-rounded'}],
+                                            order: [[0,'asc']],
+                                            pagingType: 'full_numbers',
+                                            footerCallback: function (row, data, start, end, display) {
+            var api = this.api();
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column(9)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Total over this page
+            pageTotal = api
+                .column(9, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Update footer
+            $(api.column(9).footer()).html('Rs.' + pageTotal + ' (Rs.' + total + ' total)');
+        },
+                                            lengthMenu: [
+                                                            [10,25,50,100,-1],
+                                                            [10,25,50,100,'All'],]
+                                        });
+                        });
+        </script>
+        {% endblock scripts %}
+        {% endblock content %}
