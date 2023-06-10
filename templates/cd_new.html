@@ -10,7 +10,12 @@
         </div>
 
         {% if receipted_tables %}
+        <div class="has-text-right">
 
+            CD list last updated on: {% if updated_time %}
+        {{ updated_time.strftime("%d-%m-%Y %H:%M:%S") }}
+        {% endif %}
+</div>
     <table class="table is-striped is-fullwidth" id="table">
             <thead>
                 <tr>

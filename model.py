@@ -1,6 +1,10 @@
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData  # , create_engine, Table
+
+# from sqlalchemy.ext.declarative import declarative_base
+
+# Base = declarative_base()
 
 convention = {
     "ix": "ix_%(column_0_label)s",
@@ -14,6 +18,8 @@ metadata = MetaData(naming_convention=convention)
 
 
 db = SQLAlchemy(metadata=metadata)
+
+# engine = create_engine("postgresql://barneedhar:barneedhar@localhost:5432/payments")
 
 
 class User(UserMixin, db.Model):
@@ -104,3 +110,24 @@ class Leaves(db.Model):
     created_on = db.Column(db.DateTime)
     created_by = db.Column(db.String)
     approved_by = db.Column(db.String)
+
+
+# class Receipted(Base):
+#    __table__ = Table('receipted', Base.metadata, db.Column("id", db.Integer, primary_key=True),
+#            autoload=True, autoload_with=engine, extend_existing=True)
+#
+# class ScrollList(Base):
+#    __table__ = Table('scroll_list', Base.metadata, db.Column("Payment ID", db.Integer, primary_key=True),
+#            autoload=True, autoload_with=engine)
+#
+#
+# class CDList(Base):
+#    __table__ = Table('cd_list', Base.metadata, db.Column("SL Code", db.Integer, primary_key=True),
+#            autoload=True, autoload_with=engine)
+
+
+class Config(db.Model):
+    id = db.Column("id", db.Integer, primary_key=True)
+    scroll_updated_time = db.Column(db.DateTime)
+    cd_list_updated_time = db.Column(db.DateTime)
+    uw_list = db.Column(db.String)

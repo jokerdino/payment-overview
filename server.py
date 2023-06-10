@@ -8,7 +8,7 @@ from waitress import serve
 import leave_views
 import user_views
 import views
-from model import User, db  # , Payment, Leaves, Employee
+from model import Config, User, db  # , Payment, Leaves, Employee
 
 # from flask_admin.contrib.sqla import ModelView
 
@@ -254,4 +254,8 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         user_views.admin_check()
+        if not Config.query.first():
+            config = Config()
+            db.session.add(config)
+            db.session.commit()
     serve(app, host="0.0.0.0", port=8080)

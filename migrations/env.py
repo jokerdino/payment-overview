@@ -88,11 +88,18 @@ def run_migrations_online():
 
     connectable = get_engine()
 
+    def include_object(object, name, type_, reflected, compare_to):
+        if type_ == "table" and name in ("receipted", "cd_list", "scroll_list"):
+            return False
+
+        return True
+
     with connectable.connect() as connection:
         context.configure(
             connection=connection,
             target_metadata=get_metadata(),
             process_revision_directives=process_revision_directives,
+            include_object=include_object,
             **current_app.extensions["migrate"].configure_args,
         )
 

@@ -26,7 +26,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 import telegram_secrets
 import user_views
 from forms import LoginForm, PaymentEditForm, SignupForm
-from model import Employee, Payment, User
+from model import Config, Employee, Payment, User
 from sqlite_excel import convert_input, export_database
 
 
@@ -52,12 +52,17 @@ def downloaded_items():
 
 
 def upload_cd_list():
+    from server import db
+
     if request.method == "POST":
         cd_file = request.files.get("file")
         cd_list = pd.read_excel(cd_file)
         cd_list_filter = cd_list[["SL Name", "SL Code", "CD number", "Credit"]]
         engine = "postgresql://barneedhar:barneedhar@localhost:5432/payments"
         cd_list_filter.to_sql("cd_list", engine, if_exists="replace", index=False)
+        config = Config.query.first()
+        config.cd_list_updated_time = datetime.now()
+        db.session.commit()
         flash("CD list has been uploaded.")
     return render_template("upload.html", title="Upload CD list")
 
@@ -67,14 +72,18 @@ def cd_list():
         "cd_list", "postgresql://barneedhar:barneedhar@localhost:5432/payments"
     )
     cd_header_list = list(cd_list_filter.columns.values)
+    config = Config.query.first()
     return render_template(
         "cd_new.html",
         receipted_tables=cd_list_filter.to_dict(orient="records"),
         header=cd_header_list,
+        updated_time=config.cd_list_updated_time,
     )
 
 
 def upload_scroll_list():
+    from server import db
+
     if request.method == "POST":
         scroll_file = request.files.get("file")
         scroll_list = pd.read_csv(scroll_file)
@@ -96,6 +105,9 @@ def upload_scroll_list():
         scroll_list = scroll_list.rename({"Cheque Number": "Instrument number"}, axis=1)
         engine = "postgresql://barneedhar:barneedhar@localhost:5432/payments"
         scroll_list.to_sql("scroll_list", engine, if_exists="replace", index=False)
+        config = Config.query.first()
+        config.scroll_updated_time = datetime.now()
+        db.session.commit()
         flash("Pending scroll list has been uploaded.")
     return render_template("upload.html", title="Upload pending scroll list")
 
@@ -105,10 +117,12 @@ def pending_scroll_list():
         "scroll_list", "postgresql://barneedhar:barneedhar@localhost:5432/payments"
     )
     scroll_header_list = list(scroll_list.columns.values)
+    config = Config.query.first()
     return render_template(
         "scroll_list.html",
         tables=scroll_list.to_dict(orient="records"),
         header=scroll_header_list,
+        updated_time=config.scroll_updated_time,
     )
 
 
