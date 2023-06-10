@@ -53,7 +53,7 @@
                                              { extend: 'excelHtml5', className: 'is-primary is-rounded'}],
                                             order: [[0,'asc']],
                                             pagingType: 'full_numbers',
-                                                                                               footerCallback: function (row, data, start, end, display) {
+    footerCallback: function (row, data, start, end, display) {
             var api = this.api();
 
             // Remove the formatting to get integer data for summation

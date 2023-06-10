@@ -4,7 +4,17 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import requests
 from flask import flash, redirect, render_template, request, send_file, url_for
-from plotnine import aes, facet_wrap, geom_bar, ggplot, ggsave, ggtitle, labs
+from plotnine import (
+    aes,
+    element_text,
+    facet_wrap,
+    geom_bar,
+    ggplot,
+    ggsave,
+    ggtitle,
+    labs,
+    theme,
+)
 from sqlalchemy import or_
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -49,7 +59,7 @@ def upload_cd_list():
         engine = "postgresql://barneedhar:barneedhar@localhost:5432/payments"
         cd_list_filter.to_sql("cd_list", engine, if_exists="replace", index=False)
         flash("CD list has been uploaded.")
-    return render_template("upload.html")
+    return render_template("upload.html", title="Upload CD list")
 
 
 def cd_list():
@@ -87,7 +97,7 @@ def upload_scroll_list():
         engine = "postgresql://barneedhar:barneedhar@localhost:5432/payments"
         scroll_list.to_sql("scroll_list", engine, if_exists="replace", index=False)
         flash("Pending scroll list has been uploaded.")
-    return render_template("upload.html")
+    return render_template("upload.html", title="Upload pending scroll list")
 
 
 def pending_scroll_list():
@@ -112,6 +122,7 @@ def draw_chart():
             + labs(x="Relationship manager", y="Count of tasks")
             + geom_bar()
             + facet_wrap(["underwriter"], ncol=3)
+            + theme(axis_text_x=element_text(angle=90, hjust=1))
         )
         ggsave(
             p,
@@ -151,28 +162,16 @@ def home_page():
         values="id",
         aggfunc="count",
     )
-    pivot_data.fillna(0, inplace=True)
 
     pivot_data = pivot_data.reset_index()
 
     pivot_data["Total"] = pivot_data.sum(numeric_only=True, axis=1)
-    pivot_data.loc["TOTAL"] = pivot_data.sum(numeric_only=True, axis=0)
 
+    pivot_header_list = list(pivot_data.columns.values)
     return render_template(
         "underwriting_home.html",
-        tables=[
-            pivot_data.to_html(
-                classes="table is-fullwidth",
-                border=1,
-                table_id="table",
-                na_rep="Total",
-                justify="center",
-                float_format="{:.0f}".format,
-                header=True,
-                index=False,
-            )
-        ],
-        titles=pivot_data.columns.values,
+        tables=pivot_data.to_dict(orient="records"),
+        header=pivot_header_list,
     )
 
 
@@ -188,7 +187,7 @@ def upload():
         upload_file = request.files.get("file")
         convert_input(upload_file)
         flash("Payment data has been uploaded.")
-    return render_template("upload.html")
+    return render_template("upload.html", title="Upload NEFT file from NEFT portal")
 
 
 def payments_all():

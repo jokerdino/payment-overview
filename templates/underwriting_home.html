@@ -15,13 +15,43 @@
 <a class="button is-link" href="{{ url_for('.payments_all') }}">Show all transactions</a>
 
 <div class="mt-10 has-text-centered">
-    <h3>Status summary - underwriter and relationship manager breakup
+    <h3 class="title is-4">Status summary - underwriter and relationship manager breakup
     </h3>
 </div>
-{% for table in tables %}
+{% if tables %}
+    <table class="table is-striped is-fullwidth is-bordered is-hoverable" id="table">
+    <thead>
+        <tr>
+            {% for heading in header %}
+                <th> {{ heading|title }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        {% for columns in tables %}
+                {% for heading in header %}
+                    {% if columns[heading]|int != 0 %}
+                        <td class="has-text-right"> {{ columns[heading]|round|int }}</td>
+                    {% elif columns[heading] is string %}
+                        <td> {{ columns[heading] }}</td>
+                    {% else %}
+                         <td class="has-text-right">0</td>
+                    {% endif %}
+                {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+            <tr>
+                    {% for heading in header %}
+                    <th class="has-text-right"> </th>
+                    {% endfor %}
+            </tr>
+    </tfoot>
 
-{{ table | safe }}
-{% endfor %}
+    </table>
+{% endif %}
 
 <!-- djlint:off -->
 <img src="/payments/plot.png"/>
@@ -33,11 +63,28 @@
         $(document).ready(function () {
                     $('#table').DataTable({
                                 "bPaginate": false,
-                                "columnDefs": [
-                                            {
-                                                        "targets": [0],
-                                                        "visible": false,
-                                                    }],
+  footerCallback: function (row, data, start, end, display) {
+            var api = this.api();
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+            };
+
+                  for (var r = 2; r < {{ header | length }}; r++) {
+                            // Total over this page
+                            pageTotal = api
+                                .column(r, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+                            // Update footer
+                            $(api.column(r).footer()).html(pageTotal);
+                            }
+                             $(api.column(0).footer()).html("Total");
+                        },
                                 "info": false
                             });
                 });
